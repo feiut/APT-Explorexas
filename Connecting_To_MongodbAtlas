@@ -1,0 +1,22 @@
+
+<<<< To connect to MongoDB Atlas, using python: >>>>
+
+import pymongo
+from pymongo import MongoClient
+client = pymongo.MongoClient("mongodb+srv://<username>:<password>@cluster0-eteyg.mongodb.net/test?retryWrites=true&w=majority")
+db = client.test
+db = client['Explorexas']
+
+Replace <username> and <password> using username and password below:
+1. WANGSONG: admin-user01 --- 19961106
+2. HEFEI: feihe --- 19950214
+3. XUSHILONG: slhsu --- a0937538651
+4. RONGPENGCHENG: pengchengrong --- 19961106
+
+client = pymongo.MongoClient("mongodb+srv://admin-user01:19961106@cluster0-eteyg.mongodb.net/test?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://feihe:19950214@cluster0-eteyg.mongodb.net/test?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://slhsu:a0937538651@cluster0-eteyg.mongodb.net/test?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://pengchengrong:19961106@cluster0-eteyg.mongodb.net/test?retryWrites=true&w=majority")
+
+
+
