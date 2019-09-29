@@ -4,6 +4,7 @@ API Documents:
 1. userCollectionAPI.py
 2. tagCollectionAPI.py
 3. categoryCollectionAPI.py
+4. commonAPI.py
 
 Demo Documents:
 1. demoPhase1.py
