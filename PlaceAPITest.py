@@ -9,6 +9,14 @@ def testPlaceAPI():
     assert(inserted_id is not None)
     print("Passed")
 
+    print("Test list")
+    place2 = Place("another dummy name", "another dummy description", "dummy location", 3.0)
+    inserted_id2 = controller.insert(place2)
+    places = controller.list()
+    print("list returns ", len(places), " rows.")
+    assert(len(places) >= 2)
+    print("Passed")
+
     print("Test retrival")
     retrieved = controller.get(inserted_id)
     assert(retrieved.placeName == place.placeName)
@@ -24,6 +32,7 @@ def testPlaceAPI():
     print("Test deletion")
     result = controller.delete(inserted_id)
     assert(result.deleted_count == 1)
+    controller.delete(inserted_id2)
     print("Passed")
 
 if __name__ == '__main__':
