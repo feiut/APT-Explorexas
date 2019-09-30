@@ -1,6 +1,8 @@
 from UserAPITest import testUserAPI
 from PlaceAPITest import testPlaceAPI
 from CategoryTagAPITest import testCatAPI, testTagAPI
+from Report_ImgAPITest import testPlaceAPI, testImageAPI
+
 
 if __name__ == '__main__':
     print("Test User API: ")
@@ -16,3 +18,9 @@ if __name__ == '__main__':
     testTagAPI()
 
     print("Test Report API: ")
+    testPlaceAPI()
+
+    print("Test Image API: ")
+    testImageAPI()
+
+    print("All Test Passed!")
