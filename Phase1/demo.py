@@ -3,7 +3,7 @@ from PlaceAPITest import testPlaceAPI
 from CategoryTagAPITest import testCatAPI, testTagAPI
 from Report_ImgAPITest import testReportAPI, testImageAPI
 
-# this is demo
+
 if __name__ == '__main__':
     print("Test User API: ")
     testUserAPI()
