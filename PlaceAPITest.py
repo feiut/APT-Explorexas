@@ -35,5 +35,5 @@ def testPlaceAPI():
     controller.delete(inserted_id2)
     print("Passed")
 
-if __name__ == '__main__':
-    testPlaceAPI()
+# if __name__ == '__main__':
+#     testPlaceAPI()
