@@ -21,10 +21,10 @@ class CategoryAPI():
     def update(self, cat):
         collection = get_db_collection(COLLECTION_NAME)
         if cat.cat_id is None:
-            print "Cat. ID cannot be None"
+            print("Cat. ID cannot be None")
             return None
         elif collection.find_one({"_id": ObjectId(cat.cat_id)}) is None:
-            print "Cat. ID does not exist, please create new cat. instead"
+            print("Cat. ID does not exist, please create new cat. instead")
             return None
         else:
             return collection.update_one({ "_id": ObjectId(cat.cat_id)}, {'$set':cat.toQuery()})
