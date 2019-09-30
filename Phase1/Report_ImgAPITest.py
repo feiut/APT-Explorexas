@@ -3,7 +3,7 @@ from Report import Report
 from ImageAPI import ImageAPI
 from Image import Image
 
-def testPlaceAPI():
+def testReportAPI():
 
     # Report(reportId, userId, placeId, categoryId, imgPath, imgId, review, rating)
     # Image(imgPath, imgId, reportId, userId, tagId)

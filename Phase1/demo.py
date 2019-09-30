@@ -1,7 +1,7 @@
 from UserAPITest import testUserAPI
 from PlaceAPITest import testPlaceAPI
 from CategoryTagAPITest import testCatAPI, testTagAPI
-from Report_ImgAPITest import testPlaceAPI, testImageAPI
+from Report_ImgAPITest import testReportAPI, testImageAPI
 
 
 if __name__ == '__main__':
@@ -18,7 +18,7 @@ if __name__ == '__main__':
     testTagAPI()
 
     print("Test Report API: ")
-    testPlaceAPI()
+    testReportAPI()
 
     print("Test Image API: ")
     testImageAPI()
