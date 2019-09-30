@@ -1,4 +1,4 @@
-from utils import *
+from utils import get_db_collection
 from bson.objectid import ObjectId
 from Tag import Tag
 

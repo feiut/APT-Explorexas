@@ -1,20 +1,12 @@
-from pymongo import MongoClient
 from Report import Report
-from Image import Image
 from ImageAPI import ImageAPI
+from utils import get_db_collection
 
 class ReportAPI():
 
-    def connect_to_database(self, collection):
-        client = MongoClient("mongodb+srv://fei:20190101@cluster0-37xwl.mongodb.net/test?retryWrites=true&w=majority")
-        #     client = MongoClient("mongodb+srv://feihe:19950214@cluster0-eteyg.mongodb.net/test?retryWrites=true&w=majority")
-        db = client['Explorexas']
-        target = db[collection]
-        return target
-
     def add_report(self, report, image):
         # reportId, userId, placeId, categoryId, imgPath, imgId, tagId, review, rating
-        reports = self.connect_to_database('Reports')
+        reports = get_db_collection('Reports')
         query = {'reportId': report.reportId}
         if reports.find_one(query):
             print("Report exist.")
@@ -27,7 +19,7 @@ class ReportAPI():
         return result
 
     def delete_report_by_id(self, reportId):
-        reports = self.connect_to_database('Reports')
+        reports = get_db_collection('Reports')
         query = {'reportId': reportId}
         report = reports.find_one(query)
         if not report:
@@ -39,7 +31,7 @@ class ReportAPI():
         return result
 
     def find_reports_by_userId(self, userId):
-        reports = self.connect_to_database('Reports')
+        reports = get_db_collection('Reports')
         query = {'userId': userId}
         if not reports.find_one(query):
             print("No report for userId:" + str(userId) + " was found")

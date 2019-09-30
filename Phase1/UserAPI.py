@@ -1,5 +1,5 @@
 
-from utils import *
+from utils import get_db_collection
 from User import User
 from bson.objectid import ObjectId
 

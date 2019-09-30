@@ -1,20 +1,11 @@
-from pymongo import MongoClient
 import gridfs
-from Report import Report
-from Image import Image
+from utils import get_imagedb
 
 class ImageAPI():
 
-    def connect_to_imagedb(self):
-
-        client = MongoClient("mongodb+srv://fei:20190101@cluster0-37xwl.mongodb.net/test?retryWrites=true&w=majority")
-
-        # client = MongoClient("mongodb+srv://feihe:19950214@cluster0-eteyg.mongodb.net/test?retryWrites=true&w=majority")
-        return client.images
-
     def add_image(self, image):
         # imgPath, imgId, reportId, userId, tagId
-        db = self.connect_to_imagedb()
+        db = get_imagedb()
         query = {'_id': image.imgId}
         if db.fs.files.find_one(query):
             print("image exist")
@@ -28,7 +19,7 @@ class ImageAPI():
         return result
 
     def get_image_by_id(self, imgId):
-        db = self.connect_to_imagedb()
+        db = get_imagedb()
         query = {'_id': imgId}
         if not db.fs.files.find_one(query):
             print("Image not found")
@@ -36,7 +27,7 @@ class ImageAPI():
         return db.fs.files.find(query)
 
     def get_image_by_tagId(self, tagId):
-        db = self.connect_to_imagedb()
+        db = get_imagedb()
         query = {'tagId': tagId}
         if not db.fs.files.find_one(query):
             print("Image not found")
@@ -44,7 +35,7 @@ class ImageAPI():
         return db.fs.files.find(query)
 
     def delete_image_by_id(self, imgId):
-        db = self.connect_to_imagedb()
+        db = get_imagedb()
         query = {'_id': imgId}
         result = db.fs.files.find_one(query)
         if not result:
