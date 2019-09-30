@@ -35,7 +35,7 @@ def testUserAPI():
     user2 = User("qinsong", "19971106", "wang@utexas.edu", "female", "10-1996")
     inserted_id2 = controller.insert(user2)
     users = controller.list()
-    print users
+    print(users)
     print("list returns ", len(users), " rows.")
     assert(len(users) >= 3)
     print("List Test Passed")
