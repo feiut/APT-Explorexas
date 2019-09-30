@@ -31,7 +31,7 @@ class UserCollectionAPI():
             result = collection.delete_one(query)
             return result
         else:
-            print 'User not existed.'
+            print('User not existed.')
 
 
     def update(self, user):
@@ -43,7 +43,7 @@ class UserCollectionAPI():
             result = collection.update_one({"_id":ObjectId(user.user_id)}, {"$set": user.toQuery()})
             return result
         else:
-            print 'User ' + user.user_id + ' not existed.'
+            print('User ' + user.user_id + ' not existed.')
 
 
     def get(self, field, value):
