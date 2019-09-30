@@ -21,10 +21,10 @@ class TagAPI():
     def update(self, tag):
         collection = get_db_collection(COLLECTION_NAME)
         if tag.tag_id is None:
-            print "Tag ID cannot be None"
+            print("Tag ID cannot be None")
             return None
         elif collection.find_one({"_id": ObjectId(tag.tag_id)}) is None:
-            print "Tag ID does not exist, please create new tag instead"
+            print("Tag ID does not exist, please create new tag instead")
             return None
         else:
             return collection.update_one({ "_id": ObjectId(tag.tag_id)}, {'$set':tag.toQuery()})
