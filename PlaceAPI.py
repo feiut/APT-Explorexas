@@ -2,7 +2,7 @@ from utils import *
 from bson.objectid import ObjectId
 from Place import Place
 
-COLLECTION_NAME = "place"
+COLLECTION_NAME = "Places"
 
 class PlaceAPI():
     def insert(self, place):
