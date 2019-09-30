@@ -73,6 +73,6 @@ def testCatAPI():
     print("Passed")
 
 
-if __name__ == '__main__':
-    testTagAPI()
-    testCatAPI()
+# if __name__ == '__main__':
+#     testTagAPI()
+#     testCatAPI()
