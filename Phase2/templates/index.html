@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-analytics.js"></script>
+
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyDNIX4HvhcZfG-6jBZAVtjp_f8H3nKhhmc",
+        authDomain: "my-second-lab-254515.firebaseapp.com",
+        databaseURL: "https://my-second-lab-254515.firebaseio.com",
+        projectId: "my-second-lab-254515",
+        storageBucket: "my-second-lab-254515.appspot.com",
+        messagingSenderId: "523114286882",
+        appId: "1:523114286882:web:c9bd7609115e6bef579f7b",
+        measurementId: "G-E67CTZCMBC"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+     </script>
+    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-auth.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.css" />
+
+    <title>Explorexas - Explore Outdoor Activities in Texas!</title>
+    <style>
+        .center-in-center{
+            position: absolute;
+            top: 30%;
+            left: 13%;
+        }
+    </style>
+    <script language="JavaScript">
+        function createCategory(){
+            window.location.href = "/createCategory";
+        }
+    </script>
+</head>
+<body style="background-image:url(http://res.cloudinary.com/culturemap-com/image/upload/ar_4:3,c_fill,g_faces:center,w_1200/v1558461235/photos/296046_original.jpg);background-repeat: no-repeat;background-size: cover;">
+<body>
+    <div class="center-in-center">
+        <div style="display:inline;"><h1 style="font-size:40px;"> Explorexas - Explore Outdoor Activities in Texas!</h1></div>
+    <!-- </div> -->
+    <div id="firebaseui-auth-container"></div>
+    <div id="login-info" hidden=true>
+    {% if user_data %}
+        <h2>Hello! {{user_data['name']}}</h2>
+        <input type="button" value="Create Category" onclick="createCategory()"/>
+    {% elif error_message %}
+        <p>Error: {{ error_message }}</p>
+    {% endif %}
+    </div>
+    <button id="sign-out" hidden=true>Sign Out</button>
+</body>
+</html>
