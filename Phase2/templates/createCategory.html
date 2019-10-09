@@ -1,0 +1,103 @@
+<!doctype html>
+
+<html>
+<head>
+    <title>Create a new category - Explorexas</title>
+    <style>
+        .center-in-center{
+            position: absolute;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            top: 30%;
+            left: 35%;
+
+            background: #D0EEFF;
+            opacity:1;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 15px;
+        }
+        .inputfile {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 15px;
+        }
+        .inputfile input{
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .inputfile:hover{
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        function changepic(obj) {
+        //console.log(obj.files[0]);//这里可以获取上传文件的name
+        var newsrc=getObjectURL(obj.files[0]);
+        document.getElementById('show').src=newsrc;
+        document.getElementById('srcURL').value=newsrc;
+
+        }
+        function getObjectURL(file) {
+            var url = null ;
+            if (window.createObjectURL!=undefined) { // basic
+                url = window.createObjectURL(file) ;
+            } else if (window.URL!=undefined) { // mozilla(firefox)
+                url = window.URL.createObjectURL(file) ;
+            } else if (window.webkitURL!=undefined) { // webkit or chrome
+                url = window.webkitURL.createObjectURL(file) ;
+            }
+            return url ;
+        }
+    </script>
+</head>
+<body style="background-image:url(http://res.cloudinary.com/culturemap-com/image/upload/ar_4:3,c_fill,g_faces:center,w_1200/v1558461235/photos/296046_original.jpg);background-repeat: no-repeat;background-size: cover;">
+<body>
+    <div class="center-in-center">
+        <h1 style="font-size:40px;color:white"> Create a New Category </h1>
+          <form action="{{ url_for('create_category') }}" method="post" enctype="multipart/form-data">
+              <div>
+              <table align="center">
+                  <tr>
+                      <td><label style="color:white">Category Name:</label></td>
+                      <td><input type="text" id= "categoryName" name="categoryName" style="width:260px;"></td>
+                  </tr>
+                  <tr>
+                      <td><label style="color:white">Category Description:</label></td>
+                      <td><input type="text" id= "categoryDescription" name="categoryDescription" style="width:260px;"></td>
+                  </tr>
+                  <tr>
+                      <td><label style="color:white">Category Photo:</label></td>
+                      <td>
+                          <input type="file" name="file" id="file" class="inputfile" onchange="changepic(this)" accept="image/png, image/jpeg, image/jpg"/>
+                      </td>
+                  </tr>
+              </table>
+              <img src="" id="show" name="show" width="200">
+              <input type="text" id="srcURL" name="srcURL" hidden="true">
+              </div>
+              <br>
+              <input type="submit" value="Submit" id="btnPost" style="width:90px;"/>
+        </form>
+    </div>
+</body>
+</html>
