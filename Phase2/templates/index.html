@@ -3,11 +3,9 @@
     {% block head%}
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
-
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-analytics.js"></script>
-
     <script>
     // Your web app's Firebase configuration
     var firebaseConfig = {
@@ -30,13 +28,13 @@
     <script src="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.css" />
     <title>Explorexas - Explore Outdoor Activities in Texas!</title>
-<!--    <style>-->
-<!--        .center-in-center{-->
-<!--            position: absolute;-->
-<!--            top: 30%;-->
-<!--            left: 13%;-->
-<!--        }-->
-<!--    </style>-->
+    <style>
+        .center-in-center{
+            position: absolute;
+            top: 30%;
+            left: 5%;
+        }
+    </style>
     <script language="JavaScript">
         function createCategory(){
             window.location.href = "/createCategory";
@@ -48,16 +46,16 @@
     {% block content %}
         <div class="center-in-center">
             <div style="display:inline;"><h1 style="font-size:40px;"> Explorexas - Explore Outdoor Activities in Texas! </h1></div>
-         </div>
-        <div id="firebaseui-auth-container"></div>
-        <div id="login-info" hidden=true>
-            {% if user_data %}
-                <h2>Hello! {{user_data['name']}}</h2>
-<!--                <input type="button" value="Create Category" onclick="createCategory()"/>-->
-            {% elif error_message %}
-                <p>Error: {{ error_message }}</p>
-            {% endif %}
+<!--        <div id="firebaseui-auth-container"></div>-->
+            <div id="login-info" hidden=true>
+                {% if user_data %}
+                    <h2 style="color:white">Hello! {{user_data['name']}}</h2>
+    <!--                <input type="button" value="Create Category" onclick="createCategory()"/>-->
+                {% elif error_message %}
+                    <p>Error: {{ error_message }}</p>
+                {% endif %}
+            </div>
+            <button id="sign-out" hidden=true>Sign Out</button>
         </div>
-        <button id="sign-out" hidden=true>Sign Out</button>
     {% endblock %}
 
