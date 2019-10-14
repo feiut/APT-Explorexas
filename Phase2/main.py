@@ -32,9 +32,12 @@ def create_category():
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
             controller = CategoryAPI.CategoryAPI()
-            cat = Category.Category(categoryName, categoryDescription, imgId)
+            cat = Category.Category(categoryName, categoryDescription, imgId, userId)
             image = CategoryImage.CategoryImage(pic, imgId, userId)
             insert_id = controller.insert(cat, image)
+            insert_result = controller.list_user_creation(userId)
+            for result in insert_result:
+                print(result)
         except ValueError as exc:
             error_message = str(exc)
     return redirect(url_for('createCategory'))

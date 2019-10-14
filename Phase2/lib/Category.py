@@ -1,10 +1,11 @@
 class Category:
-    def __init__(self, catName, catDescription, pic, cat_id = None):
+    def __init__(self, catName, catDescription, imgId = 'default' , userId = 'default', cat_id = None):
         self.catName = catName
         self.catDescription = catDescription
-        self.pic = pic
+        self.imgId = imgId
+        self.userId = userId
         self.cat_id = cat_id
 
     def toQuery(self):
-        query = {"catName": self.catName, "catDescription": self.catDescription, "pic": self.pic}
+        query = {"catName": self.catName, "catDescription": self.catDescription, "imgId": self.imgId, "userId": self.userId}
         return query
