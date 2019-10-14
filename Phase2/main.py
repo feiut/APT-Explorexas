@@ -49,13 +49,10 @@ def create_category():
             image = CategoryImage.CategoryImage(pic, imgId, userId)
             insert_id = controller.insert(cat, image)
             insert_result = controller.list_user_creation(userId)
-            for result in insert_result:
-                print(result)
         except ValueError as exc:
             error_message = str(exc)
-    # return redirect(url_for('createCategory'))
     return render_template(
-        'createCategory.html', inserted_data=insert_result, user_data=claims)
+            'createCategory.html', inserted_data=insert_result, user_data=claims)
 
 
 @app.route('/create_report', methods=['POST'])
