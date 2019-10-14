@@ -9,10 +9,21 @@ from lib import Image, ImageAPI
 app = Flask(__name__)
 datastore_client = datastore.Client()
 firebase_request_adapter = requests.Request()
+claims = None
 
 @app.route('/createCategory')
 def createCategory():
-    return render_template('createCategory.html')
+    id_token = request.cookies.get("token")
+    if id_token:
+        try:
+            claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+            controller = CategoryAPI.CategoryAPI()
+            insert_result = controller.list_user_creation(claims["email"])
+            for result in insert_result:
+                print(result)
+        except ValueError as exc:
+            error_message = str(exc)
+    return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
 
 
 @app.route('/createReport')
@@ -42,7 +53,7 @@ def create_category():
             error_message = str(exc)
     # return redirect(url_for('createCategory'))
     return render_template(
-        'createCategory.html', inserted_data=insert_result)
+        'createCategory.html', inserted_data=insert_result, user_data=claims)
 
 
 @app.route('/create_report', methods=['POST'])
