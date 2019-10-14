@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+    {% block head %}
+    <title>Create a new report - Explorexas</title>
+    <style>
+        .center-in-center{
+/* <!--            position: absolute;-->
+<!--            display: table-cell;-->
+<!--            vertical-align: middle;-->
+<!--            text-align: center;-->
+<!--            top: 30%;-->
+<!--            left: 35%;--> */
+
+            background: #D0EEFF;
+            opacity:1;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 15px;
+        }
+        .inputfile {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 15px;
+        }
+        .inputfile input{
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .inputfile:hover{
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        function changepic(obj) {
+        //console.log(obj.files[0]);//这里可以获取上传文件的name
+        var newsrc=getObjectURL(obj.files[0]);
+        document.getElementById('show').src=newsrc;
+        document.getElementById('srcURL').value=newsrc;
+
+        }
+        function getObjectURL(file) {
+            var url = null ;
+            if (window.createObjectURL!=undefined) { // basic
+                url = window.createObjectURL(file) ;
+            } else if (window.URL!=undefined) { // mozilla(firefox)
+                url = window.URL.createObjectURL(file) ;
+            } else if (window.webkitURL!=undefined) { // webkit or chrome
+                url = window.webkitURL.createObjectURL(file) ;
+            }
+            return url ;
+        }
+    </script>
+    {% endblock %}
+
+{% block content %}
+    <div class="center-in-center">
+        <h1 style="font-size:40px;color:white"> Create a New Report </h1>
+          <form action="{{ url_for('create_report') }}" method="post" enctype="multipart/form-data">
+              <div>
+              <table align="center">
+                  <tr>
+                      <td><label style="color:white">ReportId:</label></td>
+                      <td><input type="text" id= "reportId" name="reportId" style="width:260px;"></td>
+                  </tr>
+                  <tr>
+                      <td><label style="color:white">UserId:</label></td>
+                      <td><input type="text" id= "userId" name="userId" style="width:260px;"></td>
+                  </tr>
+                  <tr>
+                      <td><label style="color:white">PlaceName:</label></td>
+                      <td><input type="text" id= "placeName" name="placeName" style="width:260px;"></td>
+                  </tr>
+                  <tr>
+                      <td><label style="color:white">Coordinates:</label></td>
+                      <td><input type="text" id= "coordinates" name="coordinates" style="width:260px;"></td>
+                  </tr>
+                  <tr>
+                      <td><label style="color:white">CategoryId:</label></td>
+                      <td><input type="text" id= "categoryId" name="categoryId" style="width:260px;"></td>
+                  </tr>
+                  <tr>
+                      <td><label style="color:white">ImgId:</label></td>
+                      <td><input type="text" id= "imgId" name="imgId" style="width:260px;"></td>
+                  </tr>
+                  <tr>
+                      <td><label style="color:white">Review:</label></td>
+                      <td><input type="text" id= "review" name="review" style="width:260px;"></td>
+                  </tr>
+                  <tr>
+                      <td><label style="color:white">Rating:</label></td>
+                      <td><input type="text" id= "rating" name="rating" style="width:260px;"></td>
+                  </tr>
+                  <tr>
+                      <td><label style="color:white">tagId:</label></td>
+                      <td><input type="text" id= "tagId" name="tagId" style="width:260px;"></td>
+                  </tr>
+                  <tr>
+                      <td><label style="color:white">Upload Image:</label></td>
+                      <td>
+                          <input type="file" name="file" id="file" class="inputfile" onchange="changepic(this)" accept="image/png, image/jpeg, image/jpg"/>
+                      </td>
+                  </tr>
+              </table>
+              <img src="" id="show" name="show" width="200">
+              <input type="text" id="srcURL" name="srcURL" hidden="true">
+              </div>
+              <br>
+              <input type="submit" value="Submit" id="btnPost" style="width:90px;"/>
+        </form>
+    </div>
+{% endblock %}
