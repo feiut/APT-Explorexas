@@ -8,6 +8,11 @@ class Image:
         self.tagId = tagId
 
     def toQuery(self):
-        query = {"imgData": self.imgData, "imgId": self.imgId, "reportId": self.reportId, "userId": self.userId,
-                 "tagId": self.tagId}
+        query = {
+                "imgData": self.imgData, 
+                "imgId": self.imgId, 
+                "reportId": self.reportId, 
+                "userId": self.userId,
+                "tagId": self.tagId
+                }
         return query

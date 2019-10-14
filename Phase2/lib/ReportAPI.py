@@ -6,6 +6,7 @@ COLLECTION_NAME = "Reports"
 
 class ReportAPI():
     def __init__(self):
+        # self.client = pymongo.MongoClient("mongodb+srv://fei:20190101@cluster0-37xwl.mongodb.net/test?retryWrites=true&w=majority")
         self.client = pymongo.MongoClient("mongodb+srv://admin-user01:19961106@cluster0-eteyg.mongodb.net/admin?retryWrites=true&w=majority")
         self.db = self.client['Explorexas']
         self.collection = self.db[COLLECTION_NAME]
@@ -14,13 +15,13 @@ class ReportAPI():
         # reportId, userId, placeId, categoryId, imgPath, imgId, tagId, review, rating
         reports = self.collection
         query = {'reportId': report.reportId}
-        if reports.find_one(query):
+        if reports.find_one(query):  # Report ID should be unique
             print("Report exist.")
             return False
         new_report = report.toQuery()
-        result = reports.insert_one(new_report)
         imageapi = ImageAPI.ImageAPI()
         imageapi.add_image(image)
+        result = reports.insert_one(new_report)
         print("Report created successfully.")
         return result
 

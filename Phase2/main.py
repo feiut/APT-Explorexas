@@ -34,6 +34,7 @@ def createCategory():
 
 @app.route('/create_report', methods=['POST'])
 def create_report():
+    # Report ID and Image ID need to be unique
     reportId = request.form['reportId']
     userId = request.form['userId']
     placeName = request.form['placeName']
