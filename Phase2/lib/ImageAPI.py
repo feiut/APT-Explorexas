@@ -7,8 +7,9 @@ DATABASE_NAME = "Images"
 class ImageAPI():
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb+srv://admin-user01:19961106@cluster0-eteyg.mongodb.net/admin?retryWrites=true&w=majority")
-        self.db = self.client['Explorexas']
-        self.collection = self.db[DATABASE_NAME]
+        self.db = self.client['Images']
+        self.collection = self.db['what?']
+        self.collection.insert_one({"what": "what?"})
 
     def add_image(self, image):
         # imgPath, imgId, reportId, userId, tagId
