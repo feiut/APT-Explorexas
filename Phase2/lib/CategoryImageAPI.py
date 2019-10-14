@@ -2,35 +2,27 @@ import gridfs
 from bson.objectid import ObjectId
 import pymongo
 
-DATABASE_NAME = "Images"
+DATABASE_NAME = "CategoryImages"
 
-class ImageAPI():
+class CategoryImageAPI():
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb+srv://admin-user01:19961106@cluster0-eteyg.mongodb.net/admin?retryWrites=true&w=majority")
         self.db = self.client['Explorexas']
         self.collection = self.db[DATABASE_NAME]
 
     def add_image(self, image):
-        # imgPath, imgId, reportId, userId, tagId
+        # imgPath, imgId, userId
         query = {'_id': image.imgId}
         if self.db.fs.files.find_one(query):
-            print("image exist")
+            print("image exists")
             return False
         imgput = gridfs.GridFS(self.db)
         f = image.imgData.filename.split('.')
-        result = imgput.put(image.imgData, content_type=f[1], imgName=f[0], _id=image.imgId, \
-                               reportId=image.reportId, userId=image.userId, tagId=image.tagId)
+        result = imgput.put(image.imgData, content_type=f[1], imgName=f[0], _id=image.imgId, userId=image.userId)
         return result
 
     def get_image_by_id(self, imgId):
         query = {'_id': imgId}
-        if not self.db.fs.files.find_one(query):
-            print("Image not found")
-            return None
-        return self.db.fs.files.find(query)
-
-    def get_image_by_tagId(self, tagId):
-        query = {'tagId': tagId}
         if not self.db.fs.files.find_one(query):
             print("Image not found")
             return None

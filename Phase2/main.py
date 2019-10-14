@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from google.auth.transport import requests
 from google.cloud import datastore
 import google.oauth2.id_token
-from lib import Category, CategoryAPI
+from lib import Category, CategoryAPI, CategoryImage, CategoryImageAPI
 from lib import Report, ReportAPI
 from lib import Image, ImageAPI
 
@@ -10,27 +10,35 @@ app = Flask(__name__)
 datastore_client = datastore.Client()
 firebase_request_adapter = requests.Request()
 
+@app.route('/createCategory')
+def createCategory():
+    return render_template('createCategory.html')
+
+
+@app.route('/createReport')
+def createReport():
+    return render_template('createReport.html')
+
 
 @app.route('/create_category', methods=['POST'])
 def create_category():
     categoryName = request.form['categoryName']
     categoryDescription = request.form['categoryDescription']
-    pic = "request.files['file']"
+    pic = request.files['file']
+    userId = request.form['userId']
+    imgId = request.form['imgId']
     id_token = request.cookies.get("token")
     if id_token:
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
             controller = CategoryAPI.CategoryAPI()
-            cat = Category.Category(categoryName, categoryDescription, pic)
-            insert_id = controller.insert(cat)
+            cat = Category.Category(categoryName, categoryDescription, imgId)
+            image = CategoryImage.CategoryImage(pic, imgId, userId)
+            insert_id = controller.insert(cat, image)
         except ValueError as exc:
             error_message = str(exc)
     return redirect(url_for('createCategory'))
 
-
-@app.route('/createCategory')
-def createCategory():
-    return render_template('createCategory.html')
 
 @app.route('/create_report', methods=['POST'])
 def create_report():
@@ -56,9 +64,6 @@ def create_report():
             error_message = str(exc)
     return redirect(url_for('createReport'))
 
-@app.route('/createReport')
-def createReport():
-    return render_template('createReport.html')
 
 @app.route('/')
 def root():

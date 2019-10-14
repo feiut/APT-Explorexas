@@ -1,4 +1,4 @@
-from lib import Category
+from lib import Category, CategoryImageAPI
 # from utils import get_db_collection
 import pymongo
 from bson.objectid import ObjectId
@@ -15,10 +15,12 @@ class CategoryAPI():
 
     #[input]  cat object
     #[return] _id of inserted category
-    def insert(self, cat):
+    def insert(self, cat, image):
         srchRlt = self.collection.find_one(cat.toQuery())
         if srchRlt is None:
             cat_id = self.collection.insert_one(cat.toQuery()).inserted_id
+            imageapi = CategoryImageAPI.CategoryImageAPI()
+            imageapi.add_image(image)
         else:
             cat_id = srchRlt['_id']
         return cat_id
