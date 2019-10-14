@@ -98,6 +98,22 @@
               <br>
               <input type="submit" value="Submit" id="btnPost" style="width:90px;"/>
         </form>
-
+         <div id="creation-history">
+             <h5 style="color:white"> Categories you have created: </h5>
+             <table border='1' align="center" >
+                 <tr>
+                     <td>Category Name</td>
+                     <td>Category Description</td>
+                 </tr>
+                {% if inserted_data %}
+                    {% for data in inserted_data %}
+                 <tr>
+                     <td>{{data["catName"]}}</td>
+                     <td>{{data["catDescription"]}}</td>
+                 </tr>
+                     {% endfor %}
+             {% endif %}
+             </table>
+         </div>
     </div>
 {% endblock %}

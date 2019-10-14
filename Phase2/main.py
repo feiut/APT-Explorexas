@@ -40,7 +40,9 @@ def create_category():
                 print(result)
         except ValueError as exc:
             error_message = str(exc)
-    return redirect(url_for('createCategory'))
+    # return redirect(url_for('createCategory'))
+    return render_template(
+        'createCategory.html', inserted_data=insert_result)
 
 
 @app.route('/create_report', methods=['POST'])
