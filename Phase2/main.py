@@ -3,23 +3,19 @@ from google.auth.transport import requests
 from google.cloud import datastore
 import google.oauth2.id_token
 from lib import Category, CategoryAPI
+from lib import Report, ReportAPI
+from lib import Image, ImageAPI
 
 app = Flask(__name__)
 datastore_client = datastore.Client()
 firebase_request_adapter = requests.Request()
 
-# Enter the createCategory page
-@app.route('/createCategory')
-def createCategory():
-    return render_template('createCategory.html')
 
-
-# Insert a new category to the database
 @app.route('/create_category', methods=['POST'])
 def create_category():
     categoryName = request.form['categoryName']
     categoryDescription = request.form['categoryDescription']
-    pic = request.files['file']
+    pic = "request.files['file']"
     id_token = request.cookies.get("token")
     if id_token:
         try:
@@ -31,6 +27,38 @@ def create_category():
             error_message = str(exc)
     return redirect(url_for('createCategory'))
 
+
+@app.route('/createCategory')
+def createCategory():
+    return render_template('createCategory.html')
+
+@app.route('/create_report', methods=['POST'])
+def create_report():
+    reportId = request.form['reportId']
+    userId = request.form['userId']
+    placeName = request.form['placeName']
+    coordinates = request.form['coordinates']
+    categoryId = request.form['categoryId']
+    imgId = request.form['imgId']
+    review = request.form['review']
+    rating = request.form['rating']
+    tagId = request.form['tagId']
+    pic = request.files['file']
+    id_token = request.cookies.get("token")
+    if id_token:
+        try:
+            claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+            repController = ReportAPI.ReportAPI()
+            report = Report.Report(reportId, userId, placeName, coordinates, categoryId, imgId, review, rating)
+            image = Image.Image(pic, imgId, reportId, userId, tagId)
+            insert_id = repController.add_report(report, image)
+        except ValueError as exc:
+            error_message = str(exc)
+    return redirect(url_for('createReport'))
+
+@app.route('/createReport')
+def createReport():
+    return render_template('createReport.html')
 
 @app.route('/')
 def root():
@@ -77,5 +105,5 @@ if __name__ == '__main__':
     # the "static" directory. See:
     # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
     # App Engine itself will serve those files as configured in app.yaml.
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    app.run(host='127.0.0.1', port=3000, debug=True)
     # db = get_db_collection()
