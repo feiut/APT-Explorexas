@@ -1,7 +1,7 @@
 from lib import Category
 # from utils import get_db_collection
-from bson.objectid import ObjectId
 import pymongo
+from bson.objectid import ObjectId
 
 COLLECTION_NAME = "Categories"
 

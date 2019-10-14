@@ -46,10 +46,10 @@
     {% block content %}
         <div class="center-in-center">
             <div style="display:inline;"><h1 style="font-size:40px;"> Explorexas - Explore Outdoor Activities in Texas! </h1></div>
-<!--        <div id="firebaseui-auth-container"></div>-->
+        <div id="firebaseui-auth-container"></div>
             <div id="login-info" hidden=true>
                 {% if user_data %}
-                    <h2 style="color:white">Hello! {{user_data['name']}}</h2>
+                    <h3 style="color:white">Hello! {{user_data['name']}}</h3>
     <!--                <input type="button" value="Create Category" onclick="createCategory()"/>-->
                 {% elif error_message %}
                     <p>Error: {{ error_message }}</p>

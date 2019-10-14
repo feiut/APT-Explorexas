@@ -8,7 +8,13 @@ app = Flask(__name__)
 datastore_client = datastore.Client()
 firebase_request_adapter = requests.Request()
 
+# Enter the createCategory page
+@app.route('/createCategory')
+def createCategory():
+    return render_template('createCategory.html')
 
+
+# Insert a new category to the database
 @app.route('/create_category', methods=['POST'])
 def create_category():
     categoryName = request.form['categoryName']
@@ -24,11 +30,6 @@ def create_category():
         except ValueError as exc:
             error_message = str(exc)
     return redirect(url_for('createCategory'))
-
-
-@app.route('/createCategory')
-def createCategory():
-    return render_template('createCategory.html')
 
 
 @app.route('/')
