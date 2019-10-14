@@ -4,7 +4,7 @@
     <title>Create a new category - Explorexas</title>
     <style>
         .center-in-center{
-            background: #D0EEFF;
+            background: #cc5500;
             opacity:1;
             border: 1px solid #99D3F5;
             border-radius: 4px;
@@ -68,7 +68,7 @@
         <h1 style="font-size:40px;color:white"> Create a New Category </h1>
           <form action="{{ url_for('create_category') }}" method="post" enctype="multipart/form-data">
               <div>
-              <table align="center">
+              <table class="table" align="center">
                   <tr>
                       <td><label style="color:white">Category Name:</label></td>
                       <td><input type="text" id= "categoryName" name="categoryName" style="width:260px;"></td>
@@ -92,26 +92,38 @@
                       </td>
                   </tr>
               </table>
-              <img src="" id="show" name="show" width="200">
-              <input type="text" id="srcURL" name="srcURL" hidden="true">
+                  <img src="" id="show" name="show" width="200">
+                  <input type="text" id="srcURL" name="srcURL" hidden="true">
+                  <br>
+                  <input type="submit" value="Submit" id="btnPost" style="width:90px;"/>
               </div>
-              <br>
-              <input type="submit" value="Submit" id="btnPost" style="width:90px;"/>
         </form>
+        <br><br>
          <div id="creation-history">
-             <h5 style="color:white"> Categories you have created: </h5>
-             <table border='1' align="center" >
-                 <tr>
-                     <td>Category Name</td>
-                     <td>Category Description</td>
-                 </tr>
+             <table class="table" border='1' align="center" >
                 {% if inserted_data %}
-                    {% for data in inserted_data %}
-                 <tr>
-                     <td>{{data["catName"]}}</td>
-                     <td>{{data["catDescription"]}}</td>
-                 </tr>
+                 <h5 style="color:white"> Categories you have created: </h5>
+                 <thead class="thead-dark">
+                     <tr>
+                         <th scope="col">#</th>
+                         <th scope="col">Category Name</th>
+                         <th scope="col">Category Description</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                        {% for data in inserted_data %}
+                     <tr>
+                         <th scope="row"></th>
+                         <td>{{data["catName"]}}</td>
+                         <td>{{data["catDescription"]}}</td>
+                     </tr>
                      {% endfor %}
+                 {% else %}
+                 <tr>
+                     <p>You haven't created any category. Now create one!</p>
+                 </tr>
+                 </tbody>
+
              {% endif %}
              </table>
          </div>

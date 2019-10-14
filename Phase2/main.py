@@ -5,6 +5,8 @@ import google.oauth2.id_token
 from lib import Category, CategoryAPI, CategoryImage, CategoryImageAPI
 from lib import Report, ReportAPI
 from lib import Image, ImageAPI
+from lib import User, UserAPI
+
 
 app = Flask(__name__)
 datastore_client = datastore.Client()
@@ -99,6 +101,9 @@ def root():
             # http://flask.pocoo.org/docs/1.0/quickstart/#sessions).
             claims = google.oauth2.id_token.verify_firebase_token(
                 id_token, firebase_request_adapter)
+            user_controller = UserAPI.UserAPI()
+            user = User.User(claims["email"], claims["name"])
+            search_user = user_controller.insert(user)
 
         except ValueError as exc:
             # This will be raised if the token is expired or any other
