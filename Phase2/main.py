@@ -5,9 +5,7 @@ import google.oauth2.id_token
 from lib import Category, CategoryAPI, CategoryImage, CategoryImageAPI
 from lib import Report, ReportAPI
 from lib import Image, ImageAPI
-from lib import User, UserAPI
-
-
+from flask import make_response
 app = Flask(__name__)
 datastore_client = datastore.Client()
 firebase_request_adapter = requests.Request()
@@ -26,12 +24,6 @@ def createCategory():
         except ValueError as exc:
             error_message = str(exc)
     return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
-
-
-@app.route('/createReport')
-def createReport():
-    return render_template('createReport.html')
-
 
 @app.route('/create_category', methods=['POST'])
 def create_category():
@@ -78,7 +70,35 @@ def create_report():
             insert_id = repController.add_report(report, image)
         except ValueError as exc:
             error_message = str(exc)
+    return render_template('createReport.html')
+
+@app.route('/createReport')
+def createReport():
+    return render_template('createReport.html')
+
+@app.route('/images/<imgId>')
+def image(imgId):
+    imgController = ImageAPI.ImageAPI()
+    image = imgController.get_image_by_id(imgId)
+    response = make_response(image.read())
+    response.mimetype = 'image/jpeg'
+    return response
     return redirect(url_for('createReport'))
+    
+@app.route('/reports/<reportId>')
+def report(reportId):
+    repController = ReportAPI.ReportAPI()
+    imgController = ImageAPI.ImageAPI()
+    report = repController.find_by_reportId(reportId)
+    return render_template('reports.html', report=report, imgId=report["imgId"])
+
+# @app.route('/user_reports/<userId>') 
+# def report(userId):
+#     repController = ReportAPI.ReportAPI()
+#     imgController = ImageAPI.ImageAPI()
+#     reports = repController.find_reports_by_userId(userId)
+#     return render_template('reports.html', imgId=1)
+
 
 
 @app.route('/')
@@ -96,9 +116,6 @@ def root():
             # some applications may wish to cache results in an encrypted
             # session store (see for instance
             # http://flask.pocoo.org/docs/1.0/quickstart/#sessions).
-            claims = google.oauth2.id_token.verify_firebase_token(
-                id_token, firebase_request_adapter)
-            user_controller = UserAPI.UserAPI()
             user = User.User(claims["email"], claims["name"])
             search_user = user_controller.insert(user)
 

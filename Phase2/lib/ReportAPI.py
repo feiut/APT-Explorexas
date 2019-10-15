@@ -6,8 +6,8 @@ COLLECTION_NAME = "Reports"
 
 class ReportAPI():
     def __init__(self):
-        # self.client = pymongo.MongoClient("mongodb+srv://fei:20190101@cluster0-37xwl.mongodb.net/test?retryWrites=true&w=majority")
-        self.client = pymongo.MongoClient("mongodb+srv://admin-user01:19961106@cluster0-eteyg.mongodb.net/admin?retryWrites=true&w=majority")
+        self.client = pymongo.MongoClient("mongodb+srv://fei:20190101@cluster0-37xwl.mongodb.net/test?retryWrites=true&w=majority")
+        # self.client = pymongo.MongoClient("mongodb+srv://admin-user01:19961106@cluster0-eteyg.mongodb.net/admin?retryWrites=true&w=majority")
         self.db = self.client['Explorexas']
         self.collection = self.db[COLLECTION_NAME]
 
@@ -25,7 +25,24 @@ class ReportAPI():
         print("Report created successfully.")
         return result
 
-    def delete_report_by_id(self, reportId):
+    def find_by_reportId(self, reportId):
+        reports = self.collection
+        query = {'reportId': reportId}
+        try:
+            result = reports.find_one(query)
+        except:
+            raise ValueError("Report not found!")
+        report = Report.Report(result["reportId"],
+                               result["userId"],
+                               result["placeName"],
+                               result["coordinates"],
+                               result["categoryId"],
+                               result["imgId"],
+                               result["review"],
+                               result["rating"])
+        return report.toQuery()
+
+    def delete_by_id(self, reportId):
         reports = self.collection
         query = {'reportId': reportId}
         report = reports.find_one(query)
@@ -37,7 +54,7 @@ class ReportAPI():
         result = reports.delete_one({"reportId": reportId})
         return result
 
-    def find_reports_by_userId(self, userId):
+    def find_by_userId(self, userId):
         reports = self.collection
         query = {'userId': userId}
         if not reports.find_one(query):
