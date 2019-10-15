@@ -5,6 +5,7 @@ import google.oauth2.id_token
 from lib import Category, CategoryAPI, CategoryImage, CategoryImageAPI
 from lib import Report, ReportAPI
 from lib import Image, ImageAPI
+from lib import User, UserAPI
 from flask import make_response
 app = Flask(__name__)
 datastore_client = datastore.Client()
@@ -116,7 +117,9 @@ def root():
             # some applications may wish to cache results in an encrypted
             # session store (see for instance
             # http://flask.pocoo.org/docs/1.0/quickstart/#sessions).
+            claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
             user = User.User(claims["email"], claims["name"])
+            user_controller = UserAPI.UserAPI()
             search_user = user_controller.insert(user)
 
         except ValueError as exc:
