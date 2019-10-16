@@ -3,11 +3,13 @@ from google.auth.transport import requests
 from google.cloud import datastore
 from datetime import datetime 
 import google.oauth2.id_token
+import uuid
 from lib import Category, CategoryAPI, CategoryImage, CategoryImageAPI
 from lib import Report, ReportAPI
 from lib import Image, ImageAPI
 from lib import User, UserAPI
 from flask import make_response
+
 app = Flask(__name__)
 datastore_client = datastore.Client()
 firebase_request_adapter = requests.Request()
@@ -24,8 +26,9 @@ def createCategory():
             for result in insert_result:
                 print(result)
         except ValueError as exc:
-            error_message = str(exc)
-    return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
+            return render_template('noLogin.html')
+        return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
+    return render_template('noLogin.html')
 
 @app.route('/create_category', methods=['POST'])
 def create_category():
@@ -53,23 +56,33 @@ def create_category():
 @app.route('/create_report', methods=['POST'])
 def create_report():
     # Report ID and Image ID need to be unique
-    reportId = request.form['reportId']
-    userId = request.form['userId']
-    placeName = request.form['placeName']
-    coordinates = request.form['coordinates']
-    categoryId = request.form['categoryId']
-    imgId = request.form['imgId']
-    review = request.form['review']
-    rating = request.form['rating']
-    tagId = request.form['tagId']
-    pic = request.files['file']
-    timeStamp = datetime.now()
     id_token = request.cookies.get("token")
     if id_token:
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+            title = request.form['title']
+            reportId = uuid.uuid1()
+            imgId = uuid.uuid4()
+            userId = claims['email']
+            placeName = request.form['placeName']
+            coordinates = request.form['coordinates']
+            categoryId = request.form['categoryId']
+            review = request.form['review']
+            rating = request.form['rating']
+            tagId = request.form['tagId']
+            pic = request.files['file']
+            timeStamp = datetime.now()
             repController = ReportAPI.ReportAPI()
-            report = Report.Report(reportId, userId, placeName, coordinates, categoryId, imgId, review, rating, timeStamp)
+            report = Report.Report(reportId,
+                                    userId, 
+                                    title, 
+                                    placeName, 
+                                    coordinates, 
+                                    categoryId, 
+                                    imgId, 
+                                    review, 
+                                    rating, 
+                                    timeStamp)
             image = Image.Image(pic, imgId, reportId, userId, tagId)
             insert_id = repController.add_report(report, image)
         except ValueError as exc:
@@ -78,7 +91,16 @@ def create_report():
 
 @app.route('/createReport')
 def createReport():
-    return render_template('createReport.html')
+    id_token = request.cookies.get("token")
+    if id_token:
+        try:
+            claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+        except ValueError as exc:
+            return render_template('noLogin.html')
+        return render_template('createReport.html')
+    else:
+        return render_template('noLogin.html')
+
 
 @app.route('/images/<imgId>')
 def image(imgId):

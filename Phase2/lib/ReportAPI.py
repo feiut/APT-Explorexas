@@ -17,10 +17,10 @@ class ReportAPI():
     def add_report(self, report, image):
         # reportId, userId, placeId, categoryId, imgPath, imgId, tagId, review, rating
         reports = self.collection
-        query = {'reportId': report.reportId}
-        if reports.find_one(query):  # Report ID should be unique
-            print("Report exist.")
-            return False
+        # query = {'reportId': report.reportId}
+        # if reports.find_one(query):  # Report ID should be unique
+        #     print("Report exist.")
+        #     return False
         new_report = report.toQuery()
         imageapi = ImageAPI.ImageAPI()
         imageapi.add_image(image)
@@ -35,8 +35,11 @@ class ReportAPI():
             result = reports.find_one(query)
         except:
             raise ValueError("Report not found!")
+        if result == None:
+            raise ValueError("Report not found!")
         report = Report.Report(result["reportId"],
                                result["userId"],
+                               result["title"],
                                result["placeName"],
                                result["coordinates"],
                                result["categoryId"],
