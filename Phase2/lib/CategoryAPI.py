@@ -23,8 +23,6 @@ class CategoryAPI():
         srchRlt = self.collection.find_one(cat.toQuery())
         if srchRlt is None:
             cat_id = self.collection.insert_one(cat.toQuery()).inserted_id
-            # imageapi = CategoryImageAPI.CategoryImageAPI()
-            # imageId = imageapi.add_image(image)
         else:
             cat_id = srchRlt['_id']
         return cat_id
@@ -49,7 +47,7 @@ class CategoryAPI():
             print("The Category corresponding the input cat. id does not exist")
             return None
         else:
-            cat = Category(srchRlt["catName"], srchRlt["catDescription"], srchRlt["imgId"], srchRlt["userId"], srchRlt["_id"])
+            cat = Category(srchRlt["catName"], srchRlt["catDescription"], srchRlt["imageId"], srchRlt["userId"], srchRlt["_id"])
             return cat
 
     #[input]  None
@@ -58,7 +56,7 @@ class CategoryAPI():
         results = self.collection.find({})
         cats = []
         for result in results:
-            cat = Category(result["catName"], result["catDescription"],result["imgId"], result["userId"], result["_id"])
+            cat = Category(result["catName"], result["catDescription"],result["imageId"], result["userId"], result["_id"])
             cats.append(cat)
         return cats
 

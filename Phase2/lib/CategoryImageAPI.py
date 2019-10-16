@@ -18,7 +18,6 @@ class CategoryImageAPI():
         #     return False
         imgput = gridfs.GridFS(self.db)
         f = image.imgData.filename.split('.')
-        # result = imgput.put(image.imgData, content_type=f[1], imgName=f[0], _id=image.imgId, userId=image.userId)
         result = imgput.put(image.imgData, content_type=f[1], imgName=f[0], userId=image.userId)
 
         return result

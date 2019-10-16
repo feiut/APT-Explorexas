@@ -3,7 +3,6 @@ from google.auth.transport import requests
 from google.cloud import datastore
 from datetime import datetime 
 import google.oauth2.id_token
-import re
 from lib import Category, CategoryAPI, CategoryImage, CategoryImageAPI
 from lib import Report, ReportAPI
 from lib import Image, ImageAPI
