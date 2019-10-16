@@ -1,5 +1,8 @@
 from lib import Report
 from lib import ImageAPI
+from lib import TagAPI
+from lib import UserAPI
+from lib import CategoryAPI
 import pymongo
 
 COLLECTION_NAME = "Reports"
@@ -39,7 +42,8 @@ class ReportAPI():
                                result["categoryId"],
                                result["imgId"],
                                result["review"],
-                               result["rating"])
+                               result["rating"],
+                               result["timeStamp"])
         return report.toQuery()
 
     def delete_by_id(self, reportId):
@@ -70,6 +74,48 @@ class ReportAPI():
                             result["categoryId"],
                             result["imgId"],
                             result["review"],
-                            result["rating"])
+                            result["rating"],
+                            result["timeStamp"])
             report_list.append(report)
         return report_list
+
+    def find_reports_by_catId(self, catId):
+        reports = self.collection
+        query = {'categoryId': catId}
+        if not reports.find_one(query):
+            raise ValueError("Report not found!")
+        results = reports.find(query)
+        report_list = []
+        for result in results:
+            report = Report.Report(result["reportId"],
+                            result["userId"],
+                            result["placeName"],
+                            result["coordinates"],
+                            result["categoryId"],
+                            result["imgId"],
+                            result["review"],
+                            result["rating"],
+                            result["timeStamp"])
+            report_list.append(report)
+        return report_list
+
+    def get_report_content_list_by_catId(self, catId): 
+        imageAPI = ImageAPI.ImageAPI()
+        tagAPI = TagAPI.TagAPI()
+        userAPI = UserAPI.UserAPI()
+        catAPI = CategoryAPI.CategoryAPI()
+
+        reportContentList = []
+        reportList = self.find_reports_by_catId(catId)
+        for report in reportList:
+            userName = userAPI.get(report.userId).userName
+            catName = catAPI.get(catId).catName
+            tagId = imageAPI.get_image_by_id(report.imgId).tagId
+            tagName = tagAPI.get(tagId)
+            reportContent = {"userName": userName, "placeName": report.placeName, 
+                             "coordinates": report.coordinates, "categoryName": catName,
+                             "imgId": report.imgId, "review": report.review, 
+                             "rating": report.rating, "tagName":tagName,
+                             "timeStamp": report.timeStamp}
+            reportContentList.append(reportContent)
+        return reportContentList

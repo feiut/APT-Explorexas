@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
 from google.auth.transport import requests
 from google.cloud import datastore
+from datetime import datetime 
 import google.oauth2.id_token
+import re
 from lib import Category, CategoryAPI, CategoryImage, CategoryImageAPI
 from lib import Report, ReportAPI
 from lib import Image, ImageAPI
@@ -62,12 +64,13 @@ def create_report():
     rating = request.form['rating']
     tagId = request.form['tagId']
     pic = request.files['file']
+    timeStamp = datetime.now()
     id_token = request.cookies.get("token")
     if id_token:
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
             repController = ReportAPI.ReportAPI()
-            report = Report.Report(reportId, userId, placeName, coordinates, categoryId, imgId, review, rating)
+            report = Report.Report(reportId, userId, placeName, coordinates, categoryId, imgId, review, rating, timeStamp)
             image = Image.Image(pic, imgId, reportId, userId, tagId)
             insert_id = repController.add_report(report, image)
         except ValueError as exc:
@@ -93,6 +96,13 @@ def report(reportId):
     imgController = ImageAPI.ImageAPI()
     report = repController.find_by_reportId(reportId)
     return render_template('reports.html', report=report, imgId=report["imgId"])
+
+@app.route('/viewCategoryPost/<catId>')
+def viewCategoryPost(catId):
+    repController = ReportAPI.ReportAPI()
+    reportContentList = repController.get_report_content_list_by_catId(catId)
+    reportContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
+    return render_template('viewCategoryPost.html', reportContentList=reportContentList)
 
 # @app.route('/user_reports/<userId>') 
 # def report(userId):
