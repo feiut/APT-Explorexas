@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Show report list under specific category - Explorexas</title>
+    <style>
+        .center-in-center{
+/* <!--            position: absolute;-->
+<!--            display: table-cell;-->
+<!--            vertical-align: middle;-->
+<!--            text-align: center;-->
+<!--            top: 30%;-->
+<!--            left: 35%;--> */
+            color: black;
+            background: #D0EEFF;
+            opacity:1;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 15px;
+        }
+        .report-container{
+            margin: 50px 10px;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="center-in-center">
+        {% for reportContent in reportContentList %}
+        <h2>Place: {{ reportContent["placeName"] }}</h2>
+            <div class="report-container">
+                <div class="row">
+                    <div class="col-4">
+                        <img src="{{url_for('image', imgId=reportContent["imgId"])}}" alt={{reportContent["placeName"]}} style="height:180px;width:200px">
+                        <p {{reportContent["tagName"]}} /p>
+                    </div>
+                    <div class="col-8">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">userName: {{ reportContent["userName"] }}</li>
+                            <li class="list-group-item">Location: {{ reportContent["coordinates"] }}</li>
+                            <li class="list-group-item">category: {{ reportContent["categoryName"] }}</li>
+                            <li class="list-group-item">review: {{ reportContent["review"] }}</li>
+                            <li class="list-group-item">rating: {{ reportContent["rating"] }}</li>
+                            <li class="list-group-item">time: {{ reportContent["timeStamp"] }}</li>
+                        </ul>
+                    </div>
+                </div> 
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
