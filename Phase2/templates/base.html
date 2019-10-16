@@ -18,6 +18,9 @@
         .site-header{
             background-color:white;
         }
+        .container{
+          display: flex;
+        }
     </style>
 </head>
 <body style="background-image:url(http://res.cloudinary.com/culturemap-com/image/upload/ar_4:3,c_fill,g_faces:center,w_1200/v1558461235/photos/296046_original.jpg);background-repeat: no-repeat;background-size: cover;">
@@ -46,11 +49,13 @@
       </nav>
     </header>
 
-    <main role="main" class="container">
+    <!--main role="main" class="container">
       <div class="row">
-        <div class="col-md-8">
-          {% block content %}{% endblock %}
-        </div>
+        <div class="col-md-8"-->
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+        <!--/div>
         <div class="col-md-4">
           <div class="content-section">
             <h3>Function Sidebar</h3>
@@ -63,7 +68,7 @@
           </div>
         </div>
       </div>
-    </main>
+    </main-->
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
