@@ -32,15 +32,16 @@ def create_category():
     categoryDescription = request.form['categoryDescription']
     pic = request.files['file']
     userId = request.form['userId']
-    imgId = request.form['imgId']
+    # imgId = request.form['imgId']
     id_token = request.cookies.get("token")
     if id_token:
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
             controller = CategoryAPI.CategoryAPI()
-            cat = Category.Category(categoryName, categoryDescription, imgId, userId)
-            image = CategoryImage.CategoryImage(pic, imgId, userId)
-            insert_id = controller.insert(cat, image)
+            image = CategoryImage.CategoryImage(pic, userId)
+            imageId = controller.insert_image_of_this_Category(image)
+            cat = Category.Category(categoryName, categoryDescription, imageId, userId)
+            insert_id = controller.insert(cat)
             insert_result = controller.list_user_creation(userId)
         except ValueError as exc:
             error_message = str(exc)

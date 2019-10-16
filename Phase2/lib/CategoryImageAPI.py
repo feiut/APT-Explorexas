@@ -12,13 +12,15 @@ class CategoryImageAPI():
 
     def add_image(self, image):
         # imgPath, imgId, userId
-        query = {'_id': image.imgId}
-        if self.db.fs.files.find_one(query):
-            print("image exists")
-            return False
+        # query = {'_id': image.imgId}
+        # if self.db.fs.files.find_one(query):
+        #     print("image exists")
+        #     return False
         imgput = gridfs.GridFS(self.db)
         f = image.imgData.filename.split('.')
-        result = imgput.put(image.imgData, content_type=f[1], imgName=f[0], _id=image.imgId, userId=image.userId)
+        # result = imgput.put(image.imgData, content_type=f[1], imgName=f[0], _id=image.imgId, userId=image.userId)
+        result = imgput.put(image.imgData, content_type=f[1], imgName=f[0], userId=image.userId)
+
         return result
 
     def get_image_by_id(self, imgId):

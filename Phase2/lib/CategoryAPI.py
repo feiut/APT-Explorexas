@@ -12,15 +12,19 @@ class CategoryAPI():
         self.db = self.client['Explorexas']
         self.collection = self.db[COLLECTION_NAME]
 
+    def insert_image_of_this_Category(self, image):
+        imageapi = CategoryImageAPI.CategoryImageAPI()
+        imageId = imageapi.add_image(image)
+        return imageId
 
     #[input]  cat object
     #[return] _id of inserted category
-    def insert(self, cat, image):
+    def insert(self, cat):
         srchRlt = self.collection.find_one(cat.toQuery())
         if srchRlt is None:
             cat_id = self.collection.insert_one(cat.toQuery()).inserted_id
-            imageapi = CategoryImageAPI.CategoryImageAPI()
-            imageapi.add_image(image)
+            # imageapi = CategoryImageAPI.CategoryImageAPI()
+            # imageId = imageapi.add_image(image)
         else:
             cat_id = srchRlt['_id']
         return cat_id
