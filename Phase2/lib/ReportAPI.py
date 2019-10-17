@@ -37,7 +37,8 @@ class ReportAPI():
                                result["userId"],
                                result["title"],
                                result["placeName"],
-                               result["coordinates"],
+                               result["latitude"],
+                               result["longitude"],
                                result["categoryId"],
                                result["imgId"],
                                result["review"],
@@ -70,7 +71,8 @@ class ReportAPI():
                             result["userId"],
                             result["title"],
                             result["placeName"],
-                            result["coordinates"],
+                            result["latitude"],
+                            result["longitude"],
                             result["categoryId"],
                             result["imgId"],
                             result["review"],
@@ -91,7 +93,8 @@ class ReportAPI():
                             result["userId"],
                             result["title"],
                             result["placeName"],
-                            result["coordinates"],
+                            result["latitude"],
+                            result["longitude"],
                             result["categoryId"],
                             result["imgId"],
                             result["review"],
@@ -111,7 +114,8 @@ class ReportAPI():
                                result["userId"],
                                result["title"],
                                result["placeName"],
-                               result["coordinates"],
+                               result["latitude"],
+                               result["longitude"],
                                result["categoryId"],
                                result["imgId"],
                                result["review"],
@@ -133,11 +137,17 @@ class ReportAPI():
                 catName = catAPI.get(catId).catName
                 tagId = imageAPI.get_image_by_id(report.imgId).tagId
                 tagName = tagAPI.get(tagId).tagName
-                reportContent = {"userName": userName, "placeName": report.placeName, 
-                                 "coordinates": report.coordinates, "categoryName": catName,
-                                 "imgId": report.imgId, "review": report.review, 
-                                 "rating": report.rating, "tagName":tagName,
-                                 "timeStamp": report.timeStamp, "title":report.title}
+                reportContent = {"userName": userName, 
+                                 "placeName": report.placeName, 
+                                 "latitude": report.latitude, 
+                                 "latitude": report.longitude, 
+                                 "categoryName": catName,
+                                 "imgId": report.imgId, 
+                                 "review": report.review, 
+                                 "rating": report.rating, 
+                                 "tagName":tagName,
+                                 "timeStamp": report.timeStamp, 
+                                 "title":report.title}
                 reportContentList.append(reportContent)
         return reportContentList
 
@@ -154,11 +164,17 @@ class ReportAPI():
             userName = userAPI.get(report.userId).userName
             catName = catAPI.get(report.categoryId).catName
             tagName = tagAPI.get(tagId).tagName
-            reportContent = {"userName": userName, "placeName": report.placeName, 
-                             "coordinates": report.coordinates, "categoryName": catName,
-                             "imgId": report.imgId, "review": report.review, 
-                             "rating": report.rating, "tagName":tagName,
-                             "timeStamp": report.timeStamp, "title":report.title}
+            reportContent = {"userName": userName, 
+                            "placeName": report.placeName, 
+                            "latitude": report.latitude, 
+                            "latitude": report.longitude, 
+                            "categoryName": catName,
+                            "imgId": report.imgId, 
+                            "review": report.review, 
+                            "rating": report.rating, 
+                            "tagName":tagName,
+                            "timeStamp": report.timeStamp, 
+                            "title":report.title}
             reportContentList.append(reportContent)
         return reportContentList
             

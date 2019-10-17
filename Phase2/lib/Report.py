@@ -5,7 +5,8 @@ class Report:
                 userId, 
                 title,
                 placeName, 
-                coordinates, 
+                latitude, 
+                longitude, 
                 categoryId, 
                 imgId, 
                 review, 
@@ -15,7 +16,8 @@ class Report:
         self.userId = userId
         self.title = title
         self.placeName = placeName
-        self.coordinates = coordinates
+        self.latitude = latitude
+        self.longitude = longitude
         self.categoryId = categoryId
         self.imgId = imgId
         self.review = review
@@ -28,7 +30,8 @@ class Report:
                 "userId": self.userId, 
                 "title": self.title, 
                 "placeName": self.placeName, 
-                "coordinates": self.coordinates, 
+                "latitude": self.latitude, 
+                "longitude": self.longitude, 
                 "categoryId": self.categoryId,
                 "imgId": self.imgId, 
                 "review": self.review, 
