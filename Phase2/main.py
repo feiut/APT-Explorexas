@@ -4,6 +4,7 @@ from google.cloud import datastore
 from datetime import datetime 
 import google.oauth2.id_token
 import uuid
+from bson.objectid import ObjectId
 from lib import Category, CategoryAPI, CategoryImage, CategoryImageAPI
 from lib import Report, ReportAPI
 from lib import Image, ImageAPI
@@ -61,18 +62,18 @@ def create_report():
     if id_token:
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
-            title = request.form['title']
             reportId = uuid.uuid1()
-            imgId = uuid.uuid4()
-            userId = claims['email']
+            userId = claims['email']            
+            title = request.form['title']
             placeName = request.form['placeName']
             coordinates = request.form['coordinates']
             categoryId = request.form['categoryId']
             review = request.form['review']
             rating = request.form['rating']
+            timeStamp = datetime.now()
             tagId = request.form['tagId']
             pic = request.files['file']
-            timeStamp = datetime.now()
+            imgId = ObjectId()
             repController = ReportAPI.ReportAPI()
             report = Report.Report(reportId,
                                     userId, 
@@ -86,9 +87,12 @@ def create_report():
                                     timeStamp)
             image = Image.Image(pic, imgId, reportId, userId, tagId)
             insert_id = repController.add_report(report, image)
+            report = repController.find_by_reportId(reportId)
+            # print(report["imgId"])
+            return render_template('reports.html', report=report, imgId=report["imgId"])
         except ValueError as exc:
             error_message = str(exc)
-    return render_template('createReport.html')
+    return render_template('nologin.html')
 
 @app.route('/createReport')
 def createReport():
@@ -103,7 +107,7 @@ def createReport():
         return render_template('noLogin.html')
 
 
-@app.route('/images/<imageIdd>')
+@app.route('/images/<imgId>')
 def image(imgId):
     imgController = ImageAPI.ImageAPI()
     image = imgController.get_image_by_id(imgId)

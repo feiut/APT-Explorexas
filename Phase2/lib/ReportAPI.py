@@ -9,18 +9,14 @@ COLLECTION_NAME = "Reports"
 
 class ReportAPI():
     def __init__(self):
-        # self.client = pymongo.MongoClient("mongodb+srv://fei:20190101@cluster0-37xwl.mongodb.net/test?retryWrites=true&w=majority")
-        self.client = pymongo.MongoClient("mongodb+srv://admin-user01:19961106@cluster0-eteyg.mongodb.net/admin?retryWrites=true&w=majority")
+        self.client = pymongo.MongoClient("mongodb+srv://fei:20190101@cluster0-37xwl.mongodb.net/test?retryWrites=true&w=majority")
+        # self.client = pymongo.MongoClient("mongodb+srv://admin-user01:19961106@cluster0-eteyg.mongodb.net/admin?retryWrites=true&w=majority")
         self.db = self.client['Explorexas']
         self.collection = self.db[COLLECTION_NAME]
 
     def add_report(self, report, image):
         # reportId, userId, placeId, categoryId, imgPath, imgId, tagId, review, rating
         reports = self.collection
-        query = {'reportId': report.reportId}
-        if reports.find_one(query):  # Report ID should be unique
-            print("Report exist.")
-            return False
         new_report = report.toQuery()
         imageapi = ImageAPI.ImageAPI()
         imageapi.add_image(image)
@@ -30,12 +26,14 @@ class ReportAPI():
 
     def find_by_reportId(self, reportId):
         reports = self.collection
-        query = {'reportId': reportId}
+        query = {'_id': reportId}
         try:
             result = reports.find_one(query)
-        except:
+        except ValueError as exc:
+            raise ValueError(str(exc))
+        if result == None:
             raise ValueError("Report not found!")
-        report = Report.Report(result["reportId"],
+        report = Report.Report(result["_id"],
                                result["userId"],
                                result["title"],
                                result["placeName"],
@@ -68,7 +66,7 @@ class ReportAPI():
         results = reports.find(query)
         report_list = []
         for result in results:
-            report = Report.Report(result["reportId"],
+            report = Report.Report(result["_id"],
                             result["userId"],
                             result["title"],
                             result["placeName"],
@@ -89,7 +87,7 @@ class ReportAPI():
         results = reports.find(query)
         report_list = []
         for result in results:
-            report = Report.Report(12,
+            report = Report.Report(result["_id"],
                             result["userId"],
                             result["title"],
                             result["placeName"],

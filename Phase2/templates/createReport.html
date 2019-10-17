@@ -12,7 +12,9 @@
 <!--            left: 35%;--> */
 
             background: #cc5500;
+            color: #FFFFFF;
             margin: 0 auto;
+            width: 90%;
             opacity:1;
             border: 1px solid #99D3F5;
             border-radius: 4px;
@@ -22,7 +24,7 @@
             text-indent: 0;
             line-height: 15px;
         }
-        .inputfile {
+        /* .inputfile {
             position: relative;
             display: inline-block;
             background: #D0EEFF;
@@ -34,15 +36,15 @@
             text-decoration: none;
             text-indent: 0;
             line-height: 15px;
-        }
-        .inputfile input{
+        } */
+        .custom-file-input input{
             position: absolute;
             font-size: 100px;
             right: 0;
             top: 0;
             opacity: 0;
         }
-        .inputfile:hover{
+        .custom-file-input:hover{
             background: #AADFFD;
             border-color: #78C3F3;
             color: #004974;
@@ -68,65 +70,83 @@
             }
             return url ;
         }
+        function getLocationConstant() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+            } else {
+                alert("Your browser or device doesn't support Geolocation");
+            }
+        }
+
+        // If have a successful location update
+        function onGeoSuccess(event) {
+            // document.getElementById("Latitude").value = event.coords.latitude;
+            // document.getElementById("Longitude").value = event.coords.longitude;
+            document.getElementById("coordinates").value = event.coords.latitude + ", " + event.coords.longitude;
+
+        }
+
+        // If something has gone wrong with the geolocation request
+        function onGeoError(event) {
+            alert("Error code " + event.code + ". " + event.message);
+        }
     </script>
     {% endblock %}
 
 {% block content %}
     <div class="center-in-center">
-        <h1 style="font-size:40px;color:white"> Create a New Report </h1>
+        <h1 style="font-size:40px;color:white"> New Report </h1>
           <form action="{{ url_for('create_report') }}" method="post" enctype="multipart/form-data">
-              <div>
-              <table align="center">
-                  <tr>
-                      <td><label style="color:white">ReportId:</label></td>
-                      <td><input type="text" id= "reportId" name="reportId" style="width:260px;"></td>
-                  </tr>
-                  <tr>
-                      <td><label style="color:white">UserId:</label></td>
-                      <td><input type="text" id= "userId" name="userId" style="width:260px;"></td>
-                  </tr>
-                  <tr>
-                      <td><label style="color:white">Title:</label></td>
-                      <td><input type="text" id= "title" name="title" style="width:260px;"></td>
-                  </tr>
-                  <tr>
-                      <td><label style="color:white">PlaceName:</label></td>
-                      <td><input type="text" id= "placeName" name="placeName" style="width:260px;"></td>
-                  </tr>
-                  <tr>
-                      <td><label style="color:white">Coordinates:</label></td>
-                      <td><input type="text" id= "coordinates" name="coordinates" style="width:260px;"></td>
-                  </tr>
-                  <tr>
-                      <td><label style="color:white">CategoryId:</label></td>
-                      <td><input type="text" id= "categoryId" name="categoryId" style="width:260px;"></td>
-                  </tr>
-                  <tr>
-                      <td><label style="color:white">ImgId:</label></td>
-                      <td><input type="text" id= "imgId" name="imgId" style="width:260px;"></td>
-                  </tr>
-                  <tr>
-                      <td><label style="color:white">Review:</label></td>
-                      <td><input type="text" id= "review" name="review" style="width:260px;"></td>
-                  </tr>
-                  <tr>
-                      <td><label style="color:white">Rating:</label></td>
-                      <td><input type="text" id= "rating" name="rating" style="width:260px;"></td>
-                  </tr>
-                  <tr>
-                      <td><label style="color:white">tagId:</label></td>
-                      <td><input type="text" id= "tagId" name="tagId" style="width:260px;"></td>
-                  </tr>
-                  <tr>
-                      <td><label style="color:white">Upload Image:</label></td>
-                      <td>
-                          <input type="file" name="file" id="file" class="inputfile" onchange="changepic(this)" accept="image/png, image/jpeg, image/jpg"/>
-                      </td>
-                  </tr>
-              </table>
-              <img src="" id="show" name="show" width="200">
-              <input type="text" id="srcURL" name="srcURL" hidden="true">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Title">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="placeName">PlaceName</label>
+                <input type="text" class="form-control" id="placeName" name="placeName" placeholder="Place Name">
               </div>
+              <div class="form-group col-md-6">
+                <label for="tagId">CategoryId</label>
+                <input type="text" class="form-control" id= "categoryId" name="categoryId">
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="review">Review</label>
+                <textarea class="form-control" id="review" name="review" rows="6" placeholder="Description"></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputState">Rating</label>
+                            <select id="rating" name="rating" class="form-control">
+                                <option selected>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                            <label for="tagId">tagId</label>
+                            <input type="text" class="form-control" id= "tagId" name="tagId">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="tagId">Coordinates</label>
+                            <input type="text" class="form-control" id= "coordinates" name="coordinates" >
+                            <input type="button" value="Get Location" onclick="getLocationConstant()" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="custom-file">
+                        <label for="file">Upload Image</label>
+                        <input type="file" class="custom-file-input" name="file" id="file" onchange="changepic(this)" accept="image/png, image/jpeg, image/jpg">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                        <img src="" id="show" name="show" width="200">
+                        <input type="text" id="srcURL" name="srcURL" hidden="true">
+                    </div>
+                </div>
+            </div>
               <br>
               <input type="submit" value="Submit" id="btnPost" style="width:90px;"/>
         </form>

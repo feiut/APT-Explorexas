@@ -11,7 +11,7 @@ class Report:
                 review, 
                 rating, 
                 timeStamp):
-        self.reportId = reportId
+        self._id = reportId
         self.userId = userId
         self.title = title
         self.placeName = placeName
@@ -24,7 +24,7 @@ class Report:
 
     def toQuery(self):
         query = {
-                "reportId": self.reportId, 
+                "_id": self._id, 
                 "userId": self.userId, 
                 "title": self.title, 
                 "placeName": self.placeName, 
