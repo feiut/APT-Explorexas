@@ -32,7 +32,7 @@
 {% block content %}
     <div class="center-in-center">
         {% for reportContent in reportContentList %}
-        <h2>Title: {{ reportContent["title"] }}</h2>
+        <h2>Place: {{ reportContent["placeName"] }}</h2>
             <div class="report-container">
                 <div class="row">
                     <div class="col-4">
@@ -41,10 +41,9 @@
                     </div>
                     <div class="col-8">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">userName:  {{reportContent["userName"] }}</li>
+                            <li class="list-group-item">userName: {{ reportContent["userName"] }}</li>
                             <li class="list-group-item">Location: {{ reportContent["coordinates"] }}</li>
-                            <li class="list-group-item">Category: {{ reportContent["categoryName"] }}</li>
-                            <li class="list-group-item">Place: {{ reportContent["placeName"] }}</li>
+                            <li class="list-group-item">category: {{ reportContent["categoryName"] }}</li>
                             <li class="list-group-item">review: {{ reportContent["review"] }}</li>
                             <li class="list-group-item">rating: {{ reportContent["rating"] }}</li>
                             <li class="list-group-item">time: {{ reportContent["timeStamp"] }}</li>

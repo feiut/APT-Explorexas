@@ -1,6 +1,7 @@
 from bson.objectid import ObjectId
 from lib import Tag
 import pymongo
+import re
 
 COLLECTION_NAME = "Tags"
 
@@ -43,7 +44,7 @@ class TagAPI():
             print("The Tag corresponding the input tag id does not exist")
             return None
         else:
-            tag = Tag(srchRlt["tagName"], srchRlt["_id"])
+            tag = Tag.Tag(srchRlt["tagName"], srchRlt["_id"])
             return tag
 
     #[input]  None
@@ -53,7 +54,7 @@ class TagAPI():
         results = collection.find({})
         tags = []
         for result in results:
-            tag = Tag(result["tagName"], result["_id"])
+            tag = Tag.Tag(result["tagName"], result["_id"])
             tags.append(tag)
         return tags
 
@@ -68,3 +69,18 @@ class TagAPI():
         else:
             result = collection.delete_one({"_id": ObjectId(tag_id)})
             return result
+
+    #[input] tag string
+    #[return] a list of tag id
+    def srch_tagId_by_pattern(self, pattern):
+        ptn = re.compile(pattern)
+        tagList = self.list()
+        tagIdList = []
+        for tag in tagList:
+            match = ptn.search(tag.tagName)
+            if match:
+                tagIdList.append(tag.tag_id)
+        return tagIdList
+
+
+

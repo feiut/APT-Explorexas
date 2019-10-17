@@ -21,6 +21,9 @@
         .container{
           display: flex;
         }
+        #btnPost{
+          background-color: : #cbd5db;
+        }
     </style>
 </head>
 <body style="background-image:url(http://res.cloudinary.com/culturemap-com/image/upload/ar_4:3,c_fill,g_faces:center,w_1200/v1558461235/photos/296046_original.jpg);background-repeat: no-repeat;background-size: cover;">
@@ -41,6 +44,11 @@
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
+              <form action="{{ url_for('searchTag') }}" method="post" enctype="multipart/form-data">
+                 Search Tag
+                <input type="text" name="searchTag" id="searchTag">
+                <input type="submit" value="Submit" id="btnPost" style="width:90px;">
+              </form>
               <a class="nav-item nav-link" href="/">Login</a>
               <a class="nav-item nav-link" href="/register">Register</a>
             </div>

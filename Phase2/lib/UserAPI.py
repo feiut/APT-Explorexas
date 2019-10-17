@@ -32,7 +32,7 @@ class UserAPI():
             print("The user does not exist")
             return None
         else:
-            user = User(srchRlt["userId"], srchRlt["userName"])
+            user = User.User(srchRlt["userId"], srchRlt["userName"])
             return user
 
     #[input]  None
@@ -41,7 +41,7 @@ class UserAPI():
         results = self.collection.find({})
         users = []
         for result in results:
-            user = User(result["userId"], result["userName"])
+            user = User.User(result["userId"], result["userName"])
             users.append(user)
         return users
 

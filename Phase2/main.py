@@ -8,6 +8,7 @@ from lib import Category, CategoryAPI, CategoryImage, CategoryImageAPI
 from lib import Report, ReportAPI
 from lib import Image, ImageAPI
 from lib import User, UserAPI
+from lib import Tag, TagAPI
 from flask import make_response
 
 app = Flask(__name__)
@@ -102,7 +103,7 @@ def createReport():
         return render_template('noLogin.html')
 
 
-@app.route('/images/<imgId>')
+@app.route('/images/<imageIdd>')
 def image(imgId):
     imgController = ImageAPI.ImageAPI()
     image = imgController.get_image_by_id(imgId)
@@ -122,8 +123,25 @@ def report(reportId):
 def viewCategoryPost(catId):
     repController = ReportAPI.ReportAPI()
     reportContentList = repController.get_report_content_list_by_catId(catId)
-    reportContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
+    if len(reportContentList):
+        reportContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
     return render_template('viewCategoryPost.html', reportContentList=reportContentList)
+
+@app.route('/searchTag', methods=['POST'])
+def searchTag():
+    pattern = request.form['searchTag']
+    tagAPI = TagAPI.TagAPI()
+
+    tagIdList = tagAPI.srch_tagId_by_pattern(pattern)
+    if len(tagIdList):
+        currRptContentList = []
+        for tagId in tagIdList:
+            rptContentList = get_report_content_list_by_tagId(tagId)
+            currRptContentList.extend(rptContentList)
+        currRptContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
+        return render_template('viewTagPost.html', reportContentList=currRptContentList)
+    else:
+        return render_template('noMatchRlt.html')
 
 # @app.route('/user_reports/<userId>') 
 # def report(userId):

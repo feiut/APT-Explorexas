@@ -17,10 +17,10 @@ class ReportAPI():
     def add_report(self, report, image):
         # reportId, userId, placeId, categoryId, imgPath, imgId, tagId, review, rating
         reports = self.collection
-        # query = {'reportId': report.reportId}
-        # if reports.find_one(query):  # Report ID should be unique
-        #     print("Report exist.")
-        #     return False
+        query = {'reportId': report.reportId}
+        if reports.find_one(query):  # Report ID should be unique
+            print("Report exist.")
+            return False
         new_report = report.toQuery()
         imageapi = ImageAPI.ImageAPI()
         imageapi.add_image(image)
@@ -34,8 +34,6 @@ class ReportAPI():
         try:
             result = reports.find_one(query)
         except:
-            raise ValueError("Report not found!")
-        if result == None:
             raise ValueError("Report not found!")
         report = Report.Report(result["reportId"],
                                result["userId"],
@@ -72,6 +70,7 @@ class ReportAPI():
         for result in results:
             report = Report.Report(result["reportId"],
                             result["userId"],
+                            result["title"],
                             result["placeName"],
                             result["coordinates"],
                             result["categoryId"],
@@ -82,7 +81,7 @@ class ReportAPI():
             report_list.append(report)
         return report_list
 
-    def find_reports_by_catId(self, catId):
+    def find_by_catId(self, catId):
         reports = self.collection
         query = {'categoryId': catId}
         if not reports.find_one(query):
@@ -90,8 +89,9 @@ class ReportAPI():
         results = reports.find(query)
         report_list = []
         for result in results:
-            report = Report.Report(result["reportId"],
+            report = Report.Report(12,
                             result["userId"],
+                            result["title"],
                             result["placeName"],
                             result["coordinates"],
                             result["categoryId"],
@@ -101,6 +101,25 @@ class ReportAPI():
                             result["timeStamp"])
             report_list.append(report)
         return report_list
+
+    def find_by_imgId(self, imgId):
+        reports = self.collection
+        query = {'imgId': imgId}
+        try:
+            result = reports.find_one(query)
+        except:
+            raise ValueError("Report not found!")
+        report = Report.Report(13,
+                               result["userId"],
+                               result["title"],
+                               result["placeName"],
+                               result["coordinates"],
+                               result["categoryId"],
+                               result["imgId"],
+                               result["review"],
+                               result["rating"],
+                               result["timeStamp"])
+        return report
 
     def get_report_content_list_by_catId(self, catId): 
         imageAPI = ImageAPI.ImageAPI()
@@ -109,16 +128,39 @@ class ReportAPI():
         catAPI = CategoryAPI.CategoryAPI()
 
         reportContentList = []
-        reportList = self.find_reports_by_catId(catId)
-        for report in reportList:
+        reportList = self.find_by_catId(catId)
+        if len(reportList) > 0:
+            for report in reportList:
+                userName = userAPI.get(report.userId).userName
+                catName = catAPI.get(catId).catName
+                tagId = imageAPI.get_image_by_id(report.imgId).tagId
+                tagName = tagAPI.get(tagId).tagName
+                reportContent = {"userName": userName, "placeName": report.placeName, 
+                                 "coordinates": report.coordinates, "categoryName": catName,
+                                 "imgId": report.imgId, "review": report.review, 
+                                 "rating": report.rating, "tagName":tagName,
+                                 "timeStamp": report.timeStamp, "title":report.title}
+                reportContentList.append(reportContent)
+        return reportContentList
+
+    def get_report_content_list_by_tagId(self, tagId):
+        imageAPI = ImageAPI.ImageAPI()
+        userAPI = UserAPI.UserAPI()
+        catAPI = CategoryAPI.CategoryAPI()
+        tagAPI = TagAPI.TagAPI()
+
+        reportContentList = []
+        imageCursor = imageAPI.get_image_by_tagId(tagId)
+        for image in imageCursor:
+            report = self.find_by_imgId(image["imgId"])
             userName = userAPI.get(report.userId).userName
-            catName = catAPI.get(catId).catName
-            tagId = imageAPI.get_image_by_id(report.imgId).tagId
-            tagName = tagAPI.get(tagId)
+            catName = catAPI.get(report.categoryId).catName
+            tagName = tagAPI.get(tagId).tagName
             reportContent = {"userName": userName, "placeName": report.placeName, 
                              "coordinates": report.coordinates, "categoryName": catName,
                              "imgId": report.imgId, "review": report.review, 
                              "rating": report.rating, "tagName":tagName,
-                             "timeStamp": report.timeStamp}
+                             "timeStamp": report.timeStamp, "title":report.title}
             reportContentList.append(reportContent)
         return reportContentList
+            
