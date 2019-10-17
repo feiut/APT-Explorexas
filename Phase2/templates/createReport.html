@@ -31,6 +31,47 @@
             text-decoration: none;
         }
     </style>
+    
+    <script>
+            function changepic(obj) {
+            //console.log(obj.files[0]);//这里可以获取上传文件的name
+            var newsrc=getObjectURL(obj.files[0]);
+            document.getElementById('show').src=newsrc;
+            document.getElementById('srcURL').value=newsrc;
+    
+            }
+            function getObjectURL(file) {
+                var url = null ;
+                if (window.createObjectURL!=undefined) { // basic
+                    url = window.createObjectURL(file) ;
+                } else if (window.URL!=undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file) ;
+                } else if (window.webkitURL!=undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file) ;
+                }
+                return url ;
+            }
+            function getLocationConstant() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+                } else {
+                    alert("Your browser or device doesn't support Geolocation");
+                }
+            }
+    
+            // If have a successful location update
+            function onGeoSuccess(event) {
+                document.getElementById("latitude").value = event.coords.latitude;
+                document.getElementById("longitude").value = event.coords.longitude;
+                // document.getElementById("coordinates").value = event.coords.latitude + ", " + event.coords.longitude;
+    
+            }
+    
+            // If something has gone wrong with the geolocation request
+            function onGeoError(event) {
+                alert("Error code " + event.code + ". " + event.message);
+            }
+        </script>
     {% endblock %}
 
 {% block content %}
@@ -124,44 +165,4 @@
         </form>
     </div>
     
-    <script>
-        function changepic(obj) {
-        //console.log(obj.files[0]);//这里可以获取上传文件的name
-        var newsrc=getObjectURL(obj.files[0]);
-        document.getElementById('show').src=newsrc;
-        document.getElementById('srcURL').value=newsrc;
-
-        }
-        function getObjectURL(file) {
-            var url = null ;
-            if (window.createObjectURL!=undefined) { // basic
-                url = window.createObjectURL(file) ;
-            } else if (window.URL!=undefined) { // mozilla(firefox)
-                url = window.URL.createObjectURL(file) ;
-            } else if (window.webkitURL!=undefined) { // webkit or chrome
-                url = window.webkitURL.createObjectURL(file) ;
-            }
-            return url ;
-        }
-        function getLocationConstant() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
-            } else {
-                alert("Your browser or device doesn't support Geolocation");
-            }
-        }
-
-        // If have a successful location update
-        function onGeoSuccess(event) {
-            document.getElementById("latitude").value = event.coords.latitude;
-            document.getElementById("longitude").value = event.coords.longitude;
-            // document.getElementById("coordinates").value = event.coords.latitude + ", " + event.coords.longitude;
-
-        }
-
-        // If something has gone wrong with the geolocation request
-        function onGeoError(event) {
-            alert("Error code " + event.code + ". " + event.message);
-        }
-    </script>
 {% endblock %}

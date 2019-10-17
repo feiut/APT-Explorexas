@@ -4,15 +4,19 @@
     <title>Show report - Explorexas</title>
     <style>
         .center-in-center{
-            color: black;
-            background: #FFFFFF;
+            background: #cc5500;
+            color: #FFFFFF;
+            margin: 0 auto 50px;
+            width: 90%;
+            opacity:1;
             border: 1px solid #99D3F5;
             border-radius: 4px;
-            padding: 4px 12px;
-            margin: 0 auto;
-            width: 80%;
+            padding: 10px 50px 30px;
+            overflow: hidden;
+            text-decoration: none;
+            text-indent: 0;
             line-height: 15px;
-        }
+            }
         .report-container{
             margin: 50px 10px;
         }
@@ -23,7 +27,7 @@
 
 {% block content %}
     <div class="center-in-center">
-        <h2>Place: {{ report["placeName"] }}</h2>
+        <h2>Place: {{ report["title"] }}</h2>
         <div class="report-container">
             <div class="row">
                 <div class="col-4">
@@ -31,9 +35,9 @@
                 </div>
                 <div class="col-8">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">userId: {{ report["userId"] }}</li>
+                        <li class="list-group-item">userId:</li>
                         <li class="list-group-item">categoryId: {{ report["categoryId"] }}</li>
-                        <li class="list-group-item">review: {{ report["review"] }}</li>
+                        <li class="list-group-item">coordinates: {{ report["coordinates"] }}</li>
                         <li class="list-group-item">rating: {{ report["rating"] }}</li>
                     </ul>
                 </div>

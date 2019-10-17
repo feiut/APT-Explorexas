@@ -68,6 +68,7 @@ def create_report():
             placeName = request.form['placeName']
             latitude = request.form['latitude']
             longitude = request.form['longitude']
+            coordinates = [latitude, longitude]
             categoryId = request.form['categoryId']
             review = request.form['review']
             rating = request.form['rating']
@@ -80,8 +81,7 @@ def create_report():
                                     userId, 
                                     title, 
                                     placeName, 
-                                    latitude,
-                                    longitude,  
+                                    coordinates,  
                                     categoryId, 
                                     imgId, 
                                     review, 
