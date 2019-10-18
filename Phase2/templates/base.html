@@ -43,10 +43,14 @@
               <a class="nav-item nav-link" href="/">Home</a>
               <a class="nav-item nav-link" href="/createCategory">CreateCategory</a>
               <a class="nav-item nav-link" href="/createReport">CreateReport</a>
-              <a class="nav-item nav-link" href="/viewCategoryPost/5da81ade7e698a1952d0ecae">ViewCategoryPost</a>
+              <a class="nav-item nav-link" href="/viewCategoryPost/5da7821825f5baf830b00f96">ViewCategoryPost</a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
+<!--                <form action="{{ url_for('searchTag') }}" method="post" enctype="multipart/form-data" class="form-inline">-->
+<!--                    <input class="form-control mr-sm-2" type="search" name="searchTag" id="searchTag" placeholder="Search Tag" aria-label="Search Tag">-->
+<!--                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
+<!--                </form>-->
               <form action="{{ url_for('searchTag') }}" method="post" enctype="multipart/form-data">
                 <input type="text" name="searchTag" id="searchTag" placeholder="search tag here">
                 <input type="submit" value="Submit" id="btnPost" style="width:90px;">

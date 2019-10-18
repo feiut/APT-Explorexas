@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title>Show report list under specific category - Explorexas</title>
+    <title>Reports - Explorexas</title>
     <style>
         .center-in-center{
             background: #cc5500;
@@ -27,7 +27,7 @@
 
 {% block content %}
     <div class="center-in-center">
-        <h1 style="color:powderblue" align="center"> {{ categoryName }} </h1>
+        <h3 style="color:powderblue" align="center"> Category: {{ categoryName }} </h3>
         {% for reportContent in reportContentList %}
             <div class="report-container">
                 <div>
