@@ -18,15 +18,39 @@
             line-height: 15px;
             }
         .report-container{
-            margin: 50px 10px;
+            margin: 30px 10px;
+        }
+        .report-title{
+            margin: 0 0 10px;
+        }
+        .report-title-user{
+            margin: 0 0 50px;
+            display: inline-flex;
+        }
+        .report-item{
+            padding: 5px 5px;
+            margin: 0 5px 40px;
+            text-align: left;
+        }
+        #media-container{
+            width: 100%;
+        }
+        #tag-container{
+            margin: 10px auto 40px;
+            text-align: left;
+        }
+        #map{
+            height: 400px;
+            color: black;
         }
 
-    </style>
 
+    </style>
     {% endblock %}
 
 {% block content %}
     <div class="center-in-center">
+<<<<<<< HEAD
         <h2>Title: {{ report["title"] }}</h2>
         <div class="report-container">
             <div class="row">
@@ -42,6 +66,124 @@
                     </ul>
                 </div>
             </div> 
+=======
+        <div class="container-fluid report-container">
+        <div class="report-title"><h2>title</h2></div>   
+        <div class="report-title-user">
+            <i class="fa fa-user-circle" style="display: inline"></i>
+            &nbsp&nbsp&nbsp&nbsp
+            <div id="user-name">None</div>
+        </div>   
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="report-item">
+                    Rating:
+                    <span class="fa fa-star" id="star0"></span>
+                    <span class="fa fa-star" id="star1"></span>
+                    <span class="fa fa-star" id="star2"></span>
+                    <span class="fa fa-star" id="star3"></span>
+                    <span class="fa fa-star" id="star4"></span>
+                </div>  
+                <div class="report-item">
+                    Review: {{report["review"]}}
+                </div>  
+                <div class="report-item" id="report-time">
+                    Report created at {{report["timeStamp"]}}
+                </div>          
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="media-container"> 
+                    <img src="{{url_for('image', imgId=imgId)}}" style="width:100%">
+                </div>
+                <div id="tag-container">
+                    Tag: #{{report["tagId"]}}
+                </div>  
+                <div class="media-container">
+                    <div id="map"></div>
+                </div>  
+            </div>
+        </div> 
+>>>>>>> implement report detail page
         </div>
     </div>
+    
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_ZuUcbBYwIb8zilv_yRq89ZU1iNiuBC4&callback=initMap">
+    </script>
+    <script>
+        // Note: This example requires that you consent to location sharing when
+        // prompted by your browser. If you see the error "The Geolocation service
+        // failed.", it means you probably did not give permission for the browser to
+        // locate you.
+
+        // show user name
+        var userName = "{{report["userId"]}}";
+        userName = userName.split('@')[0];
+        document.getElementById('user-name').innerText = userName;
+
+        // show rating
+        var rating = parseInt("{{report["rating"]}}");
+        console.log(rating);
+        var i
+        for(i = 0; i < rating; i++){
+            let star = document.getElementById("star" + i.toString());
+            star.style.color = "gold"
+        }
+
+        // parse time
+        // let timeStamp = "{{report["timeStamp"]}}".split('.');
+        // let date = timeStamp[0].split(' ')
+        // console.log(date)
+        // let time = document.getElementById("report-time")
+        // time.innerText = 'Created at ' + date[1] + ' on ' + date[0];
+
+        // show map
+        var map, infoWindow;
+        function initMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 35.6585928, lng: 139.7432474},
+            zoom: 15
+          });
+          infoWindow = new google.maps.InfoWindow;
+  
+          // Try HTML5 geolocation.
+          try{
+            {{report["coordinates"][0]}};
+            {{report["coordinates"][1]}};
+          }catch(error){
+            console.log("Invalid input coordinates")
+          }
+          
+          if ({{report["coordinates"][0]}} && {{report["coordinates"][1]}}) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              var pos = {
+                lat: {{report["coordinates"][0]}},
+                lng: {{report["coordinates"][1]}}
+              };
+  
+              infoWindow.setPosition(pos);
+              let placeName = "{{report["placeName"]}}"
+              if(placeName === "" || placeName === null){
+                  placeName = "position found";
+              }
+              infoWindow.setContent(placeName);
+              infoWindow.open(map);
+              map.setCenter(pos);
+            }, function() {
+              handleLocationError(true, infoWindow, map.getCenter());
+            });
+          } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+          }
+        }
+  
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+          infoWindow.setPosition(pos);
+          infoWindow.setContent(browserHasGeolocation ?
+                                'Error: The Geolocation service failed.' :
+                                'Error: Your browser doesn\'t support geolocation.');
+          infoWindow.open(map);
+        }
+      </script>
 {% endblock %}
