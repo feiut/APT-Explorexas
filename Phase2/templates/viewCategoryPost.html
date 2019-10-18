@@ -4,18 +4,14 @@
     <title>Show report list under specific category - Explorexas</title>
     <style>
         .center-in-center{
-/* <!--            position: absolute;-->
-<!--            display: table-cell;-->
-<!--            vertical-align: middle;-->
-<!--            text-align: center;-->
-<!--            top: 30%;-->
-<!--            left: 35%;--> */
-            color: black;
-            background: #D0EEFF;
+            background: #cc5500;
+            color: #FFFFFF;
+            margin: 0 auto 50px;
+            width: 90%;
             opacity:1;
             border: 1px solid #99D3F5;
             border-radius: 4px;
-            padding: 4px 12px;
+            padding: 10px 50px 30px;
             overflow: hidden;
             text-decoration: none;
             text-indent: 0;
@@ -33,14 +29,18 @@
     <div class="center-in-center">
         {% for reportContent in reportContentList %}
             <div class="report-container">
-                <h2>Title: {{ reportContent["title"] }}</h2>
+                <div>
+                    <h2 style="color:White">{{ reportContent["title"] }}</h2>
+                </div>
                 <div class="row">
                     <div class="col-4">
                         <img src="{{url_for('image', imgId=reportContent["imgId"])}}" alt={{reportContent["placeName"]}} style="height:180px;width:200px">
-                        <label for="tag">{{reportContent["tag"]}}</label>
+                        <div> 
+                            <label for="tag" style="color:DodgerBlue">{{reportContent["tag"]}}</label>
+                        </div>
                     </div>
                     <div class="col-8">
-                        <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush" style="color:Black">
                             <li class="list-group-item">userName: {{ reportContent["userName"] }}</li>
                             <li class="list-group-item">category: {{ reportContent["categoryName"] }}</li>
                             <li class="list-group-item">review: {{ reportContent["review"] }}</li>
