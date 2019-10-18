@@ -50,23 +50,6 @@
 
 {% block content %}
     <div class="center-in-center">
-<<<<<<< HEAD
-        <h2>Title: {{ report["title"] }}</h2>
-        <div class="report-container">
-            <div class="row">
-                <div class="col-4">
-                    <img src="{{url_for('image', imgId=imgId)}}" alt={{report["imgId"]}} style="height:180px;width:200px">
-                </div>
-                <div class="col-8">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">userId: {{ report["userId"] }}</li>
-                        <li class="list-group-item">categoryId: {{ report["categoryId"] }}</li>
-                        <li class="list-group-item">coordinates: {{ report["coordinates"] }}</li>
-                        <li class="list-group-item">rating: {{ report["rating"] }}</li>
-                    </ul>
-                </div>
-            </div> 
-=======
         <div class="container-fluid report-container">
         <div class="report-title"><h2>title</h2></div>   
         <div class="report-title-user">
@@ -103,7 +86,6 @@
                 </div>  
             </div>
         </div> 
->>>>>>> implement report detail page
         </div>
     </div>
     
@@ -130,12 +112,12 @@
             star.style.color = "gold"
         }
 
-        // parse time
-        // let timeStamp = "{{report["timeStamp"]}}".split('.');
-        // let date = timeStamp[0].split(' ')
-        // console.log(date)
-        // let time = document.getElementById("report-time")
-        // time.innerText = 'Created at ' + date[1] + ' on ' + date[0];
+        parse time
+        let timeStamp = "{{report["timeStamp"]}}".split('.');
+        let date = timeStamp[0].split(' ')
+        console.log(date)
+        let time = document.getElementById("report-time")
+        time.innerText = 'Created at ' + date[1] + ' on ' + date[0];
 
         // show map
         var map, infoWindow;
