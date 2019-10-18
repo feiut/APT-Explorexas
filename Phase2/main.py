@@ -141,7 +141,9 @@ def viewCategoryPost(catId):
     reportContentList = repController.get_report_content_list_by_catId(catId)
     if len(reportContentList):
         reportContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
-    return render_template('viewCategoryPost.html', reportContentList=reportContentList)
+    return render_template('viewCategoryPost.html', 
+        reportContentList=reportContentList, 
+        categoryName=reportContentList[0].get("categoryName"))
 
 @app.route('/searchTag', methods=['POST'])
 def searchTag():
