@@ -30,6 +30,9 @@
             color: #004974;
             text-decoration: none;
         }
+        .input-container{
+            main
+        }
     </style>
     
     <script>
@@ -78,26 +81,34 @@
     <div class="center-in-center">
         <h1 style="font-size:40px;color:white"> New Report </h1>
           <form action="{{ url_for('create_report') }}" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="title">Title</label>
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="title">Title</label>
+                </div>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Title">
             </div>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="placeName">PlaceName</label>
+            <div class="form-row mb-4">
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="placeName">Place</label>
+                </div>
                 <input type="text" class="form-control" id="placeName" name="placeName" placeholder="Place Name">
               </div>
-              <div class="form-group col-md-6">
-                <label for="category">Category</label><br>
-                <select id="categoryName" name="categoryName">
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="categoryName">Category</label>
+                </div>
+                <select class="custom-select" id="categoryName" name="categoryName">
                   {% for cat in catList %}
                     <option value={{cat["catName"]}}>{{cat["catName"]}}</option>
                   {% endfor %}
                 </select>
               </div>
             </div>
-            <div class="form-group">
-                <label for="review">Review</label>
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="review">Review</label>
+                </div>
                 <textarea class="form-control" id="review" name="review" rows="6" placeholder="Description"></textarea>
             </div>
             <div class="form-row">
@@ -106,15 +117,15 @@
                         <div class="form-group col-md-9" style="padding-right:0">
                             <label>Coordinates</label>                          
                             <!-- <fieldset disabled>  -->
-                            <div class="input-group">
+                            <div class="input-group mb-2">
                               <div class="input-group-prepend">
-                                <span class="input-group-text">Lat.&nbsp&nbsp&nbsp</span>
+                                <span class="input-group-text">Lat.&nbsp</span>
                               </div>
                               <input type="text" class="form-control" id="latitude" name="latitude" >
                             </div>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                <span class="input-group-text" >Long.</span>
+                                <span class="input-group-text" >Lng.</span>
                                 </div>
                                 <input type="text" class="form-control" id= "longitude" name="longitude" >
                             </div>
@@ -122,7 +133,7 @@
                         </div>
                         <div class="input-group col-md-3" style="padding-left:0">
                             <div class="input-group">
-                                <button type="button" style="margin-top: 21px;margin-bottom: 16px;padding: 0 20px" onclick="getLocationConstant()">
+                                <button type="button" style="margin-top: 22px;margin-bottom: 16px;padding: 0 20px" onclick="getLocationConstant()">
                                     <i class="fa fa-map-marker" style="font-size:42px;"></i>
                                 </button>
                             </div>
@@ -145,7 +156,7 @@
                     </div>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                        <span class="input-group-text">tag&nbsp&nbsp</span>
+                        <span class="input-group-text">Tag&nbsp&nbsp&nbsp&nbsp</span>
                         </div>
                         <input type="text" class="form-control" id= "tagName" name="tagName">
                     </div>         
