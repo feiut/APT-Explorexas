@@ -48,8 +48,7 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               <form action="{{ url_for('searchTag') }}" method="post" enctype="multipart/form-data">
-                 Search Tag
-                <input type="text" name="searchTag" id="searchTag">
+                <input type="text" name="searchTag" id="searchTag" placeholder="search tag here">
                 <input type="submit" value="Submit" id="btnPost" style="width:90px;">
               </form>
               <a class="nav-item nav-link" href="/">Login</a>
