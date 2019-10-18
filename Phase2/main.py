@@ -138,12 +138,14 @@ def report(reportId):
 @app.route('/viewCategoryPost/<catId>')
 def viewCategoryPost(catId):
     repController = ReportAPI.ReportAPI()
+    catController = CategoryAPI.CategoryAPI()
     reportContentList = repController.get_report_content_list_by_catId(catId)
+    categoryName = catController.get(catId).catName
     if len(reportContentList):
         reportContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
     return render_template('viewCategoryPost.html', 
         reportContentList=reportContentList, 
-        categoryName=reportContentList[0].get("categoryName"))
+        categoryName=categoryName)
 
 @app.route('/searchTag', methods=['POST'])
 def searchTag():
