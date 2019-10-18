@@ -88,11 +88,20 @@ class CategoryAPI():
 
     #[input]  cat id
     #[return] deleted result
-    def delete(self, cat_id):
+    def delete_by_id(self, cat_id):
         srchRlt = self.collection.find_one({"_id": ObjectId(cat_id)})
         if srchRlt is None:
             print("The Category corresponding the input cat. id does not exist")
             return None
         else:
             result = self.collection.delete_one({"_id": ObjectId(cat_id)})
+            return result
+
+    def delete(self, catName):
+        srchRlt = self.collection.find_one({"catName": catName})
+        if srchRlt is None:
+            print("The Category corresponding the input cat does not exist")
+            return None
+        else:
+            result = self.collection.delete_one({"catName": catName})
             return result

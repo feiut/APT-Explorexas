@@ -25,12 +25,26 @@ def createCategory():
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
             controller = CategoryAPI.CategoryAPI()
             insert_result = controller.list_user_creation(claims["email"])
-            for result in insert_result:
-                print(result)
         except ValueError as exc:
             return render_template('noLogin.html')
         return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
     return render_template('noLogin.html')
+
+
+@app.route('/deleteCategory', methods=['POST'])
+def deleteCategory():
+    id_token = request.cookies.get("token")
+    if id_token:
+        try:
+            claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+            controller = CategoryAPI.CategoryAPI()
+            delete_result = controller.delete(request.form['categoryName'])
+            insert_result = controller.list_user_creation(claims["email"])
+        except ValueError as exc:
+            return render_template('noLogin.html')
+        return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
+    return render_template('noLogin.html')
+
 
 @app.route('/create_category', methods=['POST'])
 def create_category():
