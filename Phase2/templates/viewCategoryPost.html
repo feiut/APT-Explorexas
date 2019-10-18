@@ -30,7 +30,7 @@
         {% for reportContent in reportContentList %}
             <div class="report-container">
                 <div>
-                    <h2 style="color:White">{{ reportContent["title"] }}</h2>
+                    <h2 style="color:White" align="right">{{ reportContent["title"] }}</h2>
                 </div>
                 <div class="row">
                     <div class="col-4">
@@ -40,13 +40,13 @@
                         </div>
                     </div>
                     <div class="col-8">
-                        <ul class="list-group list-group-flush" style="color:Black">
-                            <li class="list-group-item">userName: {{ reportContent["userName"] }}</li>
-                            <li class="list-group-item">category: {{ reportContent["categoryName"] }}</li>
-                            <li class="list-group-item">review: {{ reportContent["review"] }}</li>
-                            <li class="list-group-item">rating: {{ reportContent["rating"] }}</li>
-                            <li class="list-group-item">place: {{ reportContent["placeName"] }}</li>
-                            <li class="list-group-item">time: {{ reportContent["timeStamp"] }}</li>
+                        <ul class="list-group list-group-flush" style="color:Black" align="left">
+                            <li class="list-group-item">User: {{ reportContent["userName"] }}</li>
+                            <li class="list-group-item">Category: {{ reportContent["categoryName"] }}</li>
+                            <li class="list-group-item">Review: {{ reportContent["review"] }}</li>
+                            <li class="list-group-item">Rating: {{ reportContent["rating"] }}</li>
+                            <li class="list-group-item">Place: {{ reportContent["placeName"] }}</li>
+                            <li class="list-group-item">Time: {{ reportContent["timeStamp"].strftime("%Y-%m-%d %H:%M:%S") }}</li>
                         </ul>
                     </div>
                 </div> 

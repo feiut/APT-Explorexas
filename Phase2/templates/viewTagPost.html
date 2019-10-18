@@ -31,17 +31,17 @@
         <br>
         <div class="report-container">
             <div>
-                <h2 style="color:White">{{ reportContent["title"] }}</h2>
+                <h2 style="color:White" align="right">{{ reportContent["title"] }}</h2>
             </div>
             <div class="row">
                 <div class="col-4" style="float:left">
                     <img src="{{url_for('image', imgId=reportContent["imgId"])}}" alt={{reportContent["placeName"]}} style="height:180px;width:200px">
                     <div> 
-                     <label for="tag" style="color:DodgerBlue">{{reportContent["tag"]}}</label>
+                        <label for="tag" style="color:DodgerBlue">{{reportContent["tag"]}}</label>
                     </div>
                 </div>
                 <div class="col-8" style="float:right">
-                    <ul class="list-group list-group-flush", style="color:Black">
+                    <ul class="list-group list-group-flush" style="color:Black" align="left">
                         <li class="list-group-item">User: {{ reportContent["userName"] }}</li>
                         <li class="list-group-item">Category: {{ reportContent["categoryName"] }}</li>
                         <li class="list-group-item">Review: {{ reportContent["review"] }}</li>
