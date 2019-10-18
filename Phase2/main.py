@@ -109,6 +109,8 @@ def create_report():
             image = Image.Image(pic, imgId, userId)
             inserted_id = repController.add_report(report, image).inserted_id
             reportDisplay = repController.find_by_reportId(inserted_id)
+            # to display tag name instead of tag id in reports.html
+            reportDisplay["tagId"] = tagController.get(reportDisplay["tagId"]).tagName
             # print(report["imgId"])
             return render_template('reports.html', report=reportDisplay, imgId=reportDisplay["imgId"])
         except ValueError as exc:
