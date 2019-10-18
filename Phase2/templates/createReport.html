@@ -24,6 +24,9 @@
             top: 0;
             opacity: 0;
         }
+        #media-container{
+            width: 100%;
+        }
         .custom-file-input:hover{
             background: #AADFFD;
             border-color: #78C3F3;
@@ -112,9 +115,9 @@
                 <textarea class="form-control" id="review" name="review" rows="6" placeholder="Description"></textarea>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-12 col-md-6 col-lg-4">
                     <div class="form-row">
-                        <div class="form-group col-md-9" style="padding-right:0">
+                        <div class="form-group col-9" style="padding-right:0">
                             <label>Coordinates</label>                          
                             <!-- <fieldset disabled>  -->
                             <div class="input-group mb-2">
@@ -131,7 +134,7 @@
                             </div>
                             <!-- </fieldset> -->
                         </div>
-                        <div class="input-group col-md-3" style="padding-left:0">
+                        <div class="input-group col-3" style="padding-left:0">
                             <div class="input-group">
                                 <button type="button" style="margin-top: 22px;margin-bottom: 16px;padding: 0 20px" onclick="getLocationConstant()">
                                     <i class="fa fa-map-marker" style="font-size:42px;"></i>
@@ -140,7 +143,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-12 col-md-6 col-lg-4">
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="rating">Rating</label>
@@ -170,9 +173,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-md-4">
-                    <img src="" id="show" name="show" width="300">
-                    <input type="text" id="srcURL" name="srcURL" hidden="true">
+                <div class="form-group col-12 col-md-12 col-lg-4">
+                    <div id="media-container">
+                        <img src="" id="show" name="show" width="300" style="width:100%">
+                        <input type="text" id="srcURL" name="srcURL" hidden="true">
+                    </div>
                 </div>
             </div>
               <br>
