@@ -22,9 +22,7 @@ class ImageAPI():
                         content_type=f[1], 
                         imgName=f[0], 
                         _id=image.imgId,
-                        reportId=image.reportId, 
-                        userId=image.userId, 
-                        tagId=image.tagId)
+                        userId=image.userId)
         return result
 
     def get_image_by_id(self, imgId):
@@ -39,12 +37,12 @@ class ImageAPI():
             raise ValueError(error_message)
         return False
 
-    def get_image_by_tagId(self, tagId):
-        query = {'tagId': tagId}
-        if not self.db.fs.files.find_one(query):
-            print("Image not found")
-            return None
-        return self.db.fs.files.find(query)
+    ##def get_image_by_tagId(self, tagId):
+    ##    query = {'tagId': tagId}
+    ##    if not self.db.fs.files.find_one(query):
+    ##        print("Image not found")
+    ##        return None
+    ##    return self.db.fs.files.find(query)
 
     def delete_image_by_id(self, imgId):
         query = {'_id': imgId}

@@ -32,20 +32,20 @@
 {% block content %}
     <div class="center-in-center">
         {% for reportContent in reportContentList %}
-        <h2>Category: {{ reportContent["categoryName"] }}</h2>
             <div class="report-container">
+                <h2>Title: {{ reportContent["title"] }}</h2>
                 <div class="row">
                     <div class="col-4">
                         <img src="{{url_for('image', imgId=reportContent["imgId"])}}" alt={{reportContent["placeName"]}} style="height:180px;width:200px">
-                        <p {{reportContent["tagName"]}} /p>
+                        <label for="tag">{{reportContent["tag"]}}</label>
                     </div>
                     <div class="col-8">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Title: {{ reportContent["title"] }}</li>
-                            <li class="list-group-item">userName:  {{reportContent["userName"] }}</li>
-                            <li class="list-group-item">Place: {{ reportContent["placeName"] }}</li>
+                            <li class="list-group-item">userName: {{ reportContent["userName"] }}</li>
+                            <li class="list-group-item">category: {{ reportContent["categoryName"] }}</li>
                             <li class="list-group-item">review: {{ reportContent["review"] }}</li>
                             <li class="list-group-item">rating: {{ reportContent["rating"] }}</li>
+                            <li class="list-group-item">place: {{ reportContent["placeName"] }}</li>
                             <li class="list-group-item">time: {{ reportContent["timeStamp"] }}</li>
                         </ul>
                     </div>

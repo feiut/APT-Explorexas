@@ -88,8 +88,12 @@
                 <input type="text" class="form-control" id="placeName" name="placeName" placeholder="Place Name">
               </div>
               <div class="form-group col-md-6">
-                <label for="tagId">CategoryId</label>
-                <input type="text" class="form-control" id= "categoryId" name="categoryId">
+                <label for="category">Category</label><br>
+                <select id="categoryName" name="categoryName">
+                  {% for cat in catList %}
+                    <option value={{cat["catName"]}}>{{cat["catName"]}}</option>
+                  {% endfor %}
+                </select>
               </div>
             </div>
             <div class="form-group">
@@ -141,9 +145,9 @@
                     </div>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                        <span class="input-group-text">tagId&nbsp&nbsp</span>
+                        <span class="input-group-text">tag&nbsp&nbsp</span>
                         </div>
-                        <input type="text" class="form-control" id= "tagId" name="tagId">
+                        <input type="text" class="form-control" id= "tagName" name="tagName">
                     </div>         
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">

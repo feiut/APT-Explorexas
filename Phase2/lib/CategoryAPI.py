@@ -47,7 +47,18 @@ class CategoryAPI():
             print("The Category corresponding the input cat. id does not exist")
             return None
         else:
-            cat = Category(srchRlt["catName"], srchRlt["catDescription"], srchRlt["imageId"], srchRlt["userId"], srchRlt["_id"])
+            cat = Category.Category(srchRlt["catName"], srchRlt["catDescription"], srchRlt["imageId"], srchRlt["userId"], srchRlt["_id"])
+            return cat
+
+    #[input]  cat Name
+    #[return] cat object
+    def get_cat_by_name(self, catName):
+        srchRlt = self.collection.find_one({"catName": catName})
+        if srchRlt == None:
+            print("The Category corresponding the input cat. id does not exist")
+            return None
+        else:
+            cat = Category.Category(srchRlt["catName"], srchRlt["catDescription"], srchRlt["imageId"], srchRlt["userId"], srchRlt["_id"])
             return cat
 
     #[input]  None
@@ -56,7 +67,7 @@ class CategoryAPI():
         results = self.collection.find({})
         cats = []
         for result in results:
-            cat = Category(result["catName"], result["catDescription"],result["imageId"], result["userId"], result["_id"])
+            cat = Category.Category(result["catName"], result["catDescription"],result["imageId"], result["userId"], result["_id"])
             cats.append(cat)
         return cats
 
@@ -67,6 +78,13 @@ class CategoryAPI():
             cat = Category.Category(result["catName"], result["catDescription"])
             cats.append({"catName":result["catName"], "catDescription":result["catDescription"]})
         return cats
+
+    def list_cat_id(self):
+        cats = self.list()
+        catIdList = []
+        for cat in cats:
+            catIdList.append(cat.cat_id)
+        return catIdList
 
     #[input]  cat id
     #[return] deleted result

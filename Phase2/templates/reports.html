@@ -27,7 +27,7 @@
 
 {% block content %}
     <div class="center-in-center">
-        <h2>Place: {{ report["title"] }}</h2>
+        <h2>Title: {{ report["title"] }}</h2>
         <div class="report-container">
             <div class="row">
                 <div class="col-4">
@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-8">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">userId:</li>
+                        <li class="list-group-item">userId: {{ report["userId"] }}</li>
                         <li class="list-group-item">categoryId: {{ report["categoryId"] }}</li>
                         <li class="list-group-item">coordinates: {{ report["coordinates"] }}</li>
                         <li class="list-group-item">rating: {{ report["rating"] }}</li>
