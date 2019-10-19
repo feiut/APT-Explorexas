@@ -27,6 +27,7 @@ class CategoryAPI():
             cat_id = srchRlt['_id']
         return cat_id
 
+
     #[input]  cat object
     #[return] updated result
     def update(self, cat):
@@ -60,6 +61,15 @@ class CategoryAPI():
         else:
             cat = Category.Category(srchRlt["catName"], srchRlt["catDescription"], srchRlt["imageId"], srchRlt["userId"], srchRlt["_id"])
             return cat
+
+
+    def get_cat_Id_by_name(self, catName):
+        srchRlt = self.collection.find_one({"catName": catName})
+        if srchRlt == None:
+            print("The Category corresponding the input cat. id does not exist")
+            return None
+        else:
+            return srchRlt["_id"]
 
     #[input]  None
     #[return] list of cat object

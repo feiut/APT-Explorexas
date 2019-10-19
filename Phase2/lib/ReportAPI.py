@@ -24,6 +24,14 @@ class ReportAPI():
         print("Report created successfully.")
         return result
 
+
+    def update_cat_id(self, reportId, newCatId):
+        reports = self.collection
+        query = {'_id': reportId}
+        result = reports.update_one( query , {"$set": {"categoryId": newCatId}})
+        return result
+
+
     def find_by_reportId(self, reportId):
         reports = self.collection
         query = {'_id': reportId}

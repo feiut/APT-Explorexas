@@ -38,6 +38,11 @@ def deleteCategory():
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
             controller = CategoryAPI.CategoryAPI()
+            othersId = controller.get_cat_Id_by_name("Others")
+            repController = ReportAPI.ReportAPI()
+            categoryReports = repController.find_by_catId(request.form['categoryId'])
+            for report in categoryReports:
+                result = repController.update_cat_id(report.reportId, othersId)
             delete_result = controller.delete_by_id(request.form['categoryId'])
             insert_result = controller.list_user_creation(claims["email"])
         except ValueError as exc:
@@ -113,7 +118,8 @@ def create_report():
                                     review, 
                                     rating, 
                                     timeStamp)
-            image = Image.Image(pic, imgId, userId)
+            # image = Image.Image(pic, imgId, userId)
+            image = Image.Image(pic, userId)
             inserted_id = repController.add_report(report, image).inserted_id
             reportDisplay = repController.find_by_reportId(inserted_id)
             # to display tag name instead of tag id in reports.html
