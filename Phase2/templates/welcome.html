@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
     {% block head%}
@@ -34,30 +35,22 @@
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.css" />
     {% endblock %}
 
-
-    
         <div>
-            {% block header %}
-            <div class="header" align="left" style="float:left">Categories</div>
-            <div align="right"> <input type="button" onclick="newCategory()" value="+ New Category" class="btn btn-info btn-sm"/></div>
-            <hr/>
-            {% endblock %}
 
             {% block content %}
-            <ul class="categories card-deck">
-            {% for cat in categories %}
-                <li>
-                    <div class="card" style="width: 18rem;">
-                            <img src="/images/{{cat["imageId"]}}" class="card-img-top" alt="thumbnail">
-                            <div class="card-body">
-                                <h5 class="card-title">{{cat["catName"]}}</h5>
-                                <p class="card-text">{{cat["catDescription"]}}</p>
-                                <a href="{{ url_for('viewCategoryPost', catId = cat['cat_id']) }}" class="btn btn-primary">View reports</a>
-                            </div>
-                            </div>
-                </li>
-            {% endfor %}
-            </ul>
+            <div>
+            <div id="firebaseui-auth-container"></div>
+                <div id="login-info">
+                    {% if user_data %}
+                        <div class="p-3 mb-2 bg-primary text-white">Hi, Welcome to Explorexas! {{user_data['email']}}</div>
+<!--                        <h3 style="color:white">Welcome to Explorexas! {{user_data['email']}}</h3>-->
+                    {% elif error_message %}
+                        <p>Error: {{ error_message }}</p>
+                    {% else %}
+                        <div class="p-3 mb-2 bg-success text-white">Hi, Welcome to Explorexas! Go <a href="/login" class="alert-link" style="color:white">Log in!</a></div>
+                    {% endif %}
+                </div>
+            </div>
             {% endblock %}
         </div>
 

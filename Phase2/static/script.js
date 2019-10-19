@@ -1,6 +1,6 @@
 'use strict';
 
-window.addEventListener('load', function () {
+  window.addEventListener('load', function () {
   document.getElementById('sign-out').onclick = function () {
     firebase.auth().signOut();
   };
