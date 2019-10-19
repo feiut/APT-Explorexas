@@ -43,8 +43,12 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
                 <form action="{{ url_for('searchTag') }}" method="post" enctype="multipart/form-data" class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" name="searchTag" id="searchTag" placeholder="Search Tag" aria-label="Search Tag">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  <div class="input-group" style="margin-right: 40px">
+                    <input type="text" class="form-control mr-sm-2" name="searchTag" id="searchTag" placeholder="Search Tag" aria-label="Search Tag">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-light" type="submit"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
                 </form>
 <!--              <form action="{{ url_for('searchTag') }}" method="post" enctype="multipart/form-data">-->
 <!--                <input type="text" name="searchTag" id="searchTag" placeholder="Search reports">-->
@@ -69,13 +73,18 @@
     <div class="col left_nav">
         <ul>
             <li><a class="nav-item nav-link" href="/welcomePage">Welcome</a></li>
+            <hr>
             <li><a class="nav-item nav-link" href="/">Categories</a></li>
+            <hr>
             <li><a class="nav-item nav-link" href="/createCategory">CreateCategory</a></li>
+            <hr>
             <li><a class="nav-item nav-link" href="/createReport">CreateReport</a></li>
+            <hr>
             <li><a class="nav-item nav-link" href="/viewCategoryPost/1">ViewCategory</a></li>
+            <hr>
         </ul>
     </div>
-    <div class="col container">
+    <div class="col right-body">
         {% block header %}{% endblock %}
         {% block content %}{% endblock %}
     </div>

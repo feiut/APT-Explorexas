@@ -1,6 +1,6 @@
 body {
   background: #fafafa;
-  color: #33333;
+  color: #333333;
   margin-top: 5rem;
 }
 
@@ -110,11 +110,8 @@ body {
 .left_nav {
   flex: 0 0 auto;
   width:20%!important;
-  margin-right:10px;
+  margin: 0 2% 5% 5%;
   background-color: #eeeeee;
-}
-
-.container {
 }
 
 .left_nav  ul{
@@ -123,11 +120,16 @@ body {
 
 .left_nav  ul li a {
   display:block;
-  padding:5px 40px!important;
+  padding:25px 30px;
+  font-size: 20px;
 }
 
 .left_nav  ul a:hover{
   background-color: #dddddd;
+}
+
+.right-body{
+  margin: 0 5% 5% 0;
 }
 
 .header {
@@ -176,4 +178,19 @@ body {
 
 #login-info {
   margin:auto 5px;
+}
+
+.center-in-center{
+    background-color: #cf9667;
+    color: #FFFFFF;
+    margin: 0 auto 50px;
+    width: 98%;
+    opacity:1;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 10px 20px 30px;
+    overflow: hidden;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 15px;
 }

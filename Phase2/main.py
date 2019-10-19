@@ -162,8 +162,10 @@ def image(imgId):
 def report(reportId):
     repController = ReportAPI.ReportAPI()
     imgController = ImageAPI.ImageAPI()
+    catController = CategoryAPI.CategoryAPI()
     report = repController.find_by_reportId(reportId)
-    return render_template('reports.html', report=report, imgId=report["imgId"])
+    categoryName = catController.get(reportId["categoryId"]).catName
+    return render_template('reports.html', report=report, imgId=report["imgId"], categoryName= categoryName)
 
 @app.route('/viewCategoryPost/<catId>')
 def viewCategoryPost(catId):
