@@ -23,7 +23,7 @@ class CategoryImageAPI():
         return result
 
     def get_image_by_id(self, imgId):
-        query = {'_id': imgId}
+        query = {'_id': ObjectId(imgId)}
         if not self.db.fs.files.find_one(query):
             print("Image not found")
             return None

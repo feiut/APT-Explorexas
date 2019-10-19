@@ -8,10 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='main.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='main.css')}}?{{now}}">
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <!-- icon style sheet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -21,39 +20,39 @@
         .site-header{
             background-color:white;
         }
-        .container{
-          display: flex;
-        }
         #btnPost{
           background-color: #cbd5db;
         }
     </style>
+    <script>
+    function manualSignout(){
+      firebase.auth().signOut().then(function() {
+        document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+        document.location.reload();
+      });
+    }
+    </script>
 </head>
-<body style="background-image:url(http://res.cloudinary.com/culturemap-com/image/upload/ar_4:3,c_fill,g_faces:center,w_1200/v1558461235/photos/296046_original.jpg);background-repeat: no-repeat;background-size: cover;">
+<body>
 
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
           <a class="navbar-brand mr-4" href="/">Explorexas</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="/">Home</a>
-              <a class="nav-item nav-link" href="/createCategory">CreateCategory</a>
-              <a class="nav-item nav-link" href="/createReport">CreateReport</a>
-              <a class="nav-item nav-link" href="/viewCategoryPost/1">ViewCategory</a>
-            </div>
+          <div id="navbarToggle">
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               <form action="{{ url_for('searchTag') }}" method="post" enctype="multipart/form-data">
-                 Search Tag
-                <input type="text" name="searchTag" id="searchTag">
-                <input type="submit" value="Submit" id="btnPost" style="width:90px;">
+                <input type="text" name="searchTag" id="searchTag" placeholder="Search reports">
+                <input type="submit" value="Search" id="btnPost">
               </form>
-              <a class="nav-item nav-link" href="/">Login</a>
-              <a class="nav-item nav-link" href="/register">Register</a>
+
+              {% if user_data %}
+                <a id="login-info" href="/profile">{{user_data['email']}}</a>
+                <a href="javascript: manualSignout()">Sign Out</a>
+              {% else %}
+              <a class="nav-item nav-link" id="login" href="/login">Login</a>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -63,9 +62,20 @@
     <!--main role="main" class="container">
       <div class="row">
         <div class="col-md-8"-->
-    <div class="container">
+    <div class="row">
+    <div class="col left_nav">
+        <ul>
+            <li><a class="nav-item nav-link" href="/">Home</a></li>
+            <li><a class="nav-item nav-link" href="/createCategory">CreateCategory</a></li>
+            <li><a class="nav-item nav-link" href="/createReport">CreateReport</a></li>
+            <li><a class="nav-item nav-link" href="/viewCategoryPost/1">ViewCategory</a></li>
+        </ul>
+    </div>
+    <div class="col container">
+        {% block header %}{% endblock %}
         {% block content %}{% endblock %}
     </div>
+  </div>
         <!--/div>
         <div class="col-md-4">
           <div class="content-section">

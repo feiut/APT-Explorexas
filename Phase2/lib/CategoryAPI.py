@@ -47,7 +47,7 @@ class CategoryAPI():
             print("The Category corresponding the input cat. id does not exist")
             return None
         else:
-            cat = Category(srchRlt["catName"], srchRlt["catDescription"], srchRlt["imageId"], srchRlt["userId"], srchRlt["_id"])
+            cat = Category.Category(srchRlt["catName"], srchRlt["catDescription"], srchRlt["imageId"], srchRlt["userId"], srchRlt["_id"])
             return cat
 
     #[input]  None
@@ -56,7 +56,7 @@ class CategoryAPI():
         results = self.collection.find({})
         cats = []
         for result in results:
-            cat = Category(result["catName"], result["catDescription"],result["imageId"], result["userId"], result["_id"])
+            cat = Category.Category(result["catName"], result["catDescription"],result["imageId"], result["userId"], result["_id"])
             cats.append(cat)
         return cats
 

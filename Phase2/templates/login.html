@@ -27,33 +27,49 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.css" />
+    <title>Explorexas - Explore Outdoor Activities in Texas!</title>
+    <style>
+        .center-in-center{
+            margin: 0 auto;
+           }
+    </style>
+    <script language="JavaScript">
+        function createCategory(){
+            window.location.href = "/createCategory";
+        }
+    </script>
     {% endblock %}
 
 
-    
-        <div>
+    <div>
             {% block header %}
-            <div class="header">Themes</div>
+            <div class="header">Login</div>
             <hr/>
             {% endblock %}
 
             {% block content %}
-            <ul class="categories card-deck">
-            {% for cat in categories %}
-                <li>
-
-                    <div class="card" style="width: 18rem;">
-                            <img src="/images/{{cat["imageId"]}}" class="card-img-top" alt="thumbnail">
-                            <div class="card-body">
-                                <h5 class="card-title">{{cat["catName"]}}</h5>
-                                <p class="card-text">{{cat["catDescription"]}}</p>
-                                <a href="{{ url_for('viewCategoryPost', catId = cat['cat_id']) }}" class="btn btn-primary">View reports</a>
-                            </div>
-                            </div>
-                </li>
-            {% endfor %}
-            </ul>
-            {% endblock %}
+        <div>
+        <div id="firebaseui-auth-container"></div>
+            <div id="login-info" hidden=true>
+                {% if user_data %}
+                    <h3 style="color:white">Hello! {{user_data['email']}}</h3>
+    <!--                <input type="button" value="Create Category" onclick="createCategory()"/>-->
+                {% elif error_message %}
+                    <p>Error: {{ error_message }}</p>
+                {% endif %}
+            </div>
+            <button id="sign-out" hidden=true>Sign Out</button>
         </div>
 
+        <div>
+            <ul class="categories">
+            {% for cat in categories %}
+                <li><a href="{{ url_for('viewCategoryPost', catId = cat['cat_id']) }}">{{cat["catName"]}}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endblock %}
 
+    </div>
+
+    

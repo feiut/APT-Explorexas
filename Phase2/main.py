@@ -44,8 +44,9 @@ def create_category():
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
             controller = CategoryAPI.CategoryAPI()
-            image = CategoryImage.CategoryImage(pic, userId)
-            imageId = controller.insert_image_of_this_Category(image)
+            imageController = ImageAPI.ImageAPI()
+            image = Image.Image(imgData=pic, userId=userId)
+            imageId = imageController.add_image(image)
             cat = Category.Category(categoryName, categoryDescription, imageId, userId)
             insert_id = controller.insert(cat)
             insert_result = controller.list_user_creation(userId)
@@ -108,13 +109,14 @@ def createReport():
     else:
         return render_template('noLogin.html')
 
-
 @app.route('/images/<imgId>')
 def image(imgId):
     imgController = ImageAPI.ImageAPI()
     image = imgController.get_image_by_id(imgId)
     response = make_response(image.read())
     response.mimetype = 'image/jpeg'
+    response.headers.set(
+        'Content-Disposition', 'attachment', filename='%s.jpg' % imgId)
     return response
     return redirect(url_for('createReport'))
     
@@ -156,7 +158,9 @@ def searchTag():
 #     reports = repController.find_reports_by_userId(userId)
 #     return render_template('reports.html', imgId=1)
 
-
+@app.route('/login')
+def login():
+    return render_template('login.html', now = str(datetime.utcnow()))
 
 @app.route('/')
 def root():
@@ -183,9 +187,12 @@ def root():
             # verification checks fail.
             error_message = str(exc)
 
+    categoryContrller = CategoryAPI.CategoryAPI()
+    categories = categoryContrller.list()
+
     return render_template(
         'index.html',
-        user_data=claims, error_message=error_message, times=times)
+        user_data=claims, error_message=error_message, categories=categories, now = str(datetime.utcnow()))
 
 
 # Connect to MongoDB database
