@@ -60,11 +60,8 @@
             }
             return url ;
         }
-        function delete_category(){
-            if(confirm("Confirm to delete this category?") == true){
-                document.fileForm.submit();
-            } else{
-            }
+        function confirm_deletion(){
+            return window.confirm("Confirm to delete this category?");
         }
     </script>
     {% endblock %}
@@ -124,12 +121,12 @@
                         {% for data in inserted_data %}
                      <tr>
                          <th scope="row"></th>
-                         <form action="{{ url_for('deleteCategory') }}" method="post" enctype="multipart/form-data">
+                         <form action="{{ url_for('deleteCategory') }}" method="post">
                              <td>{{data["catName"]}}</td>
-                             <input type="text" hidden="true" name="categoryName" value={{data["catName"]}}>
+                             <input type="text" hidden="true" name="categoryName" value="{{data["catName"]}}">
                              <td>{{data["catDescription"]}}</td>
 <!--                             <td><input type="submit" value="Detele" onclick="delete_category()"></td>-->
-                             <td><input type="button" id="confirmDelete" onclick= "delete_category()" value="Delete"/></td>
+                             <td><input type="submit" id="confirmDelete" onclick= "if (!confirm_deletion()) return false;" value="Delete"/></td>
                          </form>
                      </tr>
                      {% endfor %}
