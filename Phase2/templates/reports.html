@@ -3,20 +3,6 @@
     {% block head %}
     <title>Show report - Explorexas</title>
     <style>
-        .center-in-center{
-            background: #cc5500;
-            color: #FFFFFF;
-            margin: 0 auto 50px;
-            width: 90%;
-            opacity:1;
-            border: 1px solid #99D3F5;
-            border-radius: 4px;
-            padding: 10px 50px 30px;
-            overflow: hidden;
-            text-decoration: none;
-            text-indent: 0;
-            line-height: 15px;
-            }
         .report-container{
             margin: 30px 10px;
         }
@@ -24,7 +10,7 @@
             margin: 0 0 10px;
         }
         .report-title-user{
-            margin: 0 0 50px;
+            margin: 5px 0 10px;
             display: inline-flex;
         }
         .report-item{
@@ -36,8 +22,7 @@
             width: 100%;
         }
         #tag-container{
-            margin: 10px auto 40px;
-            text-align: left;
+            margin-top: 10px;
         }
         #map{
             height: 400px;
@@ -57,7 +42,8 @@
             &nbsp&nbsp&nbsp&nbsp
             <div id="user-name">None</div>
         </div>   
-        <div class="row">
+        <hr>
+        <div class="row" style="margin-top: 40px">
             <div class="col-12 col-md-6">
                 <div class="report-item">
                     Rating:
@@ -68,19 +54,22 @@
                     <span class="fa fa-star" id="star4"></span>
                 </div>  
                 <div class="report-item">
+                    Category: {{categoryName}}
+                </div>  
+                <div class="report-item">
                     Review: {{report["review"]}}
                 </div>  
+                <div class="report-item media-container"> 
+                        <img src="{{url_for('image', imgId=imgId)}}" style="width:100%">
+                    </div>
+                    <div class="report-item" id="tag-container">
+                        Tag: #{{report["tagId"]}}
+                    </div> 
                 <div class="report-item" id="report-time">
                     Report created at {{report["timeStamp"]}}
                 </div>          
             </div>
             <div class="col-12 col-md-6">
-                <div class="media-container"> 
-                    <img src="{{url_for('image', imgId=imgId)}}" style="width:100%">
-                </div>
-                <div id="tag-container">
-                    Tag: #{{report["tagId"]}}
-                </div>  
                 <div class="media-container">
                     <div id="map"></div>
                 </div>  
@@ -112,7 +101,7 @@
             star.style.color = "gold"
         }
 
-<!--        parse time-->
+        // parse time
         let timeStamp = "{{report["timeStamp"]}}".split('.');
         let date = timeStamp[0].split(' ')
         console.log(date)
