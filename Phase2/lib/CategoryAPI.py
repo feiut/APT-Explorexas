@@ -76,7 +76,7 @@ class CategoryAPI():
         cats = []
         for result in results:
             cat = Category.Category(result["catName"], result["catDescription"])
-            cats.append({"catName":result["catName"], "catDescription":result["catDescription"]})
+            cats.append({"catId":result["_id"], "catName":result["catName"], "catDescription":result["catDescription"]})
         return cats
 
     def list_cat_id(self):

@@ -38,7 +38,7 @@ def deleteCategory():
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
             controller = CategoryAPI.CategoryAPI()
-            delete_result = controller.delete(request.form['categoryName'])
+            delete_result = controller.delete_by_id(request.form['categoryId'])
             insert_result = controller.list_user_creation(claims["email"])
         except ValueError as exc:
             return render_template('noLogin.html')
