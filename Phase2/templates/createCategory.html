@@ -123,8 +123,8 @@
                          <th scope="row"></th>
                          <form action="{{ url_for('deleteCategory') }}" method="post">
                              <td>{{data["catName"]}}</td>
-                             <input type="text" hidden="true" name="categoryName" value="{{data["catName"]}}">
-                             <input type="text" hidden="true" name="categoryId" value="{{data["catId"]}}">
+                             <input type="text" hidden="true" name="categoryName" value="{{data['catName']}}">
+                             <input type="text" hidden="true" name="categoryId" value="{{data['catId']}}">
                              <td>{{data["catDescription"]}}</td>
 <!--                             <td><input type="submit" value="Detele" onclick="delete_category()"></td>-->
                              <td><input type="submit" id="confirmDelete" onclick= "if (!confirm_deletion()) return false;" value="Delete"/></td>
