@@ -61,13 +61,19 @@ def create_category():
             imageController = ImageAPI.ImageAPI()
             image = Image.Image(imgData=pic, userId=userId)
             imageId = imageController.add_image(image)
-            cat = Category.Category(categoryName, categoryDescription, imageId, userId)
-            insert_id = controller.insert(cat)
-            insert_result = controller.list_user_creation(userId)
+            findExistingOne = controller.get_cat_by_name(categoryName)
+            if findExistingOne == None:
+                cat = Category.Category(categoryName, categoryDescription, imageId, userId)
+                insert_id = controller.insert(cat)
+                insert_result = controller.list_user_creation(userId)
+                error_message = None
+            else:
+                error_message = "Sorry, this category has already existed."
+                insert_result = controller.list_user_creation(userId)
         except ValueError as exc:
             error_message = str(exc)
     return render_template(
-            'createCategory.html', inserted_data=insert_result, user_data=claims)
+            'createCategory.html', inserted_data=insert_result, user_data=claims, error = error_message)
 
 
 @app.route('/create_report', methods=['POST'])

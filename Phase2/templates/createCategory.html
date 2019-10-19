@@ -48,7 +48,6 @@
         var newsrc=getObjectURL(obj.files[0]);
         document.getElementById('show').src=newsrc;
         document.getElementById('srcURL').value=newsrc;
-
         }
         function getObjectURL(file) {
             var url = null ;
@@ -62,13 +61,18 @@
             return url ;
         }
         function delete_category(){
-            if(confirm("Confirm to delete this category?")){
+            if(confirm("Confirm to delete this category?") == true){
                 document.fileForm.submit();
+            } else{
+            }
         }
     </script>
     {% endblock %}
 
 {% block content %}
+    {% for error in error_message %}
+        window.alert(error);
+    {% endfor %}
     <div class="center-in-center">
         <h1 style="font-size:40px;color:white"> Create a New Category </h1>
         <form action="{{ url_for('create_category') }}" method="post" enctype="multipart/form-data">
@@ -101,7 +105,7 @@
             <div class="form-group">
                 <input type="submit" value="Create Category!" class="btn btn-primary btn-lg btn-block"/>
             </div>
-            <img src="" id="show" name="show" width="200">
+            <div align="center"><img src="" id="show" name="show" width="200"></div>
         </form>
 
          <div id="creation-history">
@@ -124,8 +128,8 @@
                              <td>{{data["catName"]}}</td>
                              <input type="text" hidden="true" name="categoryName" value={{data["catName"]}}>
                              <td>{{data["catDescription"]}}</td>
-<!--                             <td><input type="submit" value="Detele"></td>-->
-                             <td><input type="button" id="confirmDelete" onclick= "delete_Category()" value="Delete"/></td>
+<!--                             <td><input type="submit" value="Detele" onclick="delete_category()"></td>-->
+                             <td><input type="button" id="confirmDelete" onclick= "delete_category()" value="Delete"/></td>
                          </form>
                      </tr>
                      {% endfor %}
