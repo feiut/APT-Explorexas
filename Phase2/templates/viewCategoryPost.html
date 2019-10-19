@@ -1,21 +1,17 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title>Show report list under specific category - Explorexas</title>
+    <title>Reports - Explorexas</title>
     <style>
         .center-in-center{
-/* <!--            position: absolute;-->
-<!--            display: table-cell;-->
-<!--            vertical-align: middle;-->
-<!--            text-align: center;-->
-<!--            top: 30%;-->
-<!--            left: 35%;--> */
-            color: black;
-            background: #D0EEFF;
+            background: #cc5500;
+            color: #FFFFFF;
+            margin: 0 auto 50px;
+            width: 90%;
             opacity:1;
             border: 1px solid #99D3F5;
             border-radius: 4px;
-            padding: 4px 12px;
+            padding: 10px 50px 30px;
             overflow: hidden;
             text-decoration: none;
             text-indent: 0;
@@ -31,22 +27,27 @@
 
 {% block content %}
     <div class="center-in-center">
+        <h3 style="color:powderblue" align="center"> Category: {{ categoryName }} </h3>
         {% for reportContent in reportContentList %}
-        <h2>Category: {{ reportContent["categoryName"] }}</h2>
             <div class="report-container">
+                <div>
+                    <h2 style="color:White" align="right">{{ reportContent["title"] }}</h2>
+                </div>
                 <div class="row">
                     <div class="col-4">
                         <img src="{{url_for('image', imgId=reportContent["imgId"])}}" alt={{reportContent["placeName"]}} style="height:180px;width:200px">
-                        <p {{reportContent["tagName"]}} /p>
+                        <div> 
+                            <label for="tag" style="color:DodgerBlue">{{reportContent["tag"]}}</label>
+                        </div>
                     </div>
                     <div class="col-8">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Title: {{ reportContent["title"] }}</li>
-                            <li class="list-group-item">userName:  {{reportContent["userName"] }}</li>
+                        <ul class="list-group list-group-flush" style="color:Black" align="left">
+                            <li class="list-group-item">User: {{ reportContent["userName"] }}</li>
+                            <li class="list-group-item">Category: {{ reportContent["categoryName"] }}</li>
+                            <li class="list-group-item">Review: {{ reportContent["review"] }}</li>
+                            <li class="list-group-item">Rating: {{ reportContent["rating"] }}</li>
                             <li class="list-group-item">Place: {{ reportContent["placeName"] }}</li>
-                            <li class="list-group-item">review: {{ reportContent["review"] }}</li>
-                            <li class="list-group-item">rating: {{ reportContent["rating"] }}</li>
-                            <li class="list-group-item">time: {{ reportContent["timeStamp"] }}</li>
+                            <li class="list-group-item">Time: {{ reportContent["timeStamp"].strftime("%Y-%m-%d %H:%M:%S") }}</li>
                         </ul>
                     </div>
                 </div> 

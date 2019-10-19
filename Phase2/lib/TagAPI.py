@@ -73,7 +73,7 @@ class TagAPI():
     #[input] tag string
     #[return] a list of tag id
     def srch_tagId_by_pattern(self, pattern):
-        ptn = re.compile(pattern)
+        ptn = re.compile(pattern, flags=re.I)
         tagList = self.list()
         tagIdList = []
         for tag in tagList:

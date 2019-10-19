@@ -25,12 +25,26 @@ def createCategory():
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
             controller = CategoryAPI.CategoryAPI()
             insert_result = controller.list_user_creation(claims["email"])
-            for result in insert_result:
-                print(result)
         except ValueError as exc:
             return render_template('noLogin.html')
         return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
     return render_template('noLogin.html')
+
+
+@app.route('/deleteCategory', methods=['POST'])
+def deleteCategory():
+    id_token = request.cookies.get("token")
+    if id_token:
+        try:
+            claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+            controller = CategoryAPI.CategoryAPI()
+            delete_result = controller.delete(request.form['categoryName'])
+            insert_result = controller.list_user_creation(claims["email"])
+        except ValueError as exc:
+            return render_template('noLogin.html')
+        return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
+    return render_template('noLogin.html')
+
 
 @app.route('/create_category', methods=['POST'])
 def create_category():
@@ -63,36 +77,43 @@ def create_report():
     if id_token:
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
-            reportId = uuid.uuid1()
             userId = claims['email']            
             title = request.form['title']
             placeName = request.form['placeName']
             latitude = request.form['latitude']
             longitude = request.form['longitude']
             coordinates = [latitude, longitude]
-            categoryId = request.form['categoryId']
+            categoryName = request.form['categoryName']
+            catController = CategoryAPI.CategoryAPI()
+            categoryId = catController.get_cat_by_name(categoryName).cat_id
             review = request.form['review']
             rating = request.form['rating']
             timeStamp = datetime.now()
-            tagId = request.form['tagId']
+            tagName = request.form['tagName']
+            tag = Tag.Tag(tagName)
+            tagController = TagAPI.TagAPI()
+            tagId = tagController.insert(tag)
             pic = request.files['file']
             imgId = ObjectId()
             repController = ReportAPI.ReportAPI()
-            report = Report.Report(reportId,
+            report = Report.Report( None,
                                     userId, 
                                     title, 
                                     placeName, 
                                     coordinates,  
                                     categoryId, 
-                                    imgId, 
+                                    imgId,
+                                    tagId, 
                                     review, 
                                     rating, 
                                     timeStamp)
-            image = Image.Image(pic, imgId, reportId, userId, tagId)
-            insert_id = repController.add_report(report, image)
-            report = repController.find_by_reportId(reportId)
+            image = Image.Image(pic, imgId, userId)
+            inserted_id = repController.add_report(report, image).inserted_id
+            reportDisplay = repController.find_by_reportId(inserted_id)
+            # to display tag name instead of tag id in reports.html
+            reportDisplay["tagId"] = tagController.get(reportDisplay["tagId"]).tagName
             # print(report["imgId"])
-            return render_template('reports.html', report=report, imgId=report["imgId"])
+            return render_template('reports.html', report=reportDisplay, imgId=reportDisplay["imgId"])
         except ValueError as exc:
             error_message = str(exc)
     return render_template('nologin.html')
@@ -100,12 +121,17 @@ def create_report():
 @app.route('/createReport')
 def createReport():
     id_token = request.cookies.get("token")
+    catController = CategoryAPI.CategoryAPI()
+    catList = []
+    for cat in catController.list():
+        catList.append(cat.toQuery())
+
     if id_token:
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
         except ValueError as exc:
             return render_template('noLogin.html')
-        return render_template('createReport.html')
+        return render_template('createReport.html', catList=catList)
     else:
         return render_template('noLogin.html')
 
@@ -130,21 +156,26 @@ def report(reportId):
 @app.route('/viewCategoryPost/<catId>')
 def viewCategoryPost(catId):
     repController = ReportAPI.ReportAPI()
+    catController = CategoryAPI.CategoryAPI()
     reportContentList = repController.get_report_content_list_by_catId(catId)
+    categoryName = catController.get(catId).catName
     if len(reportContentList):
         reportContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
-    return render_template('viewCategoryPost.html', reportContentList=reportContentList)
+    return render_template('viewCategoryPost.html', 
+        reportContentList=reportContentList, 
+        categoryName=categoryName)
 
 @app.route('/searchTag', methods=['POST'])
 def searchTag():
     pattern = request.form['searchTag']
-    tagAPI = TagAPI.TagAPI()
+    tagController = TagAPI.TagAPI()
+    repController = ReportAPI.ReportAPI()
 
-    tagIdList = tagAPI.srch_tagId_by_pattern(pattern)
+    tagIdList = tagController.srch_tagId_by_pattern(pattern)
     if len(tagIdList):
         currRptContentList = []
         for tagId in tagIdList:
-            rptContentList = get_report_content_list_by_tagId(tagId)
+            rptContentList = repController.get_report_content_list_by_tagId(tagId)
             currRptContentList.extend(rptContentList)
         currRptContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
         return render_template('viewTagPost.html', reportContentList=currRptContentList)

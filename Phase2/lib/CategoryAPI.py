@@ -50,6 +50,17 @@ class CategoryAPI():
             cat = Category.Category(srchRlt["catName"], srchRlt["catDescription"], srchRlt["imageId"], srchRlt["userId"], srchRlt["_id"])
             return cat
 
+    #[input]  cat Name
+    #[return] cat object
+    def get_cat_by_name(self, catName):
+        srchRlt = self.collection.find_one({"catName": catName})
+        if srchRlt == None:
+            print("The Category corresponding the input cat. id does not exist")
+            return None
+        else:
+            cat = Category.Category(srchRlt["catName"], srchRlt["catDescription"], srchRlt["imageId"], srchRlt["userId"], srchRlt["_id"])
+            return cat
+
     #[input]  None
     #[return] list of cat object
     def list(self):
@@ -68,13 +79,29 @@ class CategoryAPI():
             cats.append({"catName":result["catName"], "catDescription":result["catDescription"]})
         return cats
 
+    def list_cat_id(self):
+        cats = self.list()
+        catIdList = []
+        for cat in cats:
+            catIdList.append(cat.cat_id)
+        return catIdList
+
     #[input]  cat id
     #[return] deleted result
-    def delete(self, cat_id):
+    def delete_by_id(self, cat_id):
         srchRlt = self.collection.find_one({"_id": ObjectId(cat_id)})
         if srchRlt is None:
             print("The Category corresponding the input cat. id does not exist")
             return None
         else:
             result = self.collection.delete_one({"_id": ObjectId(cat_id)})
+            return result
+
+    def delete(self, catName):
+        srchRlt = self.collection.find_one({"catName": catName})
+        if srchRlt is None:
+            print("The Category corresponding the input cat does not exist")
+            return None
+        else:
+            result = self.collection.delete_one({"catName": catName})
             return result

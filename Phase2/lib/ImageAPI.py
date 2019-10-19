@@ -2,12 +2,12 @@ import gridfs
 from bson.objectid import ObjectId
 import pymongo
 
-DATABASE_NAME = "Images"
+DATABASE_NAME = "Explorexas"
 
 class ImageAPI():
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb+srv://admin-user01:19961106@cluster0-eteyg.mongodb.net/admin?retryWrites=true&w=majority")
-        self.db = self.client['Explorexas']
+        self.db = self.client[DATABASE_NAME]
 
     def add_image(self, image):
         fs = gridfs.GridFS(self.db)
@@ -30,12 +30,12 @@ class ImageAPI():
             raise ValueError(error_message)
         return False
 
-    def get_image_by_tagId(self, tagId):
-        query = {'tagId': tagId}
-        if not self.db.fs.files.find_one(query):
-            print("Image not found")
-            return None
-        return self.db.fs.files.find(query)
+    ##def get_image_by_tagId(self, tagId):
+    ##    query = {'tagId': tagId}
+    ##    if not self.db.fs.files.find_one(query):
+    ##        print("Image not found")
+    ##        return None
+    ##    return self.db.fs.files.find(query)
 
     def delete_image_by_id(self, imgId):
         query = {'_id': imgId}
