@@ -42,15 +42,14 @@
           <div id="navbarToggle">
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-<!--                <form action="{{ url_for('searchTag') }}" method="post" enctype="multipart/form-data" class="form-inline">-->
-<!--                    <input class="form-control mr-sm-2" type="search" name="searchTag" id="searchTag" placeholder="Search Tag" aria-label="Search Tag">-->
-<!--                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
-<!--                </form>-->
-              <form action="{{ url_for('searchTag') }}" method="post" enctype="multipart/form-data">
-                <input type="text" name="searchTag" id="searchTag" placeholder="Search reports">
-                <input type="submit" value="Search" id="btnPost">
-              </form>
-
+                <form action="{{ url_for('searchTag') }}" method="post" enctype="multipart/form-data" class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" name="searchTag" id="searchTag" placeholder="Search Tag" aria-label="Search Tag">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+<!--              <form action="{{ url_for('searchTag') }}" method="post" enctype="multipart/form-data">-->
+<!--                <input type="text" name="searchTag" id="searchTag" placeholder="Search reports">-->
+<!--                <input type="submit" value="Search" id="btnPost">-->
+<!--              </form>-->
               {% if user_data %}
                 <a id="login-info" href="/profile">{{user_data['email']}}</a>
                 <a href="javascript: manualSignout()">Sign Out</a>
