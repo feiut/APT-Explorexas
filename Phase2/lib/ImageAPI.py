@@ -48,3 +48,6 @@ class ImageAPI():
         fs = gridfs.GridFS(self.db)
         result = fs.delete(files_id)
         return result
+
+    def close_connection(self):
+        self.client.close()

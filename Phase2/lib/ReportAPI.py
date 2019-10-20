@@ -175,3 +175,5 @@ class ReportAPI():
                 reportContentList.append(reportContent)
         return reportContentList
             
+    def close_connection(self):
+        self.client.close()

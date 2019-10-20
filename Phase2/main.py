@@ -128,7 +128,8 @@ def create_report():
             reportDisplay = repController.find_by_reportId(reportId)
             # to display tag name instead of tag id in reports.html
             reportDisplay["tagId"] = tagController.get(reportDisplay["tagId"]).tagName
-            # print(report["imgId"])
+            repController.close_connection()
+            tagController.close_connection()
             return render_template('reports.html', report=reportDisplay, imgId=reportDisplay["imgId"])
         except ValueError as exc:
             error_message = str(exc)
@@ -165,10 +166,11 @@ def image(imgId):
 @app.route('/reports/<reportId>')
 def report(reportId):
     repController = ReportAPI.ReportAPI()
-    imgController = ImageAPI.ImageAPI()
     catController = CategoryAPI.CategoryAPI()
     report = repController.find_by_reportId(reportId)
-    categoryName = catController.get(report["categoryId"]).catName
+    categoryName = catController.get(str(report["categoryId"])).catName
+    catController.close_connection()
+    repController.close_connection()
     return render_template('reports.html', report=report, imgId=report["imgId"], categoryName= categoryName)
 
 @app.route('/viewCategoryPost/<catId>')
@@ -177,6 +179,8 @@ def viewCategoryPost(catId):
     catController = CategoryAPI.CategoryAPI()
     reportContentList = repController.get_report_content_list_by_catId(catId)
     categoryName = catController.get(catId).catName
+    repController.close_connection()
+    catController.close_connection()
     if len(reportContentList):
         reportContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
     return render_template('viewCategoryPost.html', 
@@ -196,8 +200,12 @@ def searchTag():
             rptContentList = repController.get_report_content_list_by_tagId(tagId)
             currRptContentList.extend(rptContentList)
         currRptContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
+        tagController.close_connection()
+        repController.close_connection()
         return render_template('viewTagPost.html', reportContentList=currRptContentList)
     else:
+        tagController.close_connection()
+        repController.close_connection()
         return render_template('noMatchRlt.html')
 
 # @app.route('/user_reports/<userId>') 
@@ -256,6 +264,7 @@ def profile():
             repController.delete_by_id(toDelete)
             print(toDelete, " is deleted.")
         reports = repController.find_by_userId(user.userId)
+        repController.close_connection()
         return render_template('profile.html', reports=reports)
         
 @app.route('/')

@@ -83,4 +83,5 @@ class TagAPI():
         return tagIdList
 
 
-
+    def close_connection(self):
+        self.client.close()
