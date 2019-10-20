@@ -115,3 +115,6 @@ class CategoryAPI():
         else:
             result = self.collection.delete_one({"catName": catName})
             return result
+
+    def close_connection(self):
+        self.client.close()

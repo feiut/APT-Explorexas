@@ -1,37 +1,6 @@
 {% extends "base.html" %}
 
     {% block head%}
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-        https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-analytics.js"></script>
-    <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyDNIX4HvhcZfG-6jBZAVtjp_f8H3nKhhmc",
-        authDomain: "my-second-lab-254515.firebaseapp.com",
-        databaseURL: "https://my-second-lab-254515.firebaseio.com",
-        projectId: "my-second-lab-254515",
-        storageBucket: "my-second-lab-254515.appspot.com",
-        messagingSenderId: "523114286882",
-        appId: "1:523114286882:web:c9bd7609115e6bef579f7b",
-        measurementId: "G-E67CTZCMBC"
-    };
-    //Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-
-    function newCategory() {
-    window.location.href = "/createCategory";
-    };
-
-     </script>
-    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-auth.js"></script>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.css" />
     {% endblock %}
 
 

@@ -71,7 +71,7 @@
         window.alert(error);
     {% endfor %}
     <div class="center-in-center">
-        <h1 style="font-size:40px;color:white"> New Category </h1>
+        <h1 style="font-size:40px;color:BLACK"> New Category </h1>
         <form action="{{ url_for('create_category') }}" method="post" enctype="multipart/form-data">
 
         <div class="input-group mb-4 mt-5">
@@ -112,7 +112,7 @@
          <div id="creation-history">
              <table class="table" border='1' align="center" >
                 {% if inserted_data %}
-                 <h5 style="color:white"> Categories you have created: </h5>
+                 <p class="font-weight-normal"> Categories you have created: </p>
                  <thead class="thead-dark">
                      <tr>
                          <th scope="col">#</th>

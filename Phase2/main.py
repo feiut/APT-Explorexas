@@ -27,6 +27,7 @@ def createCategory():
             insert_result = controller.list_user_creation(claims["email"])
         except ValueError as exc:
             return render_template('noLogin.html')
+        controller.close_connection()
         return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
     return render_template('noLogin.html')
 
@@ -47,6 +48,7 @@ def deleteCategory():
             insert_result = controller.list_user_creation(claims["email"])
         except ValueError as exc:
             return render_template('noLogin.html')
+        controller.close_connection()
         return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
     return render_template('noLogin.html')
 
@@ -77,6 +79,7 @@ def create_category():
                 insert_result = controller.list_user_creation(userId)
         except ValueError as exc:
             error_message = str(exc)
+    controller.close_connection()
     return render_template(
             'createCategory.html', inserted_data=insert_result, user_data=claims, error = error_message)
 
@@ -138,12 +141,12 @@ def createReport():
     catList = []
     for cat in catController.list():
         catList.append(cat.toQuery())
-
     if id_token:
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
         except ValueError as exc:
             return render_template('noLogin.html')
+        catController.close_connection()
         return render_template('createReport.html', catList=catList)
     else:
         return render_template('noLogin.html')
@@ -237,6 +240,24 @@ def welcomePage():
         'welcome.html',
         user_data=claims, error_message=error_message, now = str(datetime.utcnow()))
 
+@app.route('/profile')
+def profile():
+    id_token = request.cookies.get("token")
+    user = None
+    if id_token:
+        claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+        user = User.User(claims["email"], claims["name"])
+    if user is None:
+        return login()
+    else: 
+        repController = ReportAPI.ReportAPI()
+        toDelete = request.args.get('delete')
+        if toDelete != "":
+            repController.delete_by_id(toDelete)
+            print(toDelete, " is deleted.")
+        reports = repController.find_by_userId(user.userId)
+        return render_template('profile.html', reports=reports)
+        
 @app.route('/')
 def root():
     # Verify Firebase auth.

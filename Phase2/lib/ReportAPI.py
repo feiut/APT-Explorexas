@@ -54,22 +54,19 @@ class ReportAPI():
 
     def delete_by_id(self, reportId):
         reports = self.collection
-        query = {'reportId': reportId}
+        query = {'_id': reportId}
         report = reports.find_one(query)
         if not report:
             print("No report found")
             return False
         imageapi = ImageAPI.ImageAPI()
         imageapi.delete_image_by_id(report['imgId'])
-        result = reports.delete_one({"reportId": reportId})
+        result = reports.delete_one({"_id": reportId})
         return result
 
     def find_by_userId(self, userId):
         reports = self.collection
         query = {'userId': userId}
-        if not reports.find_one(query):
-            print("No report for userId:" + str(userId) + " was found")
-            return None
         results = reports.find(query)
         report_list = []
         for result in results:
