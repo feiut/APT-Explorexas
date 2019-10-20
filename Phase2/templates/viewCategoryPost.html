@@ -4,12 +4,12 @@
     <title>Reports - Explorexas</title>
     <style>
         .center-in-center{
-            background: #cc5500;
-            color: #FFFFFF;
+            color: #3a6b95;
+            background-color:#3a6b95;
             margin: 0 auto 50px;
             width: 90%;
             opacity:1;
-            border: 1px solid #99D3F5;
+            border: 1px solid #3a6b95;
             border-radius: 4px;
             padding: 10px 50px 30px;
             overflow: hidden;
@@ -27,11 +27,11 @@
 
 {% block content %}
     <div class="center-in-center">
-        <h3 style="color:powderblue" align="center"> Category: {{ categoryName }} </h3>
+        <h3 style="color:Black" align="center"> Category: {{ categoryName }} </h3>
         {% for reportContent in reportContentList %}
             <div class="report-container">
                 <div>
-                    <h2 style="color:White" align="right">{{ reportContent["title"] }}</h2>
+                    <h2 style="color:Black" align="right">{{ reportContent["title"] }}</h2>
                 </div>
                 <div class="row">
                     <div class="col-4">
@@ -60,7 +60,6 @@
             </div>
         <script>
             var rating = parseInt({{reportContent["rating"]}});
-            console.log(rating);
             var i
             for(i = 0; i < rating; i++){
                 let star = document.getElementById("star" + i.toString());

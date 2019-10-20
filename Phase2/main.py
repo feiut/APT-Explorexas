@@ -105,7 +105,9 @@ def create_report():
             tagController = TagAPI.TagAPI()
             tagId = tagController.insert(tag)
             pic = request.files['file']
-            imgId = ObjectId()
+            imageController = ImageAPI.ImageAPI()
+            image = Image.Image(pic, userId)
+            imgId = imageController.add_image(image)
             repController = ReportAPI.ReportAPI()
             report = Report.Report( None,
                                     userId, 
@@ -119,9 +121,8 @@ def create_report():
                                     rating, 
                                     timeStamp)
             # image = Image.Image(pic, imgId, userId)
-            image = Image.Image(pic, userId)
-            inserted_id = repController.add_report(report, image).inserted_id
-            reportDisplay = repController.find_by_reportId(inserted_id)
+            reportId = repController.add_report(report).inserted_id
+            reportDisplay = repController.find_by_reportId(reportId)
             # to display tag name instead of tag id in reports.html
             reportDisplay["tagId"] = tagController.get(reportDisplay["tagId"]).tagName
             # print(report["imgId"])
@@ -154,7 +155,7 @@ def image(imgId):
     response = make_response(image.read())
     response.mimetype = 'image/jpeg'
     response.headers.set(
-        'Content-Disposition', 'attachment', filename='%s.jpg' % imgId)
+    'Content-Disposition', 'attachment', filename='%s.jpg' % imgId)
     return response
     return redirect(url_for('createReport'))
     

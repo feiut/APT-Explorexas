@@ -14,15 +14,13 @@ class ReportAPI():
         self.db = self.client['Explorexas']
         self.collection = self.db[COLLECTION_NAME]
 
-    def add_report(self, report, image):
+    def add_report(self, report):
         # reportId, userId, placeId, categoryId, imgPath, imgId, tagId, review, rating
         reports = self.collection
         new_report = report.toQuery()
-        imageapi = ImageAPI.ImageAPI()
-        imageapi.add_image(image)
-        result = reports.insert_one(new_report)
+        rptId = reports.insert_one(new_report)
         print("Report created successfully.")
-        return result
+        return rptId
 
 
     def update_cat_id(self, reportId, newCatId):
