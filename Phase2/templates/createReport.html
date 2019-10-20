@@ -20,47 +20,7 @@
             text-decoration: none;
         }
     </style>
-    
-    <script>
-            function changepic(obj) {
-            //console.log(obj.files[0]);//这里可以获取上传文件的name
-            var newsrc=getObjectURL(obj.files[0]);
-            document.getElementById('show').src=newsrc;
-            document.getElementById('srcURL').value=newsrc;
-    
-            }
-            function getObjectURL(file) {
-                var url = null ;
-                if (window.createObjectURL!=undefined) { // basic
-                    url = window.createObjectURL(file) ;
-                } else if (window.URL!=undefined) { // mozilla(firefox)
-                    url = window.URL.createObjectURL(file) ;
-                } else if (window.webkitURL!=undefined) { // webkit or chrome
-                    url = window.webkitURL.createObjectURL(file) ;
-                }
-                return url ;
-            }
-            function getLocationConstant() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
-                } else {
-                    alert("Your browser or device doesn't support Geolocation");
-                }
-            }
-    
-            // If have a successful location update
-            function onGeoSuccess(event) {
-                document.getElementById("latitude").value = event.coords.latitude;
-                document.getElementById("longitude").value = event.coords.longitude;
-                // document.getElementById("coordinates").value = event.coords.latitude + ", " + event.coords.longitude;
-    
-            }
-    
-            // If something has gone wrong with the geolocation request
-            function onGeoError(event) {
-                alert("Error code " + event.code + ". " + event.message);
-            }
-        </script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     {% endblock %}
 
 {% block content %}
@@ -119,7 +79,7 @@
                         </div>
                         <div class="input-group col-3" style="padding-left:0">
                             <div class="input-group">
-                                <button type="button" class="btn btn-light" style="margin-top: 23px;margin-bottom: 16px;padding: 0 20px" onclick="getLocationConstant()">
+                                <button type="button" class="btn btn-light" id="getLocation" style="margin-top: 23px;margin-bottom: 16px;padding: 0 20px" onclick="getLocationConstant()">
                                     <i class="fa fa-map-marker" style="font-size:42px;"></i>
                                 </button>
                             </div>
@@ -167,5 +127,79 @@
               <button type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">Create Report!</button>
         </form>
     </div>
+
     
+    <script>
+            function changepic(obj) {
+            //console.log(obj.files[0]);//这里可以获取上传文件的name
+            var newsrc=getObjectURL(obj.files[0]);
+            document.getElementById('show').src=newsrc;
+            document.getElementById('srcURL').value=newsrc;
+    
+            }
+            function getObjectURL(file) {
+                var url = null ;
+                if (window.createObjectURL!=undefined) { // basic
+                    url = window.createObjectURL(file) ;
+                } else if (window.URL!=undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file) ;
+                } else if (window.webkitURL!=undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file) ;
+                }
+                return url ;
+            }
+
+            function getLocationConstant(){
+                if(document.getElementById("latitude").value !== '' && document.getElementById("longitude").value !== ''){
+                    document.getElementById("latitude").value = '';
+                    document.getElementById("longitude").value = '';
+                }
+                else{
+                    axios.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyB_ZuUcbBYwIb8zilv_yRq89ZU1iNiuBC4")
+                    .then(function(response){
+                        console.log(response);
+                        document.getElementById("latitude").value = response.data.location.lat;
+                        document.getElementById("longitude").value = response.data.location.lng;
+                    }).catch(function(error){
+                        console.log(error);
+                    })
+                }
+            }
+
+            // $("document").ready(function(){
+            //     $("#getLocation").click(function(){
+            //         if($("#latitude").value !== null && $("#longitude").value !== null){
+            //             $("#latitude").value = result["location"]["lat"];
+            //             $("#longitude").value = result["location"]["lng"];
+            //         }
+            //         else{
+            //             $post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyB_ZuUcbBYwIb8zilv_yRq89ZU1iNiuBC4", function(result){
+            //                 $("#latitude").value = result["location"]["lat"];
+            //                 $("#longitude").value = result["location"]["lng"];
+            //         })
+            //         }
+            //     })
+            // })
+            
+            // function getLocationConstant() {
+            //     if (navigator.geolocation) {
+            //         navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+            //     } else {
+            //         alert("Your browser or device doesn't support Geolocation");
+            //     }
+            // }
+    
+            // // If have a successful location update
+            // function onGeoSuccess(event) {
+            //     document.getElementById("latitude").value = event.coords.latitude;
+            //     document.getElementById("longitude").value = event.coords.longitude;
+            //     // document.getElementById("coordinates").value = event.coords.latitude + ", " + event.coords.longitude;
+    
+            // }
+    
+            // // If something has gone wrong with the geolocation request
+            // function onGeoError(event) {
+            //     alert("Error code " + event.code + ". " + event.message);
+            // }
+        </script>
 {% endblock %}
