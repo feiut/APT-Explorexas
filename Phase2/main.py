@@ -236,6 +236,24 @@ def welcomePage():
         'welcome.html',
         user_data=claims, error_message=error_message, now = str(datetime.utcnow()))
 
+@app.route('/profile')
+def profile():
+    id_token = request.cookies.get("token")
+    user = None
+    if id_token:
+        claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+        user = User.User(claims["email"], claims["name"])
+    if user is None:
+        return login()
+    else: 
+        repController = ReportAPI.ReportAPI()
+        toDelete = request.args.get('delete')
+        if toDelete != "":
+            repController.delete_by_id(toDelete)
+            print(toDelete, " is deleted.")
+        reports = repController.find_by_userId(user.userId)
+        return render_template('profile.html', reports=reports)
+        
 @app.route('/')
 def root():
     # Verify Firebase auth.

@@ -69,9 +69,6 @@ class ReportAPI():
     def find_by_userId(self, userId):
         reports = self.collection
         query = {'userId': userId}
-        if not reports.find_one(query):
-            print("No report for userId:" + str(userId) + " was found")
-            return None
         results = reports.find(query)
         report_list = []
         for result in results:
