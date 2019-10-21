@@ -19,7 +19,7 @@
                           </div>
                           <div class="col-md-8">
                             <div class="card-body">
-                                    <a style="display:block; float:right;" href="?delete={{report['reportId']}}" onclick="if (!window.confirm('Are you sure you wish to delete this report?')) return false;">Delete</a>
+                                    <a style="display:block; float:right;" href="/profile?delete={{report['reportId']}}" onclick="if (!window.confirm('Are you sure you wish to delete this report?')) return false;">Delete</a>
                               <h5 class="card-title">{{report["title"]}}</h5>
                               <p class="card-text">{{report["review"]}}</p>
                               <p class="card-text"><small class="text-muted">{{report["placeName"]}}</small></p>

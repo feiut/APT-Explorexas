@@ -70,7 +70,7 @@ class ReportAPI():
         results = reports.find(query)
         report_list = []
         for result in results:
-            report = Report.Report(result["_id"],
+            report = Report.Report(ObjectId(result["_id"]),
                             result["userId"],
                             result["title"],
                             result["placeName"],

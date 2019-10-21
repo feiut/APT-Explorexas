@@ -278,17 +278,18 @@ def profile():
     if id_token:
         claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
         user = User.User(claims["email"], claims["name"])
-    if user is None:
-        return login()
-    else: 
-        repController = ReportAPI.ReportAPI()
-        toDelete = request.args.get('delete')
-        if toDelete != "":
-            repController.delete_by_id(toDelete)
-            print(toDelete, " is deleted.")
-        reports = repController.find_by_userId(user.userId)
-        repController.close_connection()
-        return render_template('profile.html', reports=reports, user_data=claims)
+        if user is None:
+            return login()
+        else:
+            repController = ReportAPI.ReportAPI()
+            toDelete = ObjectId(request.args.get("delete"))
+            print("Report id: ", toDelete)
+            if toDelete != "":
+                repController.delete_by_id(toDelete)
+                print(toDelete, " is deleted.")
+            reports = repController.find_by_userId(user.userId)
+            repController.close_connection()
+            return render_template('profile.html', reports=reports, user_data=claims)
         
 @app.route('/')
 def root():
