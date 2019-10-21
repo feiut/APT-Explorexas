@@ -91,9 +91,9 @@
 <!--              </form>-->
               {% if user_data %}
                 <a id="login-info" href="/profile">{{user_data['email']}}</a>
-                <a href="javascript: manualSignout()">Sign Out</a>
+                <button class="btn btn-outline-light" style="margin-left: 40px" type="submit" onclick="manualSignout()">Sign Out</button>
               {% else %}
-              <a class="nav-item nav-link" id="login" href="/login">Login</a>
+              <a class="nav-item nav-link" id="login" href="/login"><button class="btn btn-outline-light" style="margin-left: 40px">Login</button></a>
               {% endif %}
             </div>
           </div>
@@ -109,11 +109,11 @@
         <ul>
             <li><a class="nav-item nav-link" href="/welcomePage">Welcome</a></li>
             <hr>
-            <li><a class="nav-item nav-link" href="/">Categories</a></li>
+            <li><a class="nav-item nav-link" href="/">View Categories</a></li>
             <hr>
-            <li><a class="nav-item nav-link" href="/createCategory">CreateCategory</a></li>
+            <li><a class="nav-item nav-link" href="/createCategory">Create a Category</a></li>
             <hr>
-            <li><a class="nav-item nav-link" href="/createReport">CreateReport</a></li>
+            <li><a class="nav-item nav-link" href="/createReport">Create a Report</a></li>
         </ul>
     </div>
     <div class="col right-body">

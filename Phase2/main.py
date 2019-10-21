@@ -79,6 +79,7 @@ def create_category():
                 insert_result = controller.list_user_creation(userId)
         except ValueError as exc:
             error_message = str(exc)
+            return render_template('nologin.html')
     controller.close_connection()
     return render_template(
             'createCategory.html', inserted_data=insert_result, user_data=claims, errors=error_message)
@@ -204,8 +205,15 @@ def searchTag():
     pattern = request.form['searchTag']
     tagController = TagAPI.TagAPI()
     repController = ReportAPI.ReportAPI()
-
     tagIdList = tagController.srch_tagId_by_pattern(pattern)
+    id_token = request.cookies.get("token")
+    claims = None
+    error = None
+    if id_token:
+        try:
+            claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+        except ValueError as exc:
+            error_message = str(exc)
     if len(tagIdList):
         currRptContentList = []
         for tagId in tagIdList:
@@ -214,7 +222,10 @@ def searchTag():
         currRptContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
         tagController.close_connection()
         repController.close_connection()
-        return render_template('viewTagPost.html', reportContentList=currRptContentList)
+        return render_template('viewTagPost.html', 
+                                reportContentList=currRptContentList, 
+                                user_data=claims,
+                                error = error_message)
     else:
         tagController.close_connection()
         repController.close_connection()
@@ -277,7 +288,7 @@ def profile():
             print(toDelete, " is deleted.")
         reports = repController.find_by_userId(user.userId)
         repController.close_connection()
-        return render_template('profile.html', reports=reports)
+        return render_template('profile.html', reports=reports, user_data=claims)
         
 @app.route('/')
 def root():
