@@ -128,9 +128,13 @@ def create_report():
             reportDisplay = repController.find_by_reportId(reportId)
             # to display tag name instead of tag id in reports.html
             reportDisplay["tagId"] = tagController.get(reportDisplay["tagId"]).tagName
+            catController = CategoryAPI.CategoryAPI()
+            categoryName = catController.get(reportDisplay["categoryId"]).catName
             repController.close_connection()
             tagController.close_connection()
-            return render_template('reports.html', report=reportDisplay, imgId=reportDisplay["imgId"])
+            catController.close_connection()
+            reportDisplay["categoryId"] = categoryName
+            return render_template('reports.html', report=reportDisplay, user_data=claims, imgId=reportDisplay["imgId"])
         except ValueError as exc:
             error_message = str(exc)
     return render_template('nologin.html')
@@ -148,7 +152,7 @@ def createReport():
         except ValueError as exc:
             return render_template('noLogin.html')
         catController.close_connection()
-        return render_template('createReport.html', catList=catList)
+        return render_template('createReport.html', user_data=claims, catList=catList)
     else:
         return render_template('noLogin.html')
 
@@ -181,11 +185,19 @@ def viewCategoryPost(catId):
     categoryName = catController.get(catId).catName
     repController.close_connection()
     catController.close_connection()
+    id_token = request.cookies.get("token")
+    claims = None
+    error_message = None
+    if id_token:
+        try:
+            claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+        except ValueError as exc:
+            error_message = str(exc)
     if len(reportContentList):
         reportContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
     return render_template('viewCategoryPost.html', 
         reportContentList=reportContentList, 
-        categoryName=categoryName)
+        categoryName=categoryName, user_data=claims, error = error_message)
 
 @app.route('/searchTag', methods=['POST'])
 def searchTag():

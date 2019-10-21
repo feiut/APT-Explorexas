@@ -18,11 +18,18 @@
             margin: 0 5px 40px;
             text-align: left;
         }
-        #media-container{
+        .media-container{
             width: 100%;
+            margin-bottom: 10px;
         }
         #tag-container{
             margin-top: 10px;
+        }
+        #report-time{
+            margin-top: 20px;
+            text-align: right;
+            font-style: italic;
+            font-size: 12px;
         }
         #map{
             height: 400px;
@@ -53,7 +60,7 @@
                     <span class="fa fa-star" id="star4"></span>
                 </div>  
                 <div class="report-item">
-                    Category: {{categoryName}}
+                    Category: {{report["categoryId"]}}
                 </div>  
                 <div class="report-item">
                     Review: {{report["review"]}}
@@ -62,16 +69,16 @@
                         <img src="{{url_for('image', imgId=imgId)}}" style="width:100%">
                     </div>
                     <div class="report-item" id="tag-container">
-                        Tag: #{{report["tagId"]}}
+                        <span class="badge badge-pill badge-primary"># {{report["tagId"]}}</span>
                     </div> 
-                <div class="report-item" id="report-time">
-                    Report created at {{report["timeStamp"]}}
-                </div>          
             </div>
             <div class="col-12 col-md-6">
                 <div class="media-container">
                     <div id="map"></div>
                 </div>  
+                <div class="report-item" id="report-time">
+                    Report created at {{report["timeStamp"]}}
+                </div>          
             </div>
         </div> 
         </div>
