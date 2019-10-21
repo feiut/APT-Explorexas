@@ -33,23 +33,27 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.css" />
+    <style>
+        #welcome-content{
+            background-image: url("http://www.jbgoodwin.com/uploads/agent-1/Austin%20MLS%20Statistics.jpg");
+            width: 100%;
+            height: 100%;
+        }
+    </style>
     {% endblock %}
-
-        <div>
-            {% block content %}
-            <div>
-            <div id="firebaseui-auth-container"></div>
-                <div id="login-info">
-                    {% if user_data %}
-                    <div class="p-3 mb-2 bg-primary text-white">Hi, Welcome to Explorexas! {{user_data['email']}}</div>
-                    {% elif error_message %}
-                    <p>Error: {{ error_message }}</p>
-                    {% else %}
-                    <div class="p-3 mb-2 bg-success text-white">Hi, Welcome to Explorexas! Go <a href="/login" class="alert-link" style="color:white">Log in!</a></div>
-                    {% endif %}
-                </div>
-            </div>
-            {% endblock %}
-        </div>
+    {% block content %}
+    <div id="welcome-content">
+    <div id="firebaseui-auth-container"></div>
+    <div id="login-info" style="width: 100%; margin: 0">
+        {% if user_data %}
+        <div class="p-3 mb-2 bg-primary text-white">Hi, Welcome to Explorexas! {{user_data['email']}}</div>
+        {% elif error_message %}
+            <p>Error: {{ error_message }}</p>
+        {% else %}
+            <div class="p-3 mb-2 bg-success text-white">Hi, Welcome to Explorexas! Go <a href="/login" class="alert-link" style="color:white">Log in!</a></div>
+        {% endif %}
+    </div>
+    </div>
+    {% endblock %}
 
 
