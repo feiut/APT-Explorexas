@@ -26,10 +26,10 @@ def createCategory():
             controller = CategoryAPI.CategoryAPI()
             insert_result = controller.list_user_creation(claims["email"])
         except ValueError as exc:
-            return render_template('noLogin.html')
+            return render_template('nologin.html')
         controller.close_connection()
         return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
-    return render_template('noLogin.html')
+    return render_template('nologin.html')
 
 
 @app.route('/deleteCategory', methods=['POST'])
@@ -47,10 +47,10 @@ def deleteCategory():
             delete_result = controller.delete_by_id(request.form['categoryId'])
             insert_result = controller.list_user_creation(claims["email"])
         except ValueError as exc:
-            return render_template('noLogin.html')
+            return render_template('nologin.html')
         controller.close_connection()
         return render_template('createCategory.html', inserted_data=insert_result, user_data=claims)
-    return render_template('noLogin.html')
+    return render_template('nologin.html')
 
 
 @app.route('/create_category', methods=['POST'])
@@ -81,7 +81,7 @@ def create_category():
             error_message = str(exc)
     controller.close_connection()
     return render_template(
-            'createCategory.html', inserted_data=insert_result, user_data=claims, error = error_message)
+            'createCategory.html', inserted_data=insert_result, user_data=claims, errors=error_message)
 
 
 @app.route('/create_report', methods=['POST'])
@@ -150,7 +150,7 @@ def createReport():
         catController.close_connection()
         return render_template('createReport.html', catList=catList)
     else:
-        return render_template('noLogin.html')
+        return render_template('nologin.html')
 
 @app.route('/images/<imgId>')
 def image(imgId):

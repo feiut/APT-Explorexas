@@ -67,9 +67,11 @@
     {% endblock %}
 
 {% block content %}
-    {% for error in error_message %}
-        window.alert(error);
-    {% endfor %}
+    {% if errors %}
+        <div class="alert alert-secondary" role="alert">
+        Sorry, this category has already existed.
+        </div>
+    {% endif %}
     <div class="center-in-center">
         <h1 style="font-size:40px;color:white"> New Category </h1>
         <form action="{{ url_for('create_category') }}" method="post" enctype="multipart/form-data">
