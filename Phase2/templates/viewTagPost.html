@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title>Show report list under specific category - Explorexas</title>
+    <title>Show report list under specific tag - Explorexas</title>
     <style>
         .center-in-center{
-            background: #3a6b95;
             color: #3a6b95;
+            background-color:#3a6b95;
             margin: 0 auto 50px;
             width: 90%;
             opacity:1;
@@ -18,7 +18,7 @@
             line-height: 15px;
         }
         .report-container{
-            margin: 50px 10px;
+            margin: 30px 10px;
         }
 
     </style>
@@ -26,32 +26,28 @@
 {% endblock %}
 
 {% block content %}
-    <div class="center-in-center" align="center">
+    <div class="center-in-center">
+        <h1 style="font-size:40px;color:white"> {{ categoryName }} </h1>
         {% for reportContent in reportContentList %}
-        <br>
+        <hr>
         <div class="report-container">
             <div>
                 <h2 style="color:Black" align="right">{{ reportContent["title"] }}</h2>
             </div>
             <div class="row">
-                <div class="col-4" style="float:left">
-                    <img src="{{url_for('image', imgId=reportContent["imgId"])}}" alt={{reportContent["placeName"]}} style="height:180px;width:200px">
-                    <div> 
-                        <span class="badge badge-pill badge-primary">{{reportContent["tag"]}}</span>
+                <div class="col-4">
+                    <img src="{{url_for('image', imgId=reportContent["imgId"])}}" alt="{{reportContent["placeName"]}}" style="height:180px;width:200px">
+                    <div > 
+                        <span class="badge badge-pill badge-primary" style="margin-top:10px"># {{reportContent["tag"]}}</span>
                     </div>
                 </div>
-                <div class="col-8" style="float:right">
+                <div class="col-8">
                     <ul class="list-group list-group-flush" style="color:Black" align="left">
                         <li class="list-group-item">User: {{ reportContent["userName"] }}</li>
                         <li class="list-group-item">Category: {{ reportContent["categoryName"] }}</li>
                         <li class="list-group-item">Review: {{ reportContent["review"] }}</li>
-                        <li class="list-group-item"> 
-                        Rating:
-                            <span class="fa fa-star" id="star0"></span>
-                            <span class="fa fa-star" id="star1"></span>
-                            <span class="fa fa-star" id="star2"></span>
-                            <span class="fa fa-star" id="star3"></span>
-                            <span class="fa fa-star" id="star4"></span>
+                        <li class="list-group-item">
+                        Rating: {{reportContent["rating"]}}.0 / 5.0
                         </li>
                         <li class="list-group-item">Place: {{ reportContent["placeName"] }}</li>
                         <li class="list-group-item">Time: {{ reportContent["timeStamp"].strftime("%Y-%m-%d %H:%M:%S") }}</li>
@@ -59,14 +55,6 @@
                 </div>
             </div> 
         </div>
-        <script>
-            var rating = parseInt({{reportContent["rating"]}});
-            var i
-            for(i = 0; i < rating; i++){
-                let star = document.getElementById("star" + i.toString());
-                star.style.color = "gold"
-            }
-        </script>
         {% endfor %}
     </div>
 {% endblock %}

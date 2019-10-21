@@ -216,30 +216,27 @@ def searchTag():
     tagController = TagAPI.TagAPI()
     repController = ReportAPI.ReportAPI()
     tagIdList = tagController.srch_tagId_by_pattern(pattern)
-    id_token = request.cookies.get("token")
-    claims = None
-    error_message = None
-    if id_token:
-        try:
-            claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
-        except ValueError as exc:
-            error_message = str(exc)
+
     if len(tagIdList):
         currRptContentList = []
         for tagId in tagIdList:
             rptContentList = repController.get_report_content_list_by_tagId(tagId)
             currRptContentList.extend(rptContentList)
-        currRptContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
-        tagController.close_connection()
-        repController.close_connection()
-        return render_template('viewTagPost.html', 
-                                reportContentList=currRptContentList, 
-                                user_data=claims,
-                                error = error_message)
+
+        if len(currRptContentList):
+            currRptContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
+            tagController.close_connection()
+            repController.close_connection()
+            return render_template('viewTagPost.html', 
+                                    reportContentList=currRptContentList)
+        else:
+            tagController.close_connection()
+            repController.close_connection()
+            return render_template('noMatchRlt.html')
     else:
         tagController.close_connection()
         repController.close_connection()
-        return render_template('noMatchRlt.html', user_data =claims)
+        return render_template('noMatchRlt.html')
 
 # @app.route('/user_reports/<userId>') 
 # def report(userId):
@@ -298,6 +295,7 @@ def profile():
                 repController.delete_by_id(toDelete)
                 print(toDelete, " is deleted.")
             reports = repController.find_by_userId(user.userId)
+            reports.sort(key=lambda rpt:rpt.timeStamp, reverse=True)
             repController.close_connection()
             return render_template('profile.html', reports=reports, user_data=claims)
         
