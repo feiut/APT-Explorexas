@@ -36,18 +36,16 @@
     {% endblock %}
 
         <div>
-
             {% block content %}
             <div>
             <div id="firebaseui-auth-container"></div>
                 <div id="login-info">
                     {% if user_data %}
-                        <div class="p-3 mb-2 bg-primary text-white">Hi, Welcome to Explorexas! {{user_data['email']}}</div>
-<!--                        <h3 style="color:white">Welcome to Explorexas! {{user_data['email']}}</h3>-->
+                    <div class="p-3 mb-2 bg-primary text-white">Hi, Welcome to Explorexas! {{user_data['email']}}</div>
                     {% elif error_message %}
-                        <p>Error: {{ error_message }}</p>
+                    <p>Error: {{ error_message }}</p>
                     {% else %}
-                        <div class="p-3 mb-2 bg-success text-white">Hi, Welcome to Explorexas! Go <a href="/login" class="alert-link" style="color:white">Log in!</a></div>
+                    <div class="p-3 mb-2 bg-success text-white">Hi, Welcome to Explorexas! Go <a href="/login" class="alert-link" style="color:white">Log in!</a></div>
                     {% endif %}
                 </div>
             </div>

@@ -208,7 +208,7 @@ def searchTag():
     tagIdList = tagController.srch_tagId_by_pattern(pattern)
     id_token = request.cookies.get("token")
     claims = None
-    error = None
+    error_message = None
     if id_token:
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
@@ -229,7 +229,7 @@ def searchTag():
     else:
         tagController.close_connection()
         repController.close_connection()
-        return render_template('noMatchRlt.html')
+        return render_template('noMatchRlt.html', user_data =claims)
 
 # @app.route('/user_reports/<userId>') 
 # def report(userId):
