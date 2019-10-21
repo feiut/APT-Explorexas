@@ -166,17 +166,27 @@ def image(imgId):
     response.headers.set(
     'Content-Disposition', 'attachment', filename='%s.jpg' % imgId)
     return response
-    return redirect(url_for('createReport'))
     
 @app.route('/reports/<reportId>')
 def report(reportId):
+    id_token = request.cookies.get("token")
+    claims = None
+    if id_token:
+        try:
+            claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+        except ValueError as exc:
+            print("Login info Error! : " + str(exc))
     repController = ReportAPI.ReportAPI()
     catController = CategoryAPI.CategoryAPI()
-    report = repController.find_by_reportId(reportId)
-    categoryName = catController.get(str(report["categoryId"])).catName
-    catController.close_connection()
+    tagController = TagAPI.TagAPI()
+    reportDisplay = repController.find_by_reportId(reportId)
+    categoryName = catController.get(reportDisplay["categoryId"]).catName
+    reportDisplay["tagId"] = tagController.get(reportDisplay["tagId"]).tagName
     repController.close_connection()
-    return render_template('reports.html', report=report, imgId=report["imgId"], categoryName= categoryName)
+    tagController.close_connection()
+    catController.close_connection()
+    reportDisplay["categoryId"] = categoryName
+    return render_template('reports.html', report=reportDisplay, user_data=claims, imgId=reportDisplay["imgId"])
 
 @app.route('/viewCategoryPost/<catId>')
 def viewCategoryPost(catId):

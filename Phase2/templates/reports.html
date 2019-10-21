@@ -21,12 +21,13 @@
         .media-container{
             width: 100%;
             margin-bottom: 10px;
+            padding-top: 0;
         }
         #tag-container{
             margin-top: 10px;
         }
         #report-time{
-            margin-top: 20px;
+            margin: 20px auto 10px;
             text-align: right;
             font-style: italic;
             font-size: 12px;
@@ -42,45 +43,47 @@
 {% block content %}
     <div class="center-in-center">
         <div class="container-fluid report-container">
-        <div class="report-title"><h2>{{report["title"]}}</h2></div>   
-        <div class="report-title-user">
-            <i class="fa fa-user-circle" style="display: inline"></i>
-            &nbsp&nbsp&nbsp&nbsp
-            <div id="user-name">None</div>
-        </div>   
-        <hr>
-        <div class="row" style="margin-top: 40px">
-            <div class="col-12 col-md-6">
-                <div class="report-item">
-                    Rating:
-                    <span class="fa fa-star" id="star0"></span>
-                    <span class="fa fa-star" id="star1"></span>
-                    <span class="fa fa-star" id="star2"></span>
-                    <span class="fa fa-star" id="star3"></span>
-                    <span class="fa fa-star" id="star4"></span>
-                </div>  
-                <div class="report-item">
-                    Category: {{report["categoryId"]}}
-                </div>  
-                <div class="report-item">
-                    Review: {{report["review"]}}
-                </div>  
-                <div class="report-item media-container"> 
+            <div class="report-title"><h2>{{report["title"]}}</h2></div>   
+            <div class="report-title-user">
+                <i class="fa fa-user-circle" style="display: inline"></i>
+                &nbsp&nbsp&nbsp&nbsp
+                <div id="user-name">None</div>
+            </div>   
+            <hr>
+            <div class="row" style="margin-top: 40px">
+                <div class="col-12 col-md-6"> 
+                    <div class="report-item media-container"> 
                         <img src="{{url_for('image', imgId=imgId)}}" style="width:100%">
                     </div>
                     <div class="report-item" id="tag-container">
                         <span class="badge badge-pill badge-primary"># {{report["tagId"]}}</span>
+                    </div>
+                    <div class="report-item">
+                        Rating:
+                        <span class="fa fa-star" id="star0"></span>
+                        <span class="fa fa-star" id="star1"></span>
+                        <span class="fa fa-star" id="star2"></span>
+                        <span class="fa fa-star" id="star3"></span>
+                        <span class="fa fa-star" id="star4"></span>
+                    </div>  
+                    <div class="report-item">
+                        Category: {{report["categoryId"]}}
+                    </div>  
+                    <div class="report-item">
+                        Review: {{report["review"]}}
                     </div> 
-            </div>
-            <div class="col-12 col-md-6">
-                <div class="media-container">
-                    <div id="map"></div>
-                </div>  
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="media-container">
+                        <div id="map"></div>
+                    </div>           
+                </div>
+            </div> 
+            <div class="report-footer">
                 <div class="report-item" id="report-time">
                     Report created at {{report["timeStamp"]}}
-                </div>          
+                </div> 
             </div>
-        </div> 
         </div>
     </div>
     
