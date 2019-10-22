@@ -216,6 +216,14 @@ def searchTag():
     tagController = TagAPI.TagAPI()
     repController = ReportAPI.ReportAPI()
     tagIdList = tagController.srch_tagId_by_pattern(pattern)
+    id_token = request.cookies.get("token")
+    claims = None
+    error_message = None
+    if id_token:
+        try:
+            claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+        except ValueError as exc:
+            error_message = str(exc)
 
     if len(tagIdList):
         currRptContentList = []
@@ -224,18 +232,24 @@ def searchTag():
             if rptContentList == None :
                 tagController.close_connection()
                 repController.close_connection()
-                return render_template('noMatchReport.html')
+                return render_template('noMatchReport.html',
+                                       user_data=claims, 
+                                       error = error_message)
             else:
                 currRptContentList.extend(rptContentList)
                 currRptContentList.sort(key=lambda rpt: rpt["timeStamp"], reverse=True)
                 tagController.close_connection()
                 repController.close_connection()
                 return render_template('viewTagPost.html',
-                                       reportContentList=currRptContentList)
+                                       reportContentList=currRptContentList,
+                                       user_data=claims, 
+                                       error = error_message)
     else:
         tagController.close_connection()
         repController.close_connection()
-        return render_template('noMatchRlt.html')
+        return render_template('noMatchRlt.html',
+                                user_data=claims, 
+                                error = error_message)
 
     # if len(tagIdList):
     #     currRptContentList = []
