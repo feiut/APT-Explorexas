@@ -173,7 +173,9 @@ class ReportAPI():
                                  "timeStamp": report.timeStamp, 
                                  "title":report.title}
                 reportContentList.append(reportContent)
-        return reportContentList
+            return reportContentList
+        else:
+            return None
             
     def close_connection(self):
         self.client.close()

@@ -221,22 +221,42 @@ def searchTag():
         currRptContentList = []
         for tagId in tagIdList:
             rptContentList = repController.get_report_content_list_by_tagId(tagId)
-            currRptContentList.extend(rptContentList)
-
-        if len(currRptContentList):
-            currRptContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
-            tagController.close_connection()
-            repController.close_connection()
-            return render_template('viewTagPost.html', 
-                                    reportContentList=currRptContentList)
-        else:
-            tagController.close_connection()
-            repController.close_connection()
-            return render_template('noMatchRlt.html')
+            if rptContentList == None :
+                tagController.close_connection()
+                repController.close_connection()
+                return render_template('noMatchReport.html')
+            else:
+                currRptContentList.extend(rptContentList)
+                currRptContentList.sort(key=lambda rpt: rpt["timeStamp"], reverse=True)
+                tagController.close_connection()
+                repController.close_connection()
+                return render_template('viewTagPost.html',
+                                       reportContentList=currRptContentList)
     else:
         tagController.close_connection()
         repController.close_connection()
         return render_template('noMatchRlt.html')
+
+    # if len(tagIdList):
+    #     currRptContentList = []
+    #     for tagId in tagIdList:
+    #         rptContentList = repController.get_report_content_list_by_tagId(tagId)
+    #         currRptContentList.extend(rptContentList)
+    #
+    #     if len(currRptContentList):
+    #         currRptContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
+    #         tagController.close_connection()
+    #         repController.close_connection()
+    #         return render_template('viewTagPost.html',
+    #                                 reportContentList=currRptContentList)
+    #     else:
+    #         tagController.close_connection()
+    #         repController.close_connection()
+    #         return render_template('noMatchRlt.html')
+    # else:
+    #     tagController.close_connection()
+    #     repController.close_connection()
+    #     return render_template('noMatchRlt.html')
 
 # @app.route('/user_reports/<userId>') 
 # def report(userId):
