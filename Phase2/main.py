@@ -151,7 +151,7 @@ def createReport():
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
         except ValueError as exc:
-            return render_template('noLogin.html')
+            return render_template('nologin.html')
         catController.close_connection()
         return render_template('createReport.html', user_data=claims, catList=catList)
     else:
