@@ -32,12 +32,13 @@ class ReportAPI():
 
     def find_by_reportId(self, reportId):
         reports = self.collection
-        query = {'_id': reportId}
+        query = {'_id': ObjectId(reportId)}
         try:
             result = reports.find_one(query)
         except ValueError as exc:
             raise ValueError(str(exc))
         if result == None:
+            print(query)
             raise ValueError("Report not found!")
         report = Report.Report(result["_id"],
                                result["userId"],
@@ -137,7 +138,8 @@ class ReportAPI():
                 userName = userAPI.get(report.userId).userName
                 catName = catAPI.get(catId).catName
                 tagName = tagAPI.get(report.tagId).tagName
-                reportContent = {"userName": userName, 
+                reportContent = {"reportId": report.reportId,
+                                 "userName": userName, 
                                  "placeName": report.placeName, 
                                  "coordinates": report.coordinates, 
                                  "categoryName": catName,
@@ -162,7 +164,8 @@ class ReportAPI():
                 userName = userAPI.get(report.userId).userName
                 catName = catAPI.get(report.categoryId).catName
                 tagName = tagAPI.get(tagId).tagName
-                reportContent = {"userName": userName, 
+                reportContent = {"reportId": report.reportId,
+                                 "userName": userName, 
                                  "placeName": report.placeName, 
                                  "coordinates": report.coordinates, 
                                  "categoryName": catName,

@@ -32,7 +32,7 @@
         <hr>
         <div class="report-container">
             <div>
-                <h2 style="color:Black" align="right">{{ reportContent["title"] }}</h2>
+                <a href="{{url_for('report', reportId=reportContent["reportId"])}}"><h2 style="color:Black" align="right">{{ reportContent["title"] }}</h2></a>
             </div>
             <div class="row">
                 <div class="col-4">
