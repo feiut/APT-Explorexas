@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Phase3</string>
+    <string name="openCameraText">Open Camera</string>
+    <string name="photoTakenDescription">Photo</string>
 </resources>
