@@ -70,7 +70,6 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-//            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account!!)
@@ -109,8 +108,8 @@ class MainActivity : AppCompatActivity() {
     fun onClick(v:View){
         if(v.getId()==R.id.sign_in_button){
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build()
+                .requestEmail()
+                .build()
             var mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
             val signInIntent = mGoogleSignInClient.getSignInIntent()
             startActivityForResult(signInIntent, RC_SIGN_IN)
