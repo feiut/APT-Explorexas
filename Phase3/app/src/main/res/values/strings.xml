@@ -2,6 +2,6 @@
     <string name="app_name">Phase3</string>
     <string name="openCameraText">Open Camera</string>
     <string name="photoTakenDescription">Photo</string>
-    <string name="congrats_text">Successfully Logged in!</string>
+    <string name="welcome_text">Welcome to Explorexas!</string>
     <string name="sign_out_button">Sign Out</string>
 </resources>
