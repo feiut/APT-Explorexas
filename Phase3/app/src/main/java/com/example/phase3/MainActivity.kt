@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(MainActivity.getLaunchIntent(this))
         FirebaseAuth.getInstance().signOut()
         sign_in_button.visibility=View.VISIBLE
-        sign_out_button.visibility=View.GONE
+        layout_buttons.visibility=View.GONE
     }
 
     companion object {
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             val account = completedTask.getResult(ApiException::class.java)
             welcome_title.text= account!!.displayName
             sign_in_button.visibility=View.GONE
-            sign_out_button.visibility=View.VISIBLE
+            layout_buttons.visibility=View.VISIBLE
             welcome_title.text="Hello! " + account.displayName
         } catch (e:ApiException){
             print("Login failed")
