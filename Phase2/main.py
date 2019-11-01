@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify 
 from google.auth.transport import requests
 from google.cloud import datastore
 from datetime import datetime 
@@ -11,8 +11,10 @@ from lib import Image, ImageAPI
 from lib import User, UserAPI
 from lib import Tag, TagAPI
 from flask import make_response
+from flask_mobility import Mobility
 
 app = Flask(__name__)
+Mobility(app)
 datastore_client = datastore.Client()
 firebase_request_adapter = requests.Request()
 claims = None
@@ -206,9 +208,13 @@ def viewCategoryPost(catId):
             error_message = str(exc)
     if len(reportContentList):
         reportContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
-    return render_template('viewCategoryPost.html', 
-        reportContentList=reportContentList, 
-        categoryName=categoryName, user_data=claims, error = error_message)
+
+    if request.MOBILE == False:
+        return render_template('viewCategoryPost.html', 
+            reportContentList=reportContentList, 
+            categoryName=categoryName, user_data=claims, error = error_message)
+    else:
+        return jsonify(reportContentList)
 
 @app.route('/searchTag', methods=['POST'])
 def searchTag():

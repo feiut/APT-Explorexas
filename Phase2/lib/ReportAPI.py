@@ -138,12 +138,12 @@ class ReportAPI():
                 userName = userAPI.get(report.userId).userName
                 catName = catAPI.get(catId).catName
                 tagName = tagAPI.get(report.tagId).tagName
-                reportContent = {"reportId": report.reportId,
+                reportContent = {"reportId": str(report.reportId),
                                  "userName": userName, 
                                  "placeName": report.placeName, 
                                  "coordinates": report.coordinates, 
                                  "categoryName": catName,
-                                 "imgId": report.imgId,
+                                 "imgId": str(report.imgId),
                                  "tag": tagName, 
                                  "review": report.review, 
                                  "rating": report.rating, 
@@ -164,12 +164,12 @@ class ReportAPI():
                 userName = userAPI.get(report.userId).userName
                 catName = catAPI.get(report.categoryId).catName
                 tagName = tagAPI.get(tagId).tagName
-                reportContent = {"reportId": report.reportId,
+                reportContent = {"reportId": str(report.reportId),
                                  "userName": userName, 
                                  "placeName": report.placeName, 
                                  "coordinates": report.coordinates, 
                                  "categoryName": catName,
-                                 "imgId": report.imgId,
+                                 "imgId": str(report.imgId),
                                  "tag": tagName, 
                                  "review": report.review, 
                                  "rating": report.rating, 
