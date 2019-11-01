@@ -8,22 +8,26 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import kotlinx.android.synthetic.main.take_picture.*
+import kotlinx.android.synthetic.main.activity_take_photo.*
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import sun.jvm.hotspot.utilities.IntArray
+//import sun.jvm.hotspot.utilities.IntArray
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.SignInAccount
+import com.google.android.gms.common.SignInButton
+
 //import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 
 class MainActivity : AppCompatActivity() {
 
+    var signin : SignInButton = findViewById(R.id.sign_in_button);
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.take_picture)
+        setContentView(R.layout.activity_main)
 //        var btnCamera: Button = findViewById (R.id.btnCamera)
 //
 //        btnCamera.setOnClickListener(View.OnClickListener {
@@ -43,16 +47,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun btnOnClick(view:View){
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, 0)
-    }
-
-    @Override
-    internal fun onActivityResult (requestCode : Int, resultCode : Int, data : Intent){
-        super.onActivityResult(requestCode  , resultCode , data)
-        val bitmap: Bitmap = data.extras?.get("data") as Bitmap
-        val imageView: ImageView = findViewById(R.id.imageView)
-        imageView.setImageBitmap(bitmap)
-    }
 }
