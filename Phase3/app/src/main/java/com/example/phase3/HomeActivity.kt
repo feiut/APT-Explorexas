@@ -23,7 +23,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun signOut() {
         startActivity(MainActivity.getLaunchIntent(this))
-        FirebaseAuth.getInstance().signOut();
+        FirebaseAuth.getInstance().signOut()
     }
 
     companion object {
