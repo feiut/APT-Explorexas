@@ -9,6 +9,14 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.take_picture.*
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import sun.jvm.hotspot.utilities.IntArray
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+//import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +32,15 @@ class MainActivity : AppCompatActivity() {
 //                startActivityForResult(intent, 0)
 //            }
 //        })
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
     }
 
     fun btnOnClick(view:View){
