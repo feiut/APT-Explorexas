@@ -15,6 +15,7 @@ import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
@@ -57,10 +58,16 @@ class MainActivity : AppCompatActivity() {
             val signInIntent = mGoogleSignInClient.getSignInIntent()
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
+
+        val searchButton = findViewById(R.id.search_button) as Button
+        searchButton.setOnClickListener{
+            val intent = Intent(this, SearchReportsActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     fun signOutOnClick(view:View){
-        startActivity(MainActivity.getLaunchIntent(this))
+        startActivity(getLaunchIntent(this))
         FirebaseAuth.getInstance().signOut()
         sign_in_button.visibility=View.VISIBLE
         layout_buttons.visibility=View.GONE
@@ -75,7 +82,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
-            var task :Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            val task :Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         }
     }
@@ -83,10 +90,9 @@ class MainActivity : AppCompatActivity() {
     private fun handleSignInResult(completedTask : Task<GoogleSignInAccount>){
         try{
             val account = completedTask.getResult(ApiException::class.java)
-            welcome_title.text= account!!.displayName
             sign_in_button.visibility=View.GONE
             layout_buttons.visibility=View.VISIBLE
-            welcome_title.text="Hello! " + account.displayName
+            welcome_title.text = "Hello! " + account!!.displayName
         } catch (e:ApiException){
             print("Login failed")
         }

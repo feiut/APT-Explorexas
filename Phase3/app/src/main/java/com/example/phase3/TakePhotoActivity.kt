@@ -15,7 +15,7 @@ class TakePhotoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_take_photo)
     }
 
-    fun btnOnClick(view: View){
+    fun btnOnClick(){
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(intent, 0)
     }
