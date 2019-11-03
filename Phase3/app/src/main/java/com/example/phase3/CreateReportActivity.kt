@@ -77,6 +77,7 @@ class CreateReportActivity : AppCompatActivity() {
             }
         }
     }
+
     fun createImage(): File{
         val timeStamp = SimpleDateFormat("yyyMMdd_HHmmss").format(Date())
         val imageName = "JPEG_" + timeStamp
