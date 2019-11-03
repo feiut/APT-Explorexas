@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3F86B5"
+    android:visibility="visible"
+    android:orientation="vertical"
+    android:layout_weight="15"
+    tools:context=".ViewReportActivity">
+
+    <ImageView
+        android:id="@+id/reportImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="8"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/reportTextViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="12"
+        android:text="This is Title"
+        android:textSize="24sp" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:stretchColumns="*"
+        android:shrinkColumns="*">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/reportTextTagField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Tag:" />
+
+            <TextView
+                android:id="@+id/reportTextViewTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is Tag" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/reportTextUserField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="User" />
+
+            <TextView
+                android:id="@+id/reportTextViewUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is User" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/reportTextCategoryField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Category" />
+
+            <TextView
+                android:id="@+id/reportTextViewCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is Category" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/reportTextReviewField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Review" />
+
+            <TextView
+                android:id="@+id/reportTextViewReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is Review" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/reportTextPlaceField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Place" />
+
+            <TextView
+                android:id="@+id/reportTextViewPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is Place" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/reportTextReviewRatingField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Rating" />
+
+            <TextView
+                android:id="@+id/reportTextViewRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is Rating" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/reportTextTimeField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Time" />
+
+            <TextView
+                android:id="@+id/reportTextViewTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is Time" />
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>
