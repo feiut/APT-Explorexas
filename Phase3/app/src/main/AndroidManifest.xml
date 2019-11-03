@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchReportsActivity"></activity>
+        <activity android:name=".ViewCategoriesActivity"></activity>
+        <activity android:name=".SearchReportsActivity" />
         <activity android:name=".CreateReportActivity" />
         <activity android:name=".ViewReportsActivity" />
         <activity android:name=".HomeActivity" />
