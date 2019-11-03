@@ -19,6 +19,13 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
+import android.widget.ImageView
+import kotlinx.android.synthetic.main.activity_take_photo.*
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.widget.SearchView
+import android.widget.TextView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -44,9 +51,37 @@ class MainActivity : AppCompatActivity() {
 //    lateinit var mGoogleSignInOptions: GoogleSignInOptions
 //    private lateinit var firebaseAuth: FirebaseAuth
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val srchView = findViewById<SearchView>(R.id.searchView)
+        srchView.setQueryHint("search tag here")
+        srchView.setIconifiedByDefault(false)
+        srchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                val catRptIntent = Intent(this@MainActivity, CategoryReportActivity::class.java);
+                catRptIntent.putExtra("Type", "Search")
+                catRptIntent.putExtra("Pattern", query)
+                startActivity(catRptIntent)
+                return true
+            }
+        })
+
+        val catViewBtn = findViewById<Button>(R.id.view_cat_button);
+        catViewBtn.setOnClickListener(object: View.OnClickListener {
+            override fun onClick(v : View?) {
+                val catRptIntent = Intent(this@MainActivity, CategoryReportActivity::class.java);
+                catRptIntent.putExtra("Type", "CategoryReport")
+                catRptIntent.putExtra(CategoryReportActivity.categoryName, "Running")
+                startActivity(catRptIntent)
+            }
+        })
 
         // Sign in
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -111,7 +146,4 @@ class MainActivity : AppCompatActivity() {
             Log.d("exception","Login failed due to:" + e.message)
         }
     }
-
-
-
 }

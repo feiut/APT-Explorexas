@@ -3,6 +3,9 @@
     package="com.example.phase3">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -17,6 +20,12 @@
         <activity android:name=".CreateReportActivity" />
         <activity android:name=".ViewReportsActivity" />
         <activity android:name=".HomeActivity" />
+        <activity android:name=".ViewReportActivity"></activity>
+        <activity android:name=".CategoryReportActivity" />
+        <activity
+            android:name=".CatReportActivity"
+            android:label="@string/title_activity_cat_report"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TakePhotoActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
