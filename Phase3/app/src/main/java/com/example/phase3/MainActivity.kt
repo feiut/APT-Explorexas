@@ -41,27 +41,26 @@ class MainActivity : AppCompatActivity() {
 
     val RC_SIGN_IN: Int = 1
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    lateinit var mGoogleSignInOptions: GoogleSignInOptions
-    private lateinit var firebaseAuth: FirebaseAuth
+//    lateinit var mGoogleSignInOptions: GoogleSignInOptions
+//    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Sign in
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        var signinButton:SignInButton=findViewById(R.id.sign_in_button)
-
-        signinButton.visibility=View.VISIBLE
-        signinButton.setSize(SignInButton.SIZE_STANDARD)
-        signinButton.setOnClickListener {
+        sign_in_button.visibility=View.VISIBLE
+        sign_in_button.setSize(SignInButton.SIZE_STANDARD)
+        sign_in_button.setOnClickListener {
             val signInIntent = mGoogleSignInClient.getSignInIntent()
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
 
+        // Search button
         val searchButton = findViewById(R.id.search_button) as Button
         searchButton.setOnClickListener{
             val intent = Intent(this, SearchReportsActivity::class.java)
@@ -75,7 +74,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun signOutOnClick(view:View){
-
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(this, object:OnCompleteListener<Void>{
                 override fun onComplete(p0: Task<Void>) {
@@ -84,13 +82,9 @@ class MainActivity : AppCompatActivity() {
                     layout_buttons.visibility=View.GONE
                 }
             })
-//        startActivity(getLaunchIntent(this))
-//
+        startActivity(getLaunchIntent(this))
 //        FirebaseAuth.getInstance().signOut()
-//        sign_in_button.visibility=View.VISIBLE
-//        layout_buttons.visibility=View.GONE
     }
-
     companion object {
         fun getLaunchIntent(from: Context) = Intent(from, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
