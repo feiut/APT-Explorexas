@@ -87,9 +87,9 @@ class ListViewCustomAdapter(var context: Activity, internal var categories:JsonA
         internal var listview_item_short_description: TextView? = null
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+    override fun getView(position: Int, view: View?, parent: ViewGroup): View {
 
-        var convertView = convertView
+        var convertView = view
         // TODO Auto-generated method stub
 
         val holder: ViewHolder
@@ -113,13 +113,13 @@ class ListViewCustomAdapter(var context: Activity, internal var categories:JsonA
         Picasso.get().load(imgUrl).into(holder.listview_image)
         Log.d("image","Loaded " + imgUrl + " into " + holder.listview_image!!.id.toString())
 
-        convertView!!.setOnClickListener(object : View.OnClickListener {
+        convertView.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 Log.d("position", position.toString())
-                val item = categories.get(position).getAsJsonObject()
-                var catId = item.get("cat_id").getAsString()
+                val clicked = categories.get(position).getAsJsonObject()
+                var catId = clicked.get("cat_id").getAsString()
 
-                val viewCatIntent = Intent(thisView, SearchReportsActivity::class.java)
+                val viewCatIntent = Intent(thisView, CategoryReportActivity::class.java)
                 viewCatIntent.putExtra("cat_id", catId)
                 thisView.startActivity(viewCatIntent)
                 Log.d("debug", "Loaded new view to show reports in category " + catId)
