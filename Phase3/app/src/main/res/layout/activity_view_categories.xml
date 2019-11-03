@@ -14,7 +14,7 @@ tools:context=".ViewCategoriesActivity">
         android:textSize="24sp" />
 
     <ListView
-    android:id="@+id/lstCategories"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" />
+        android:id="@+id/lstCategories"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

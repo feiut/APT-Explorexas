@@ -21,7 +21,7 @@ class ViewCategoriesActivity : AppCompatActivity() {
 
         val queue = Volley.newRequestQueue(this)
         // 2. Create the request with the callback
-        val url = "http://explore-texas-web.appspot.com/"
+        val url = getString(R.string.website_url)
         val stringRequest = StringRequest(Request.Method.GET, url,
             Response.Listener {
                     response -> Log.d("soap_request", response)
