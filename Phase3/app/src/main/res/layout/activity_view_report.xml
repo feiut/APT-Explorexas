@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3F86B5"
-    android:visibility="visible"
-    android:orientation="vertical"
     android:layout_weight="15"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:visibility="visible"
     tools:context=".ViewReportActivity">
 
     <ImageView
@@ -36,10 +36,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="6"
-        android:stretchColumns="*"
-        android:shrinkColumns="*">
+        android:shrinkColumns="*"
+        android:stretchColumns="*">
 
         <TableRow>
+
             <TextView
                 android:id="@+id/reportTextTagField"
                 android:layout_width="match_parent"
@@ -86,6 +87,7 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/reportTextReviewField"
                 android:layout_width="match_parent"
@@ -100,6 +102,7 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/reportTextPlaceField"
                 android:layout_width="match_parent"
@@ -114,6 +117,7 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/reportTextReviewRatingField"
                 android:layout_width="match_parent"
@@ -128,6 +132,7 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/reportTextTimeField"
                 android:layout_width="match_parent"
