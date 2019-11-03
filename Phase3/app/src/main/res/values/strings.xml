@@ -18,5 +18,6 @@
     <string name="report_tag">Tag</string>
     <string name="report_image">Image</string>
     <string name="report_coordinates">Coordinates</string>
+    <string name="website_url">http://explore-texas-web.appspot.com/</string>
 </resources>
 

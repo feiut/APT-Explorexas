@@ -16,6 +16,26 @@ import com.android.volley.toolbox.StringRequest
 import kotlinx.android.synthetic.main.activity_view_categories.*
 import com.google.gson.*
 
+class ViewCategoriesActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_view_categories)
+
+        val queue = Volley.newRequestQueue(this)
+        // 2. Create the request with the callback
+        val url = getString(R.string.website_url)
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            Response.Listener {
+                    response -> Log.d("soap_request", response)
+            },
+            Response.ErrorListener {
+                error -> run {
+                    txtHeader.text = "Failed to retrieve data"
+                    lstCategories.visibility = View.GONE
+                    Log.d("error", error.toString())
+                }
+            })
+        queue.add(stringRequest)
 
 
 

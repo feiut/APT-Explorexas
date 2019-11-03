@@ -25,6 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -40,18 +41,18 @@ class MainActivity : AppCompatActivity() {
 
     val RC_SIGN_IN: Int = 1
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    lateinit var mGoogleSignInOptions: GoogleSignInOptions
-    private lateinit var firebaseAuth: FirebaseAuth
+//    lateinit var mGoogleSignInOptions: GoogleSignInOptions
+//    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Sign in
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
-        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         sign_in_button.visibility=View.VISIBLE
         sign_in_button.setSize(SignInButton.SIZE_STANDARD)
         sign_in_button.setOnClickListener {
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
 
+        // Search button
         val searchButton = findViewById(R.id.search_button) as Button
         searchButton.setOnClickListener{
             val intent = Intent(this, SearchReportsActivity::class.java)
@@ -72,12 +74,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun signOutOnClick(view:View){
+        mGoogleSignInClient.signOut()
+            .addOnCompleteListener(this, object:OnCompleteListener<Void>{
+                override fun onComplete(p0: Task<Void>) {
+                    FirebaseAuth.getInstance().signOut()
+                    sign_in_button.visibility=View.VISIBLE
+                    layout_buttons.visibility=View.GONE
+                }
+            })
         startActivity(getLaunchIntent(this))
-        FirebaseAuth.getInstance().signOut()
-        sign_in_button.visibility=View.VISIBLE
-        layout_buttons.visibility=View.GONE
+//        FirebaseAuth.getInstance().signOut()
     }
-
     companion object {
         fun getLaunchIntent(from: Context) = Intent(from, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -97,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         try{
             sign_in_button.visibility=View.GONE
             layout_buttons.visibility=View.VISIBLE
-            val account = completedTask.getResult(ApiException::class.java)
+            val account:GoogleSignInAccount? = completedTask.getResult(ApiException::class.java)
             welcome_title.text= account!!.displayName
             welcome_title.text="Hello! " + account.displayName
         } catch (e:ApiException){

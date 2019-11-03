@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".SearchReportsActivity">
-
 
     <SearchView
         android:layout_width="match_parent"
@@ -15,6 +15,11 @@
         android:id="@+id/searchView">
     </SearchView>
 
+    <TextView
+        android:id="@+id/search_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -22,4 +27,4 @@
         android:id="@+id/mySearchList">
     </ListView>
 
-</androidx.constraintlayout.widget.LinearLayout>
+</LinearLayout>
