@@ -66,6 +66,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun viewCategories(view:View) {
+        val viewCatIntent = Intent(this, ViewCategoriesActivity::class.java)
+        startActivity(viewCatIntent)
+    }
+
     fun signOutOnClick(view:View){
         startActivity(getLaunchIntent(this))
         FirebaseAuth.getInstance().signOut()
@@ -81,6 +86,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Log.d("debug", resultCode.toString() + " vs " + RC_SIGN_IN.toString() + ", compare:" + (requestCode == RC_SIGN_IN).toString())
         if (requestCode == RC_SIGN_IN) {
             val task :Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
@@ -89,12 +95,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleSignInResult(completedTask : Task<GoogleSignInAccount>){
         try{
-            val account = completedTask.getResult(ApiException::class.java)
             sign_in_button.visibility=View.GONE
             layout_buttons.visibility=View.VISIBLE
-            welcome_title.text = "Hello! " + account!!.displayName
+            val account = completedTask.getResult(ApiException::class.java)
+            welcome_title.text= account!!.displayName
+            welcome_title.text="Hello! " + account.displayName
         } catch (e:ApiException){
-            print("Login failed")
+            Log.d("exception","Login failed due to:" + e.message)
         }
     }
 
