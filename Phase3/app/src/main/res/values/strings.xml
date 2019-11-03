@@ -7,5 +7,16 @@
     <string name="create_report_text">Create A New Report</string>
     <string name="search_report_text">Search Reports</string>
     <string name="signout_button_text">Sign Out</string>
-
+    <string name="hello_text">Hello! </string>
+    <string name="submit_button_text">Submit</string>
+    <string name="cancel_button_text">Cancel</string>
+    <string name="report_place">Place</string>
+    <string name="report_title">Title</string>
+    <string name="report_category">Category</string>
+    <string name="report_review">Review</string>
+    <string name="report_rating">Rating</string>
+    <string name="report_tag">Tag</string>
+    <string name="report_image">Image</string>
+    <string name="report_coordinates">Coordinates</string>
 </resources>
+
