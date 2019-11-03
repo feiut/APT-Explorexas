@@ -27,18 +27,12 @@ class CategoryReportActivity : AppCompatActivity() {
 
         currActivity = this@CategoryReportActivity
         val type = intent.getStringExtra("Type")
-        if(type == "CategoryReport") {
-            val catName = intent.getStringExtra(categoryName)
-            var catId = "5dab50f93763c3146ac201b9"
-            if (catName == "Hiking") {
-                catId = "5da81ade7e698a1952d0ecae"
-            } else if (catName == "Running") {
-                catId = "5dab2f78da84be2183002eee"
-            }
-            getCategoryReport(catId)
-        } else if (type == "Search") {
+        if (type == "Search") {
             val pattern = intent.getStringExtra("Pattern")!!
             getSearchReport(pattern)
+        } else {
+                val catId = intent.getStringExtra("cat_id")!!
+                getCategoryReport(catId)
         }
     }
 
@@ -102,9 +96,9 @@ class CategoryReportActivity : AppCompatActivity() {
     }
 
     companion object {
-        var categoryName:String = "Other"
-        var webUrl:String = "http://explore-texas-web.appspot.com/"
-        //var webUrl:String = "http://apt-team7.appspot.com/"
+        //var cat_id:String = "Other"
+        //var webUrl:String = "http://explore-texas-web.appspot.com/"
+        var webUrl:String = "http://apt-team7.appspot.com/"
         lateinit var currActivity: AppCompatActivity
         lateinit var reportContentList:JSONArray
     }
