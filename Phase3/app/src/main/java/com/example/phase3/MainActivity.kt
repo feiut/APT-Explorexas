@@ -25,6 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -50,11 +51,13 @@ class MainActivity : AppCompatActivity() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
-        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        sign_in_button.visibility=View.VISIBLE
-        sign_in_button.setSize(SignInButton.SIZE_STANDARD)
-        sign_in_button.setOnClickListener {
+        var signinButton:SignInButton=findViewById(R.id.sign_in_button)
+
+        signinButton.visibility=View.VISIBLE
+        signinButton.setSize(SignInButton.SIZE_STANDARD)
+        signinButton.setOnClickListener {
             val signInIntent = mGoogleSignInClient.getSignInIntent()
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
@@ -72,10 +75,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun signOutOnClick(view:View){
-        startActivity(getLaunchIntent(this))
-        FirebaseAuth.getInstance().signOut()
-        sign_in_button.visibility=View.VISIBLE
-        layout_buttons.visibility=View.GONE
+
+        mGoogleSignInClient.signOut()
+            .addOnCompleteListener(this, object:OnCompleteListener<Void>{
+                override fun onComplete(p0: Task<Void>) {
+                    FirebaseAuth.getInstance().signOut()
+                    sign_in_button.visibility=View.VISIBLE
+                    layout_buttons.visibility=View.GONE
+                }
+            })
+//        startActivity(getLaunchIntent(this))
+//
+//        FirebaseAuth.getInstance().signOut()
+//        sign_in_button.visibility=View.VISIBLE
+//        layout_buttons.visibility=View.GONE
     }
 
     companion object {
@@ -97,7 +110,7 @@ class MainActivity : AppCompatActivity() {
         try{
             sign_in_button.visibility=View.GONE
             layout_buttons.visibility=View.VISIBLE
-            val account = completedTask.getResult(ApiException::class.java)
+            val account:GoogleSignInAccount? = completedTask.getResult(ApiException::class.java)
             welcome_title.text= account!!.displayName
             welcome_title.text="Hello! " + account.displayName
         } catch (e:ApiException){

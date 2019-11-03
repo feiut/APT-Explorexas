@@ -32,17 +32,20 @@ class SearchReportsActivity : AppCompatActivity() {
                 val stringRequest = StringRequest(Request.Method.GET, url,
                     Response.Listener {
                             response ->
-                        findViewById<TextView>(R.id.search_text).text = "Response is: ${response}"
+                        if(response==null){
+                            findViewById<TextView>(R.id.search_text).text = "No Matching Tag Found!"
+                        }else {
+                            findViewById<TextView>(R.id.search_text).text =
+                                "Search result is: ${response}"
+                        }
                     },
                     Response.ErrorListener { findViewById<TextView>(R.id.search_text).text = "That didn't work!" })
-
                 queue.add(stringRequest)
                 return false
             }
 
         })
 
-        // Instantiate the RequestQueue.
 
     }
 }
