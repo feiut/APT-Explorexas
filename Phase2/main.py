@@ -244,7 +244,7 @@ def searchTag(ptn):
                                                user_data=claims, 
                                                error = error_message)
                     else:
-                        return jsonify([{}])
+                        return jsonify([])
                 else:
                     currRptContentList.extend(rptContentList)
                     currRptContentList.sort(key=lambda rpt: rpt["timeStamp"], reverse=True)
@@ -265,7 +265,7 @@ def searchTag(ptn):
                                         user_data=claims, 
                                         error = error_message)
             else:
-                return jsonify([{}])
+                return jsonify([])
 
     elif request.method == 'GET':
         pattern = ptn

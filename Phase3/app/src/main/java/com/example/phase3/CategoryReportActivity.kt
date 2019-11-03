@@ -17,6 +17,7 @@ import org.json.JSONObject
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.phase3.ViewReportActivity.Companion.webUrl
+import java.lang.Exception
 
 
 class CategoryReportActivity : AppCompatActivity() {
@@ -41,9 +42,10 @@ class CategoryReportActivity : AppCompatActivity() {
         val url: String = webUrl+"searchTag/"+pattern
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
 
-        val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, url, null,
-            Response.Listener<JSONArray> { response ->
-                    if(response.getJSONObject(0).has("title")) {
+        try {
+            val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, url, null,
+                Response.Listener<JSONArray> { response ->
+                    if (response.getJSONObject(0).has("title")) {
                         reportContentList = response
                         val reportItemList = mutableListOf<ReportItem>()
                         for (reportIdx in 0 until reportContentList.length()) {
@@ -62,12 +64,16 @@ class CategoryReportActivity : AppCompatActivity() {
                     } else {
                         findViewById<TextView>(R.id.categoryTextView).text = "No Matching Result"
                     }
-            },
-            Response.ErrorListener { error->
-                val nameTextView = findViewById<TextView>(R.id.categoryTextView)
-                nameTextView.text = error.toString()
-            })
-        queue.add(jsonArrayRequest)
+                },
+                Response.ErrorListener { error ->
+                    val nameTextView = findViewById<TextView>(R.id.categoryTextView)
+                    nameTextView.text = error.toString()
+                })
+            queue.add(jsonArrayRequest)
+        }
+        catch(e: Exception) {
+            findViewById<TextView>(R.id.categoryTextView).text = "No Matching Result"
+        }
     }
 
     private fun getCategoryReport(catId: String) {
