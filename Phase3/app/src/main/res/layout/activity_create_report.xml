@@ -129,28 +129,51 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/submit_review" />
 
-                <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="68dp"
-                    android:layout_height="63dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="36dp"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/submit_tag"
-                    app:srcCompat="@android:drawable/ic_menu_camera" />
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="209dp"
-                    android:layout_height="94dp"
-                    android:layout_marginTop="36dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginBottom="30dp"
+                    android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/submit_rating"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/submit_tag">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/buttonCamera"
+                            android:layout_width="140dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginLeft="30dp"
+                            app:srcCompat="@android:drawable/ic_menu_camera" />
+
+                        <ImageButton
+                            android:id="@+id/buttonGallery"
+                            android:layout_width="140dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="12dp"
+                            app:srcCompat="@android:drawable/ic_menu_gallery" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="92dp"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginBottom="30dp"
+                        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

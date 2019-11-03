@@ -1,5 +1,6 @@
 package com.example.phase3
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build.VERSION_CODES.M
@@ -7,32 +8,81 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.core.content.FileProvider
+import kotlinx.android.synthetic.main.activity_create_report.*
 import java.io.File
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CreateReportActivity : AppCompatActivity() {
+
+    var currentPath:String? = null
+    val TAKE_PICTURE = 1
+    val SELECT_PICTURE = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_report)
+        buttonGallery.setOnClickListener {
+            dispatchGalleryIntent()
+        }
+        buttonCamera.setOnClickListener {
+            dispatchCameraIntent()
+        }
     }
 
-    private fun camera() = try{
-        var tempImg1 = File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg")
-        if (!tempImg1.exists()){
-            var b = tempImg1.createNewFile();
-            if (b){
-                println(tempImg1.getAbsolutePath())
-                var intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImg1))
-                startActivityForResult(intent, 1)
-            }else{
-                print(b)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK){
+            try{
+                val file = File(currentPath as String)
+                val uri = Uri.fromFile(file)
+                imageView.setImageURI(uri)
+            }catch (e: IOException){
+                e.printStackTrace()
             }
-        }else{
-            print(tempImg1)
         }
-    }catch(e : IOException){
-        println(e)
+        if(requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK){
+            try{
+                val uri = data!!.data
+                imageView.setImageURI(uri)
+            }catch (e: IOException){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun dispatchGalleryIntent(){
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "select image"), SELECT_PICTURE)
+    }
+
+    fun dispatchCameraIntent(){
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if(intent.resolveActivity(packageManager)!= null){
+            var photoFile: File?= null
+            try{
+                photoFile = createImage()
+            }catch (e:IOException){
+                e.printStackTrace()
+            }
+            if(photoFile != null){
+                var photoUri = FileProvider.getUriForFile(this,
+                    "com.example.mycamera.fileprovider", photoFile)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                startActivityForResult(intent, TAKE_PICTURE)
+            }
+        }
+    }
+    fun createImage(): File{
+        val timeStamp = SimpleDateFormat("yyyMMdd_HHmmss").format(Date())
+        val imageName = "JPEG_" + timeStamp
+        var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        var image = File.createTempFile(imageName, ".jpg", storageDir)
+        currentPath = image.absolutePath
+        return image
     }
 }
