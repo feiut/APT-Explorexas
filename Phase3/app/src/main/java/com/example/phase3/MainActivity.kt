@@ -73,6 +73,13 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SearchReportsActivity::class.java)
             startActivity(intent)
         }
+
+        // Create Report button
+        val createReportButton = findViewById(R.id.create_report_button) as Button
+        createReportButton.setOnClickListener{
+            val intent = Intent(this, CreateReportActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 //    override fun onStart(){
