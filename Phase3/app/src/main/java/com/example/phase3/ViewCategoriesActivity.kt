@@ -2,85 +2,34 @@ package com.example.phase3
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ListView
-import android.widget.SimpleAdapter
-import android.R.drawable.presence_online
-import android.R.drawable.presence_offline
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
+import android.view.ViewGroup
+import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley
 import com.android.volley.toolbox.StringRequest
 import kotlinx.android.synthetic.main.activity_view_categories.*
 import com.google.gson.*
+import com.squareup.picasso.Picasso
+import android.widget.AdapterView
+import androidx.core.content.ContextCompat.startActivity
+
+val url = "http://apt-team7.appspot.com"
 
 class ViewCategoriesActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view_categories)
 
-        val queue = Volley.newRequestQueue(this)
-        // 2. Create the request with the callback
-        val url = getString(R.string.website_url)
-        val stringRequest = StringRequest(Request.Method.GET, url,
-            Response.Listener {
-                    response -> Log.d("soap_request", response)
-            },
-            Response.ErrorListener {
-                error -> run {
-                    txtHeader.text = "Failed to retrieve data"
-                    lstCategories.visibility = View.GONE
-                    Log.d("error", error.toString())
-                }
-            })
-        queue.add(stringRequest)
-
-
-
-
-class ViewCategoriesActivity : AppCompatActivity() {
     fun bind(categories:JsonArray) {
         Log.d("debug", categories.toString())
 
-        val aList = ArrayList<HashMap<String, String>>()
-
-        for (i in 0 until categories.size()) {
-            val hm = HashMap<String, String>()
-            val item = categories.get(i).getAsJsonObject()
-            hm["listview_title"] = item.get("catName").toString()
-            hm["listview_discription"] = item.get("catDescription").toString()
-            hm["listview_image"] = Integer.toString(presence_online)
-            hm["listview_imageid"] = item.get("imageId").toString()
-            aList.add(hm)
-        }
-
-        val from = arrayOf("listview_image", "listview_title", "listview_discription")
-        val to = intArrayOf(
-            R.id.listview_image,
-            R.id.listview_item_title,
-            R.id.listview_item_short_description
-        )
-
-        val simpleAdapter = SimpleAdapter(baseContext, aList, R.layout.listview_activity, from, to)
-        val androidListView = findViewById(R.id.lstCategories) as ListView
-        androidListView.setAdapter(simpleAdapter)
-
-        val firstPosition = androidListView.getFirstVisiblePosition() - androidListView.getHeaderViewsCount()
-        for (rowid in 0 until categories.size()) {
-            val wantedChild = rowid - firstPosition
-            if (wantedChild < 0 || wantedChild >= androidListView.getChildCount()) {
-                continue
-            }
-            Log.d("wantedChild", wantedChild.toString())
-            val item = androidListView.getChildAt(wantedChild)
-            Log.d("item", item.toString())
-            val image = item.findViewById<ImageView>(R.id.listview_image)
-            val imageUrl = aList[rowid]["listview_imageid"]
-            Log.d("image", imageUrl)
-
-        }
+        val adapter = ListViewCustomAdapter(this, categories, this)
+        val listView = findViewById<ListView>(R.id.lstCategories)
+        listView.setAdapter(adapter)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +37,6 @@ class ViewCategoriesActivity : AppCompatActivity() {
 
         val queue = Volley.newRequestQueue(this)
         // 2. Create the request with the callback
-        val url = "http://apt-team7.appspot.com"
         val stringRequest = StringRequest(Request.Method.GET, url,
             Response.Listener {
                 response -> run {
@@ -106,5 +54,77 @@ class ViewCategoriesActivity : AppCompatActivity() {
                 }
             })
         queue.add(stringRequest)
+    }
+}
+
+class ListViewCustomAdapter(var context: Activity, internal var categories:JsonArray, internal var thisView: ViewCategoriesActivity) :
+    BaseAdapter() {
+    var inflater: LayoutInflater
+
+    init {
+
+        this.inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    }
+
+    override fun getCount(): Int {
+        // TODO Auto-generated method stub
+        return categories.size()
+    }
+
+    override fun getItem(position: Int): Any {
+        // TODO Auto-generated method stub
+        return categories[position]
+    }
+
+    override fun getItemId(position: Int): Long {
+        // TODO Auto-generated method stub
+        return 0
+    }
+
+    class ViewHolder {
+        internal var listview_image: ImageView? = null
+        internal var listview_item_title: TextView? = null
+        internal var listview_item_short_description: TextView? = null
+    }
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+
+        var convertView = convertView
+        // TODO Auto-generated method stub
+
+        val holder: ViewHolder
+        if (convertView == null) {
+            holder = ViewHolder()
+            convertView = inflater.inflate(R.layout.listview_activity, null)
+
+            holder.listview_image = convertView!!.findViewById(R.id.listview_image) as ImageView
+            holder.listview_item_title = convertView.findViewById(R.id.listview_item_title) as TextView
+            holder.listview_item_short_description =
+                convertView.findViewById(R.id.listview_item_short_description) as TextView
+
+            convertView.tag = holder
+        } else
+            holder = convertView.tag as ViewHolder
+
+        val item = categories.get(position).getAsJsonObject()
+        holder.listview_item_title!!.setText(item.get("catName").getAsString())
+        holder.listview_item_short_description!!.setText(item.get("catDescription").getAsString())
+        val imgUrl = url + "/images/" + item.get("imageId").getAsString()
+        Picasso.get().load(imgUrl).into(holder.listview_image)
+        Log.d("image","Loaded " + imgUrl + " into " + holder.listview_image!!.id.toString())
+
+        convertView!!.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                Log.d("position", position.toString())
+                val item = categories.get(position).getAsJsonObject()
+                var catId = item.get("cat_id").getAsString()
+
+                val viewCatIntent = Intent(thisView, SearchReportsActivity::class.java)
+                viewCatIntent.putExtra("cat_id", catId)
+                thisView.startActivity(viewCatIntent)
+                Log.d("debug", "Loaded new view to show reports in category " + catId)
+            }
+        })
+        return convertView
     }
 }
