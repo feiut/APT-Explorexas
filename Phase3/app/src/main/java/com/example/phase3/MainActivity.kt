@@ -56,23 +56,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val srchView = findViewById<SearchView>(R.id.searchView)
-        srchView.setQueryHint("search tag here")
-        srchView.setIconifiedByDefault(false)
-        srchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextSubmit(query: String): Boolean {
-                val catRptIntent = Intent(this@MainActivity, CategoryReportActivity::class.java);
-                catRptIntent.putExtra("Type", "Search")
-                catRptIntent.putExtra("Pattern", query)
-                startActivity(catRptIntent)
-                return true
-            }
-        })
-
         // Sign in
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
