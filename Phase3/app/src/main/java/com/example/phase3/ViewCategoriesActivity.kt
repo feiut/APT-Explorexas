@@ -8,74 +8,31 @@ import android.R.drawable.presence_online
 import android.R.drawable.presence_offline
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley
 import com.android.volley.toolbox.StringRequest
 import kotlinx.android.synthetic.main.activity_view_categories.*
+import com.google.gson.*
+
+
+
+
 
 class ViewCategoriesActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view_categories)
-
-        val queue = Volley.newRequestQueue(this)
-        // 2. Create the request with the callback
-        val url = "http://explore-texas-web.appspot.com/"
-        val stringRequest = StringRequest(Request.Method.GET, url,
-            Response.Listener {
-                    response -> Log.d("soap_request", response)
-            },
-            Response.ErrorListener {
-                error -> run {
-                    txtHeader.text = "Failed to retrieve data"
-                    lstCategories.visibility = View.GONE
-                    Log.d("error", error.toString())
-                }
-            })
-        queue.add(stringRequest)
-
-        val listviewTitle = arrayOf(
-            "ListView Title 1",
-            "ListView Title 2",
-            "ListView Title 3",
-            "ListView Title 4",
-            "ListView Title 5",
-            "ListView Title 6",
-            "ListView Title 7",
-            "ListView Title 8"
-        )
-
-
-        val listviewImage = intArrayOf(
-            presence_online,
-            presence_offline,
-            presence_online,
-            presence_online,
-            presence_offline,
-            presence_online,
-            presence_online,
-            presence_offline
-        )
-
-        val listviewShortDescription = arrayOf(
-            "Android ListView Short Description",
-            "Android ListView Short Description",
-            "Android ListView Short Description",
-            "Android ListView Short Description",
-            "Android ListView Short Description",
-            "Android ListView Short Description",
-            "Android ListView Short Description",
-            "Android ListView Short Description"
-        )
+    fun bind(categories:JsonArray) {
+        Log.d("debug", categories.toString())
 
         val aList = ArrayList<HashMap<String, String>>()
 
-        for (i in 0..7) {
+        for (i in 0 until categories.size()) {
             val hm = HashMap<String, String>()
-            hm["listview_title"] = listviewTitle[i]
-            hm["listview_discription"] = listviewShortDescription[i]
-            hm["listview_image"] = Integer.toString(listviewImage[i])
+            val item = categories.get(i).getAsJsonObject()
+            hm["listview_title"] = item.get("catName").toString()
+            hm["listview_discription"] = item.get("catDescription").toString()
+            hm["listview_image"] = Integer.toString(presence_online)
+            hm["listview_imageid"] = item.get("imageId").toString()
             aList.add(hm)
         }
 
@@ -89,5 +46,45 @@ class ViewCategoriesActivity : AppCompatActivity() {
         val simpleAdapter = SimpleAdapter(baseContext, aList, R.layout.listview_activity, from, to)
         val androidListView = findViewById(R.id.lstCategories) as ListView
         androidListView.setAdapter(simpleAdapter)
+
+        val firstPosition = androidListView.getFirstVisiblePosition() - androidListView.getHeaderViewsCount()
+        for (rowid in 0 until categories.size()) {
+            val wantedChild = rowid - firstPosition
+            if (wantedChild < 0 || wantedChild >= androidListView.getChildCount()) {
+                continue
+            }
+            Log.d("wantedChild", wantedChild.toString())
+            val item = androidListView.getChildAt(wantedChild)
+            Log.d("item", item.toString())
+            val image = item.findViewById<ImageView>(R.id.listview_image)
+            val imageUrl = aList[rowid]["listview_imageid"]
+            Log.d("image", imageUrl)
+
+        }
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_view_categories)
+
+        val queue = Volley.newRequestQueue(this)
+        // 2. Create the request with the callback
+        val url = "http://apt-team7.appspot.com"
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            Response.Listener {
+                response -> run {
+                val parser = JsonParser()
+                val jsonTree = parser.parse(response)
+                val categories = jsonTree.asJsonArray
+                bind(categories)
+                }
+            },
+            Response.ErrorListener {
+                error -> run {
+                    txtHeader.text = "Failed to retrieve data"
+                    lstCategories.visibility = View.GONE
+                    Log.d("error", error.toString())
+                }
+            })
+        queue.add(stringRequest)
     }
 }
