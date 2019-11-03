@@ -6,55 +6,34 @@ import android.widget.ListView
 import android.widget.SimpleAdapter
 import android.R.drawable.presence_online
 import android.R.drawable.presence_offline
-import javax.swing.UIManager.put
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.util.Log
-import android.volley.Request
-import android.volley.RequestQueue
-import android.volley.toolbox.Volley
-
+import android.view.View
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.Volley
+import com.android.volley.toolbox.StringRequest
+import kotlinx.android.synthetic.main.activity_view_categories.*
 
 class ViewCategoriesActivity : AppCompatActivity() {
-
-    fun getCategories() {
-
-    }
-
-    fun HttpPOSTRequestWithParam() {
-        val queue = Volley.newRequestQueue(this)
-        val url = "http://www.yourwebstite.com/login.asp"
-        val postRequest = object : StringRequest(Request.Method.POST, url,
-            object : Response.Listener<String>() {
-                fun onResponse(response: String) {
-                    Log.d("Response", response)
-                }
-            },
-            object : Response.ErrorListener() {
-                fun onErrorResponse(error: VolleyError) {
-                    Log.d("ERROR", "error => " + error.toString())
-                }
-            }
-        ) {
-
-            protected// volley will escape this for you
-            val params: Map<String, String>
-                get() {
-                    val params = HashMap<String, String>()
-                    params["grant_type"] = "password"
-
-                    params["username"] = "tester"
-                    params["password"] = "Pass@123"
-
-                    return params
-                }
-        }
-        queue.add(postRequest)
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_categories)
+
+        val queue = Volley.newRequestQueue(this)
+        // 2. Create the request with the callback
+        val url = "http://explore-texas-web.appspot.com/"
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            Response.Listener {
+                    response -> Log.d("soap_request", response)
+            },
+            Response.ErrorListener {
+                error -> run {
+                    txtHeader.text = "Failed to retrieve data"
+                    lstCategories.visibility = View.GONE
+                    Log.d("error", error.toString())
+                }
+            })
+        queue.add(stringRequest)
 
         val listviewTitle = arrayOf(
             "ListView Title 1",
@@ -108,7 +87,7 @@ class ViewCategoriesActivity : AppCompatActivity() {
         )
 
         val simpleAdapter = SimpleAdapter(baseContext, aList, R.layout.listview_activity, from, to)
-        val androidListView = findViewById(R.id.list_view) as ListView
+        val androidListView = findViewById(R.id.lstCategories) as ListView
         androidListView.setAdapter(simpleAdapter)
     }
 }

@@ -7,14 +7,14 @@ android:orientation="vertical"
 tools:context=".ViewCategoriesActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtHeader"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="Categories"
         android:textSize="24sp" />
 
     <ListView
-    android:id="@+id/list_view"
+    android:id="@+id/lstCategories"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" />
 </LinearLayout>

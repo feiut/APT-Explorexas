@@ -367,9 +367,14 @@ def root():
     categoryContrller = CategoryAPI.CategoryAPI()
     categories = categoryContrller.list()
 
-    return render_template(
+    if request.MOBILE == False:
+        return render_template(
         'index.html',
         user_data=claims, error_message=error_message, categories=categories, now = str(datetime.utcnow()))
+    else:
+        return jsonify([cat.toJSON() for cat in categories])
+
+    
 
 
 # Connect to MongoDB database

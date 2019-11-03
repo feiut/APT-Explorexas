@@ -9,3 +9,12 @@ class Category:
     def toQuery(self):
         query = {"catName": self.catName, "catDescription": self.catDescription, "imageId" : self.imageId, "userId": self.userId}
         return query
+        
+    def toJSON(self):
+        return {
+            'catName': self.catName, 
+            'catDescription': self.catDescription,
+            'imageId': str(self.imageId),
+            'userId': str(self.userId),
+            'cat_id': str(self.cat_id)
+        }
