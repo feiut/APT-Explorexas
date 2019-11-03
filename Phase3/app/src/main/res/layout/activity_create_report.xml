@@ -171,7 +171,7 @@
                         android:layout_marginEnd="30dp"
                         android:layout_marginRight="30dp"
                         android:layout_marginBottom="30dp"
-                        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                        tools:srcCompat="@android:drawable/ic_menu_report_image" />
 
                 </LinearLayout>
 

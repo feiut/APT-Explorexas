@@ -71,7 +71,7 @@ class CreateReportActivity : AppCompatActivity() {
             }
             if(photoFile != null){
                 var photoUri = FileProvider.getUriForFile(this,
-                    "com.example.mycamera.fileprovider", photoFile)
+                    "com.example.phase3.fileprovider", photoFile)
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                 startActivityForResult(intent, TAKE_PICTURE)
             }
