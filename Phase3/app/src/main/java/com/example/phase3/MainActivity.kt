@@ -73,16 +73,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        val catViewBtn = findViewById<Button>(R.id.view_cat_button);
-        catViewBtn.setOnClickListener(object: View.OnClickListener {
-            override fun onClick(v : View?) {
-                val catRptIntent = Intent(this@MainActivity, CategoryReportActivity::class.java);
-                catRptIntent.putExtra("Type", "CategoryReport")
-                catRptIntent.putExtra(CategoryReportActivity.categoryName, "Running")
-                startActivity(catRptIntent)
-            }
-        })
-
         // Sign in
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
