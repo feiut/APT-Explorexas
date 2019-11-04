@@ -106,8 +106,8 @@ class CategoryReportActivity : AppCompatActivity() {
 
     companion object {
         //var cat_id:String = "Other"
-        var webUrl:String = "http://explore-texas-web.appspot.com/"
-        //var webUrl:String = "http://apt-team7.appspot.com/"
+        //var webUrl:String = "http://explore-texas-web.appspot.com/"
+        var webUrl:String = "http://apt-team7.appspot.com/"
         lateinit var currActivity: AppCompatActivity
         lateinit var reportContentList:JSONArray
     }

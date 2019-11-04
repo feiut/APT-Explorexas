@@ -32,7 +32,7 @@ class ViewReportActivity : AppCompatActivity() {
 
     companion object {
         var report: String = ""
-        val webUrl: String = "http://explore-texas-web.appspot.com/"
-        //var webUrl:String = "http://apt-team7.appspot.com/"
+        //val webUrl: String = "http://explore-texas-web.appspot.com/"
+        var webUrl:String = "http://apt-team7.appspot.com/"
     }
 }
