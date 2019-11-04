@@ -37,7 +37,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_main.*
-
 //import androidx.core.app.ActivityCompat.startActivityForResult
 //import androidx.core.app.ComponentActivity.ExtraData
 //import androidx.core.content.ContextCompat.getSystemService
@@ -57,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Sign in
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val gso : GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
@@ -76,9 +75,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+//    override fun onStart(){
+//        super.onStart()
+//        val account:GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
+//        if(account==null){
+//            sign_in_button.visibility=View.VISIBLE
+//            sign_in_button.setSize(SignInButton.SIZE_STANDARD)
+//        }
+//    }
+
     fun viewCategories(view:View) {
         val viewCatIntent = Intent(this, ViewCategoriesActivity::class.java)
         startActivity(viewCatIntent)
+    }
+
+    fun viewMaps(view:View){
+        val viewMapIntent = Intent(this, MapsActivity::class.java)
+        startActivity(viewMapIntent)
     }
 
     fun signOutOnClick(view:View){
@@ -101,7 +114,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d("debug", resultCode.toString() + " vs " + RC_SIGN_IN.toString() + ", compare:" + (requestCode == RC_SIGN_IN).toString())
+        Log.d("debug", requestCode.toString() + " vs " + RC_SIGN_IN.toString() + ", compare:" + (requestCode == RC_SIGN_IN).toString())
         if (requestCode == RC_SIGN_IN) {
             val task :Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
