@@ -92,7 +92,7 @@ class CategoryReportActivity : AppCompatActivity() {
                                             report.getString("imgId"),
                                             report.getString("tag")))
                 }
-                val catName = "Category:"+ reportContentList.getJSONObject(0).getString("categoryName")
+                val catName = "Category: "+ reportContentList.getJSONObject(0).getString("categoryName")
                 findViewById<TextView>(R.id.categoryTextView).text =  catName
                 recyclerView.layoutManager = LinearLayoutManager(this)
                 recyclerView.adapter = Adapter(reportItemList)
@@ -106,8 +106,8 @@ class CategoryReportActivity : AppCompatActivity() {
 
     companion object {
         //var cat_id:String = "Other"
-        //var webUrl:String = "http://explore-texas-web.appspot.com/"
-        var webUrl:String = "http://apt-team7.appspot.com/"
+        var webUrl:String = "http://explore-texas-web.appspot.com/"
+        //var webUrl:String = "http://apt-team7.appspot.com/"
         lateinit var currActivity: AppCompatActivity
         lateinit var reportContentList:JSONArray
     }
