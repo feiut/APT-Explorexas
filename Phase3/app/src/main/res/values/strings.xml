@@ -19,6 +19,25 @@
     <string name="report_tag">Tag</string>
     <string name="report_image">Image</string>
     <string name="report_coordinates">Coordinates</string>
+    <string name="report_submitted">The Report has been created!</string>
     <string name="website_url">http://explore-texas-web.appspot.com/</string>
+    <string-array name="report_rating">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="report_category">
+        <item>Hiking</item>
+        <item>Running</item>
+        <item>Boating</item>
+        <item>Basketball</item>
+        <item>Baseball</item>
+        <item>Jogging</item>
+        <item>Others</item>
+    </string-array>
+
 </resources>
 
