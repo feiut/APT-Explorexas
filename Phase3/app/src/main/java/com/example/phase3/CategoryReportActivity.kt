@@ -53,7 +53,8 @@ class CategoryReportActivity : AppCompatActivity() {
                             reportItemList.add(
                                 ReportItem(
                                     report.getString("title"),
-                                    report.getString("imgId")
+                                    report.getString("imgId"),
+                                    report.getString("tag")
                                 )
                             )
                         }
@@ -87,9 +88,11 @@ class CategoryReportActivity : AppCompatActivity() {
                 val reportItemList = mutableListOf<ReportItem>()
                 for(reportIdx in 0 until reportContentList.length()) {
                     val report: JSONObject = reportContentList.getJSONObject(reportIdx)
-                    reportItemList.add(ReportItem(report.getString("title"), report.getString("imgId")))
+                    reportItemList.add(ReportItem(report.getString("title"),
+                                            report.getString("imgId"),
+                                            report.getString("tag")))
                 }
-                val catName = "Category:"+ reportContentList.getJSONObject(0).getString("categoryName")
+                val catName = "Category: "+ reportContentList.getJSONObject(0).getString("categoryName")
                 findViewById<TextView>(R.id.categoryTextView).text =  catName
                 recyclerView.layoutManager = LinearLayoutManager(this)
                 recyclerView.adapter = Adapter(reportItemList)
@@ -110,9 +113,10 @@ class CategoryReportActivity : AppCompatActivity() {
     }
 }
 
-private class ReportItem(_title: String, _imgId: String) {
+private class ReportItem(_title: String, _imgId: String, _tag: String) {
     val title = _title
     val imgId = _imgId
+    val tag = "#"+_tag
 }
 
 private class Adapter(val reports: List<ReportItem>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
@@ -126,6 +130,7 @@ private class Adapter(val reports: List<ReportItem>) : RecyclerView.Adapter<Adap
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val imgUrl: String = CategoryReportActivity.webUrl + "images/" + reports[position].imgId
         holder.textView.text = reports[position].title
+        holder.tagView.text = reports[position].tag
         Picasso.get().load(imgUrl).into(holder.imgView)
 
         holder.textView.setOnClickListener(object: View.OnClickListener {
@@ -140,5 +145,6 @@ private class Adapter(val reports: List<ReportItem>) : RecyclerView.Adapter<Adap
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var textView = itemView.findViewById<TextView>(R.id.titleTextViewListItem)!!
         var imgView = itemView.findViewById<ImageView>(R.id.imageViewListItem)!!
+        var tagView = itemView.findViewById<TextView>(R.id.tagTextItem)!!
     }
 }

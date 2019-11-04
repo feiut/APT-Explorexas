@@ -2,7 +2,7 @@
     <string name="app_name">Phase3</string>
     <string name="openCameraText">Open Camera</string>
     <string name="photoTakenDescription">Photo</string>
-     <string name="title_activity_cat_report">CatReportActivity</string>
+    <string name="title_activity_cat_report">CatReportActivity</string>
     <string name="welcome_text">Welcome to Explorexas!</string>
     <string name="view_report_text">View All Reports</string>
     <string name="create_report_text">Create A New Report</string>
@@ -21,6 +21,8 @@
     <string name="report_coordinates">Coordinates</string>
     <string name="report_submitted">The Report has been created!</string>
     <string name="website_url">http://explore-texas-web.appspot.com/</string>
+    <string name="view_map_text">View Reports on Map</string>
+    <string name="title_activity_maps">Map</string>
     <string-array name="report_rating">
         <item>0</item>
         <item>1</item>

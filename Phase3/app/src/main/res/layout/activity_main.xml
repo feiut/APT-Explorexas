@@ -72,6 +72,13 @@
             android:text="@string/create_report_text"
             />
         <Button
+            android:id="@+id/view_map_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/view_map_text"
+            android:onClick="viewMaps"
+            />
+        <Button
             android:id="@+id/search_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
