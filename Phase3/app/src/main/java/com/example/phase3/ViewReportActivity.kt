@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_view_report.*
 import org.json.JSONObject
 
 class ViewReportActivity : AppCompatActivity() {
@@ -26,6 +27,7 @@ class ViewReportActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.reportTextViewTime).text = reportJson.getString("timeStamp")
         findViewById<TextView>(R.id.reportTextViewCategory).text = reportJson.getString("categoryName")
         findViewById<TextView>(R.id.reportTextViewTitle).text = reportJson.getString("title")
+        findViewById<TextView>(R.id.reportTextViewTag).text = "#"+reportJson.getString("tag")
     }
 
     companion object {
