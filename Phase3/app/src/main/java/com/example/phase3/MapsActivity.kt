@@ -126,6 +126,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 },
                 Response.ErrorListener { error->
+                    Log.d("Error",error.toString())
                 })
             queue.add(jsonArrayRequest)
         }
