@@ -1,5 +1,6 @@
 package com.example.phase3
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -16,6 +17,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.core.content.FileProvider
+import androidx.recyclerview.widget.ListAdapter
 import kotlinx.android.synthetic.main.activity_create_report.*
 import java.io.File
 import java.io.IOException
@@ -28,13 +30,14 @@ class CreateReportActivity : AppCompatActivity() {
     val TAKE_PICTURE = 1
     val SELECT_PICTURE = 2
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_report)
         successTextView.visibility = View.GONE
         val rating_spinner: Spinner = findViewById(R.id.submit_rating)
         // Create an ArrayAdapter using the string array and a default spinner layout
+//        var ratingArray = arrayOf("0", "1", "2", "3", "4", "5")
+//        var MyAdapter : ArrayAdapter<String> =  ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ratingArray)
 
         ArrayAdapter.createFromResource(
             this,
@@ -46,7 +49,6 @@ class CreateReportActivity : AppCompatActivity() {
             // Apply the adapter to the spinner
             rating_spinner.adapter = adapter
         }
-
         val category_spinner: Spinner = findViewById(R.id.submit_category)
         ArrayAdapter.createFromResource(
             this,
@@ -179,6 +181,4 @@ class CreateReportActivity : AppCompatActivity() {
         currentPath = image.absolutePath
         return image
     }
-
-
 }
