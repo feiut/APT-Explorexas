@@ -236,27 +236,29 @@ def searchTag(ptn):
             currRptContentList = []
             for tagId in tagIdList:
                 rptContentList = repController.get_report_content_list_by_tagId(tagId)
-                if rptContentList == None :
-                    tagController.close_connection()
-                    repController.close_connection()
-                    if request.MOBILE == False:
-                        return render_template('noMatchReport.html',
-                                               user_data=claims, 
-                                               error = error_message)
-                    else:
-                        return jsonify([])
-                else:
+                if rptContentList != None :
                     currRptContentList.extend(rptContentList)
-                    currRptContentList.sort(key=lambda rpt: rpt["timeStamp"], reverse=True)
-                    tagController.close_connection()
-                    repController.close_connection()
-                    if request.MOBILE == False  :
-                        return render_template('viewTagPost.html',
-                                               reportContentList=currRptContentList,
-                                               user_data=claims, 
-                                               error = error_message)
-                    else:
-                        return jsonify(currRptContentList)
+
+            if len(currRptContentList) == 0:
+                tagController.close_connection()
+                repController.close_connection()
+                if request.MOBILE == False:
+                    return render_template('noMatchReport.html',
+                                           user_data=claims, 
+                                           error = error_message)
+                else:
+                    return jsonify([])
+            else:
+                currRptContentList.sort(key=lambda rpt: rpt["timeStamp"], reverse=True)
+                tagController.close_connection()
+                repController.close_connection()
+                if request.MOBILE == False  :
+                    return render_template('viewTagPost.html',
+                                           reportContentList=currRptContentList,
+                                           user_data=claims, 
+                                           error = error_message)
+                else:
+                    return jsonify(currRptContentList)
         else:
             tagController.close_connection()
             repController.close_connection()
@@ -285,27 +287,29 @@ def searchTag(ptn):
             currRptContentList = []
             for tagId in tagIdList:
                 rptContentList = repController.get_report_content_list_by_tagId(tagId)
-                if rptContentList == None :
-                    tagController.close_connection()
-                    repController.close_connection()
-                    if request.MOBILE == False:
-                        return render_template('noMatchReport.html',
-                                               user_data=claims, 
-                                               error = error_message)
-                    else:
-                        return jsonify({})
-                else:
+                if rptContentList != None :
                     currRptContentList.extend(rptContentList)
-                    currRptContentList.sort(key=lambda rpt: rpt["timeStamp"], reverse=True)
-                    tagController.close_connection()
-                    repController.close_connection()
-                    if request.MOBILE == False  :
-                        return render_template('viewTagPost.html',
-                                               reportContentList=currRptContentList,
-                                               user_data=claims, 
-                                               error = error_message)
-                    else:
-                        return jsonify(currRptContentList)
+
+            if len(currRptContentList) == 0:
+                tagController.close_connection()
+                repController.close_connection()
+                if request.MOBILE == False:
+                    return render_template('noMatchReport.html',
+                                           user_data=claims, 
+                                           error = error_message)
+                else:
+                    return jsonify([])
+            else:
+                currRptContentList.sort(key=lambda rpt: rpt["timeStamp"], reverse=True)
+                tagController.close_connection()
+                repController.close_connection()
+                if request.MOBILE == False  :
+                    return render_template('viewTagPost.html',
+                                           reportContentList=currRptContentList,
+                                           user_data=claims, 
+                                           error = error_message)
+                else:
+                    return jsonify(currRptContentList)
         else:
             tagController.close_connection()
             repController.close_connection()
