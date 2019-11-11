@@ -67,18 +67,19 @@ class MainActivity : AppCompatActivity() {
             val signInIntent = mGoogleSignInClient.getSignInIntent()
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
+        signOut()
     }
 
-    fun signOutOnClick(){
+    fun signOut(){
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(this, object:OnCompleteListener<Void>{
                 override fun onComplete(p0: Task<Void>) {
                     FirebaseAuth.getInstance().signOut()
-                    sign_in_button.visibility=View.VISIBLE
-                    layout_buttons.visibility=View.GONE
+//                    sign_in_button.visibility=View.VISIBLE
+//                    layout_buttons.visibility=View.GONE
                 }
             })
-        startActivity(getLaunchIntent(this))
+//        startActivity(getLaunchIntent(this))
     }
     companion object {
         fun getLaunchIntent(from: Context) = Intent(from, MainActivity::class.java).apply {
