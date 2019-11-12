@@ -67,7 +67,6 @@ class MainActivity : AppCompatActivity() {
             val signInIntent = mGoogleSignInClient.getSignInIntent()
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
-        signOut()
     }
 
     fun signOut(){
@@ -104,6 +103,7 @@ class MainActivity : AppCompatActivity() {
             val viewMenuIntent = Intent(this, MenuActivity::class.java)
             viewMenuIntent.putExtra("clientAccount", account!!.displayName)
             viewMenuIntent.putExtra("clientAccountEmail",account!!.email)
+            signOut()
             startActivity(viewMenuIntent)
         } catch (e:ApiException){
             Log.d("exception","Login failed due to:" + e.message)
