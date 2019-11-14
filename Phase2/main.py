@@ -372,7 +372,14 @@ def profile():
             return render_template('profile.html', reports=reports, user_data=claims)
         
 @app.route('/')
-def root():
+def desktop_root():
+    return root(False)
+    
+@app.route('/mobile')
+def mobile_root():
+    return root(True)
+
+def root(mobile):
     # Verify Firebase auth.
     id_token = request.cookies.get("token")
     error_message = None
@@ -399,7 +406,7 @@ def root():
     categoryContrller = CategoryAPI.CategoryAPI()
     categories = categoryContrller.list()
 
-    if request.MOBILE == False:
+    if mobile == False:
         return render_template(
         'index.html',
         user_data=claims, error_message=error_message, categories=categories, now = str(datetime.utcnow()))
