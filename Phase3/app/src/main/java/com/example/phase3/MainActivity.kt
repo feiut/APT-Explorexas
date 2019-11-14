@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.widget.SearchView
 import android.widget.TextView
+//import com.example.phase3.MenuActivity.Companion.getLaunchIntent
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -37,6 +38,9 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.welcome_title
+import kotlinx.android.synthetic.main.activity_menu.*
+
 //import androidx.core.app.ActivityCompat.startActivityForResult
 //import androidx.core.app.ComponentActivity.ExtraData
 //import androidx.core.content.ContextCompat.getSystemService
@@ -47,9 +51,6 @@ class MainActivity : AppCompatActivity() {
 
     val RC_SIGN_IN: Int = 1
     lateinit var mGoogleSignInClient: GoogleSignInClient
-//    lateinit var mGoogleSignInOptions: GoogleSignInOptions
-//    private lateinit var firebaseAuth: FirebaseAuth
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,52 +67,18 @@ class MainActivity : AppCompatActivity() {
             val signInIntent = mGoogleSignInClient.getSignInIntent()
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
-
-        // Search button
-        val searchButton = findViewById(R.id.search_button) as Button
-        searchButton.setOnClickListener{
-            val intent = Intent(this, SearchReportsActivity::class.java)
-            startActivity(intent)
-        }
-
-        // Create Report button
-        val createReportButton = findViewById(R.id.create_report_button) as Button
-        createReportButton.setOnClickListener{
-            val intent = Intent(this, CreateReportActivity::class.java)
-            startActivity(intent)
-        }
     }
 
-//    override fun onStart(){
-//        super.onStart()
-//        val account:GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
-//        if(account==null){
-//            sign_in_button.visibility=View.VISIBLE
-//            sign_in_button.setSize(SignInButton.SIZE_STANDARD)
-//        }
-//    }
-
-    fun viewCategories(view:View) {
-        val viewCatIntent = Intent(this, ViewCategoriesActivity::class.java)
-        startActivity(viewCatIntent)
-    }
-
-    fun viewMaps(view:View){
-        val viewMapIntent = Intent(this, MapsActivity::class.java)
-        startActivity(viewMapIntent)
-    }
-
-    fun signOutOnClick(view:View){
+    fun signOut(){
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(this, object:OnCompleteListener<Void>{
                 override fun onComplete(p0: Task<Void>) {
                     FirebaseAuth.getInstance().signOut()
-                    sign_in_button.visibility=View.VISIBLE
-                    layout_buttons.visibility=View.GONE
+//                    sign_in_button.visibility=View.VISIBLE
+//                    layout_buttons.visibility=View.GONE
                 }
             })
-        startActivity(getLaunchIntent(this))
-//        FirebaseAuth.getInstance().signOut()
+//        startActivity(getLaunchIntent(this))
     }
     companion object {
         fun getLaunchIntent(from: Context) = Intent(from, MainActivity::class.java).apply {
@@ -131,10 +98,13 @@ class MainActivity : AppCompatActivity() {
     private fun handleSignInResult(completedTask : Task<GoogleSignInAccount>){
         try{
             sign_in_button.visibility=View.GONE
-            layout_buttons.visibility=View.VISIBLE
             val account:GoogleSignInAccount? = completedTask.getResult(ApiException::class.java)
-            welcome_title.text= account!!.displayName
-            welcome_title.text="Hello! " + account.displayName
+
+            val viewMenuIntent = Intent(this, MenuActivity::class.java)
+            viewMenuIntent.putExtra("clientAccount", account!!.displayName)
+            viewMenuIntent.putExtra("clientAccountEmail",account!!.email)
+            signOut()
+            startActivity(viewMenuIntent)
         } catch (e:ApiException){
             Log.d("exception","Login failed due to:" + e.message)
         }

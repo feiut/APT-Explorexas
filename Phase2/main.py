@@ -3,6 +3,7 @@ from google.auth.transport import requests
 from google.cloud import datastore
 from datetime import datetime 
 import google.oauth2.id_token
+import os
 import uuid
 from bson.objectid import ObjectId
 from lib import Category, CategoryAPI, CategoryImage, CategoryImageAPI
@@ -11,6 +12,7 @@ from lib import Image, ImageAPI
 from lib import User, UserAPI
 from lib import Tag, TagAPI
 from flask import make_response
+from werkzeug.datastructures import FileStorage
 from flask_mobility import Mobility
 
 app = Flask(__name__)
@@ -140,6 +142,7 @@ def create_report():
             return render_template('reports.html', report=reportDisplay, user_data=claims, imgId=reportDisplay["imgId"])
         except ValueError as exc:
             error_message = str(exc)
+            print(error_message)
     return render_template('nologin.html')
 
 @app.route('/createReport')
@@ -236,27 +239,29 @@ def searchTag(ptn):
             currRptContentList = []
             for tagId in tagIdList:
                 rptContentList = repController.get_report_content_list_by_tagId(tagId)
-                if rptContentList == None :
-                    tagController.close_connection()
-                    repController.close_connection()
-                    if request.MOBILE == False:
-                        return render_template('noMatchReport.html',
-                                               user_data=claims, 
-                                               error = error_message)
-                    else:
-                        return jsonify([])
-                else:
+                if rptContentList != None :
                     currRptContentList.extend(rptContentList)
-                    currRptContentList.sort(key=lambda rpt: rpt["timeStamp"], reverse=True)
-                    tagController.close_connection()
-                    repController.close_connection()
-                    if request.MOBILE == False  :
-                        return render_template('viewTagPost.html',
-                                               reportContentList=currRptContentList,
-                                               user_data=claims, 
-                                               error = error_message)
-                    else:
-                        return jsonify(currRptContentList)
+
+            if len(currRptContentList) == 0:
+                tagController.close_connection()
+                repController.close_connection()
+                if request.MOBILE == False:
+                    return render_template('noMatchReport.html',
+                                           user_data=claims, 
+                                           error = error_message)
+                else:
+                    return jsonify([])
+            else:
+                currRptContentList.sort(key=lambda rpt: rpt["timeStamp"], reverse=True)
+                tagController.close_connection()
+                repController.close_connection()
+                if request.MOBILE == False  :
+                    return render_template('viewTagPost.html',
+                                           reportContentList=currRptContentList,
+                                           user_data=claims, 
+                                           error = error_message)
+                else:
+                    return jsonify(currRptContentList)
         else:
             tagController.close_connection()
             repController.close_connection()
@@ -285,27 +290,29 @@ def searchTag(ptn):
             currRptContentList = []
             for tagId in tagIdList:
                 rptContentList = repController.get_report_content_list_by_tagId(tagId)
-                if rptContentList == None :
-                    tagController.close_connection()
-                    repController.close_connection()
-                    if request.MOBILE == False:
-                        return render_template('noMatchReport.html',
-                                               user_data=claims, 
-                                               error = error_message)
-                    else:
-                        return jsonify({})
-                else:
+                if rptContentList != None :
                     currRptContentList.extend(rptContentList)
-                    currRptContentList.sort(key=lambda rpt: rpt["timeStamp"], reverse=True)
-                    tagController.close_connection()
-                    repController.close_connection()
-                    if request.MOBILE == False  :
-                        return render_template('viewTagPost.html',
-                                               reportContentList=currRptContentList,
-                                               user_data=claims, 
-                                               error = error_message)
-                    else:
-                        return jsonify(currRptContentList)
+
+            if len(currRptContentList) == 0:
+                tagController.close_connection()
+                repController.close_connection()
+                if request.MOBILE == False:
+                    return render_template('noMatchReport.html',
+                                           user_data=claims, 
+                                           error = error_message)
+                else:
+                    return jsonify([])
+            else:
+                currRptContentList.sort(key=lambda rpt: rpt["timeStamp"], reverse=True)
+                tagController.close_connection()
+                repController.close_connection()
+                if request.MOBILE == False  :
+                    return render_template('viewTagPost.html',
+                                           reportContentList=currRptContentList,
+                                           user_data=claims, 
+                                           error = error_message)
+                else:
+                    return jsonify(currRptContentList)
         else:
             tagController.close_connection()
             repController.close_connection()
