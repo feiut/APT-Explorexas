@@ -1,7 +1,6 @@
 // Login.js
 import React from 'react'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
-import firebaseConfig from './firebaseConfig';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import withFirebaseAuth from 'react-with-firebase-auth'
 import * as firebase from 'firebase/app';
