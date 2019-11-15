@@ -99,7 +99,6 @@ class MainActivity : AppCompatActivity() {
         try{
             sign_in_button.visibility=View.GONE
             val account:GoogleSignInAccount? = completedTask.getResult(ApiException::class.java)
-
             val viewMenuIntent = Intent(this, MenuActivity::class.java)
             viewMenuIntent.putExtra("clientAccount", account!!.displayName)
             viewMenuIntent.putExtra("clientAccountEmail",account!!.email)

@@ -4,6 +4,7 @@ import Home from "./Home";
 import Login from "./Login";
 import ViewAllCategories from "./ViewAll";
 import ViewCategory from "./ViewCat";
+import Map from "./Map";
 import Template from "./Template";
 
 const AppNavigator = createStackNavigator({
@@ -11,7 +12,7 @@ const AppNavigator = createStackNavigator({
     ViewAll: ViewAllCategories,
     ViewCat: ViewCategory,
     Create: Template,
-    Map: Template,
+    Map: Map,
     Search: Template,
     SignOut: Template,
     Home: Home
