@@ -420,8 +420,11 @@ def root(mobile):
     else:
         return jsonify([cat.toJSON() for cat in categories])
 
-    
-
+@app.route('/findReports')
+def find_reports_for_map():
+    rep_controller = ReportAPI.ReportAPI()
+    reports = rep_controller.get_report_list()
+    return jsonify(reports)
 
 # Connect to MongoDB database
 # def get_db_collection():

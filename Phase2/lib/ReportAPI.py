@@ -125,6 +125,19 @@ class ReportAPI():
             report_list.append(report)
         return report_list
 
+    def get_report_list(self):
+        reports = self.collection
+        results = reports.find({})
+        report_list = []
+        for report in results:
+            report_list.append({"reportId": report["_id"],
+                                "placeName": report["placeName"],
+                                "coordinates": report["coordinates"],
+                                "review": report["review"],
+                                "timeStamp": report["timeStamp"],
+                                "title": report["title"]})
+        return report_list
+
     def get_report_content_list_by_catId(self, catId): 
         imageAPI = ImageAPI.ImageAPI()
         tagAPI = TagAPI.TagAPI()
