@@ -38,3 +38,20 @@ class Report:
                 "timeStamp": self.timeStamp
                  }
         return query
+
+    def toJSON(self):
+        return {
+            "reportId": str(self.reportId),
+            "userId": str(self.userId),
+            "title": self.title,
+            "placeName": self.placeName,
+            "coordinates": self.coordinates,
+            "latitude": self.coordinates[0],
+            "longitude": self.coordinates[1],
+            "categoryId": str(self.categoryId),
+            "imgId": str(self.imgId),
+            "tagId": str(self.tagId),
+            "review": self.review,
+            "rating": str(self.rating),
+            "timeStamp": str(self.timeStamp)
+        }

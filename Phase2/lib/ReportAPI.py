@@ -14,6 +14,24 @@ class ReportAPI():
         self.db = self.client['Explorexas']
         self.collection = self.db[COLLECTION_NAME]
 
+    def get_report_list(self):
+        results = self.collection.find({})
+        report_list = []
+        for result in results:
+            rep = Report.Report(result["_id"],
+                                result["userId"],
+                                result["title"],
+                                result["placeName"],
+                                result["coordinates"],
+                                result["categoryId"],
+                                result["imgId"],
+                                result["tagId"],
+                                result["review"],
+                                result["rating"],
+                                result["timeStamp"])
+            report_list.append(rep)
+        return report_list
+
     def add_report(self, report):
         # reportId, userId, placeId, categoryId, imgPath, imgId, tagId, review, rating
         reports = self.collection
@@ -125,18 +143,6 @@ class ReportAPI():
             report_list.append(report)
         return report_list
 
-    def get_report_list(self):
-        reports = self.collection
-        results = reports.find({})
-        report_list = []
-        for report in results:
-            report_list.append({"reportId": report["_id"],
-                                "placeName": report["placeName"],
-                                "coordinates": report["coordinates"],
-                                "review": report["review"],
-                                "timeStamp": report["timeStamp"],
-                                "title": report["title"]})
-        return report_list
 
     def get_report_content_list_by_catId(self, catId): 
         imageAPI = ImageAPI.ImageAPI()

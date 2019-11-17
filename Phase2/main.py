@@ -17,9 +17,10 @@ from flask_mobility import Mobility
 
 app = Flask(__name__)
 Mobility(app)
-datastore_client = datastore.Client()
-firebase_request_adapter = requests.Request()
+# datastore_client = datastore.Client()
+# firebase_request_adapter = requests.Request()
 claims = None
+
 
 @app.route('/createCategory')
 def createCategory():
@@ -145,6 +146,7 @@ def create_report():
             print(error_message)
     return render_template('nologin.html')
 
+
 @app.route('/createReport')
 def createReport():
     id_token = request.cookies.get("token")
@@ -162,6 +164,7 @@ def createReport():
     else:
         return render_template('nologin.html')
 
+
 @app.route('/images/<imgId>')
 def image(imgId):
     imgController = ImageAPI.ImageAPI()
@@ -171,7 +174,8 @@ def image(imgId):
     response.headers.set(
     'Content-Disposition', 'attachment', filename='%s.jpg' % imgId)
     return response
-    
+
+
 @app.route('/reports/<reportId>')
 def report(reportId):
     id_token = request.cookies.get("token")
@@ -192,6 +196,7 @@ def report(reportId):
     catController.close_connection()
     reportDisplay["categoryId"] = categoryName
     return render_template('reports.html', report=reportDisplay, user_data=claims, imgId=reportDisplay["imgId"])
+
 
 @app.route('/viewCategoryPost/<catId>')
 def viewCategoryPost(catId):
@@ -218,6 +223,7 @@ def viewCategoryPost(catId):
             categoryName=categoryName, user_data=claims, error = error_message)
     else:
         return jsonify(reportContentList)
+
 
 @app.route('/searchTag/<ptn>', methods=['POST', 'GET'])
 def searchTag(ptn):
@@ -328,6 +334,7 @@ def searchTag(ptn):
 def login():
     return render_template('login.html', now = str(datetime.utcnow()))
 
+
 @app.route('/welcomePage')
 def welcomePage():
     # Verify Firebase auth.
@@ -357,6 +364,7 @@ def welcomePage():
         'welcome.html',
         user_data=claims, error_message=error_message, now = str(datetime.utcnow()))
 
+
 @app.route('/profile')
 def profile():
     id_token = request.cookies.get("token")
@@ -377,14 +385,17 @@ def profile():
             reports.sort(key=lambda rpt:rpt.timeStamp, reverse=True)
             repController.close_connection()
             return render_template('profile.html', reports=reports, user_data=claims)
-        
+
+
 @app.route('/')
 def desktop_root():
     return root(False)
-    
+
+
 @app.route('/mobile')
 def mobile_root():
     return root(True)
+
 
 def root(mobile):
     # Verify Firebase auth.
@@ -420,11 +431,13 @@ def root(mobile):
     else:
         return jsonify([cat.toJSON() for cat in categories])
 
+
 @app.route('/findReports')
 def find_reports_for_map():
     rep_controller = ReportAPI.ReportAPI()
     reports = rep_controller.get_report_list()
-    return jsonify(reports)
+    rep_controller.close_connection()
+    return jsonify([rep.toJSON() for rep in reports])
 
 # Connect to MongoDB database
 # def get_db_collection():
