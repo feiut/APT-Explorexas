@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "579319640447",
-    "firebase_url": "https://apt-team7-1572479072461.firebaseio.com",
-    "project_id": "apt-team7-1572479072461",
-    "storage_bucket": "apt-team7-1572479072461.appspot.com"
+    "project_number": "172300852823",
+    "firebase_url": "https://phase4.firebaseio.com",
+    "project_id": "phase4",
+    "storage_bucket": "phase4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:579319640447:android:16e5646559d371dc626a4a",
+        "mobilesdk_app_id": "1:172300852823:android:4a34d3cd7f02d2d8160d12",
         "android_client_info": {
-          "package_name": "com.example.phase3"
+          "package_name": "com.phase4"
         }
       },
       "oauth_client": [
         {
-          "client_id": "579319640447-gm2g0g7pnckua5l3nh46etd1715vcqh1.apps.googleusercontent.com",
+          "client_id": "172300852823-fagua13tisda39iv00m3qb0oubcg5f16.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.phase3",
-            "certificate_hash": "f85e82cb2f07ce93fc2bdf22f9a8efe5b2fd4f39"
+            "package_name": "com.phase4",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {
-          "client_id": "579319640447-dh77o4e0giit9b8keg6ienr6nusj1ppk.apps.googleusercontent.com",
+          "client_id": "172300852823-hqd4f582qgiildj6u9pdi5fndgsfha03.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAeoHAJBQQQlqzVHKT1wxOUl13cWLOYZU0"
+          "current_key": "AIzaSyB-dTfzKx7TyVCuKwEmyngtyJUzLCKo1i8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "579319640447-dh77o4e0giit9b8keg6ienr6nusj1ppk.apps.googleusercontent.com",
+              "client_id": "172300852823-hqd4f582qgiildj6u9pdi5fndgsfha03.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -18,6 +18,7 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* Phase4Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* Phase4Tests.m */; };
 		369536980D379198024F493D /* libPods-Phase4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35992412F0165F8CFF6130E4 /* libPods-Phase4.a */; };
+		6FA79A27238248100064FC35 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6FA79A26238248100064FC35 /* GoogleService-Info.plist */; };
 		A2EB9C6667D4D18EE62697C8 /* libPods-Phase4-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DECFE17197BFA04664CED5A9 /* libPods-Phase4-tvOS.a */; };
 		F4C461BE3624D0D0847C625C /* libPods-Phase4-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CF8E2C5A5CFDD5A402FF807 /* libPods-Phase4-tvOSTests.a */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,7 @@
 		401FB7E811D1FF7D46C1A25F /* Pods-Phase4.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Phase4.release.xcconfig"; path = "Target Support Files/Pods-Phase4/Pods-Phase4.release.xcconfig"; sourceTree = "<group>"; };
 		525AB3B9218530925E086B72 /* Pods-Phase4-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Phase4-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Phase4-tvOS/Pods-Phase4-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		5CF8E2C5A5CFDD5A402FF807 /* libPods-Phase4-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Phase4-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6FA79A26238248100064FC35 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7D660054D136D25BD39235A6 /* libPods-Phase4Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Phase4Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		882522DC031AA2F25952E4AD /* Pods-Phase4-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Phase4-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Phase4-tvOSTests/Pods-Phase4-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		BE179496D651F8B9C6A08A33 /* Pods-Phase4-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Phase4-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Phase4-tvOSTests/Pods-Phase4-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 		13B07FAE1A68108700A75B9A /* Phase4 */ = {
 			isa = PBXGroup;
 			children = (
+				6FA79A26238248100064FC35 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -194,7 +197,6 @@
 				E6D6D59AED0D100913BCFCB1 /* Pods-Phase4Tests.debug.xcconfig */,
 				15557BEEA5C21E963A0854DD /* Pods-Phase4Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -309,6 +311,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -339,6 +342,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				6FA79A27238248100064FC35 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
