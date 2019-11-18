@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button} from 'react-native';
+import { StyleSheet, Text, View, Button} from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 
 export default class Home extends React.Component<Props> {
@@ -39,22 +39,27 @@ export default class Home extends React.Component<Props> {
 
  render()
  {
-    
-
     return(
-       <View>
- 
-            <Button onPress={this.openCategories.bind(this)} title="Categories"></Button>
+       <View style = {styles.container}>
+            <Button onPress={this.openCategories.bind(this)} title="ALL Categories"></Button>
             <Text></Text>
-            <Button onPress={this.createReport.bind(this)} title="Create Report"></Button>
+            <Button onPress={this.createReport.bind(this)} title="Create A NEW Report"></Button>
             <Text></Text>
-            <Button onPress={this.viewOnMap.bind(this)} title="View on Map"></Button>
+            <Button onPress={this.viewOnMap.bind(this)} title="View REPORTS on Map"></Button>
             <Text></Text>
-            <Button onPress={this.search.bind(this)} title="Search"></Button>
+            <Button onPress={this.search.bind(this)} title="Search TAGS"></Button>
             <Text></Text>
             <Button onPress={this.signOut.bind(this)} title="Sign out"></Button>
- 
        </View>
     );
  }
 }
+const styles = StyleSheet.create({
+     container: {
+       ...StyleSheet.absoluteFillObject,
+       bottom:0,
+       height: 400,
+       justifyContent: 'flex-end',
+     }
+});
+

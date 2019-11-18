@@ -5,22 +5,34 @@ import MapView, { PROVIDER_GOOGLE, Marker, Callout, Image, Circle } from 'react-
 
 export async function request_location_runtime_permission() {
 
-  try {
-      const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        'title': 'ReactNativeCode Location Permission',
-        'message': 'ReactNativeCode App needs access to your location '
+  if(Platform.OS === 'ios'){
+      try{
+          const granted = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+          console.log('iPhone: '+ granted) ;
+          if(granted === 'granted'){
+               Alert.alert("Location Permission Granted.");
+          }
+      } catch(err){
+          console.warn(err)
       }
-    )
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      Alert.alert("Location Permission Granted.");
-    }
-    else {
-      Alert.alert("Location Permission Not Granted");
-    }
-  } catch (err) {
-    console.warn(err)
+  } else{
+      try {
+          const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            'title': 'ReactNativeCode Location Permission',
+            'message': 'ReactNativeCode App needs access to your location '
+          }
+        )
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          Alert.alert("Location Permission Granted.");
+        }
+        else {
+          Alert.alert("Location Permission Not Granted");
+        }
+      } catch (err) {
+        console.warn(err)
+      }
   }
 }
 
@@ -113,6 +125,7 @@ export default class Map extends Component {
                        </Marker>
                    ))}
              </MapView>
+
         );
     }
 }
@@ -128,5 +141,5 @@ const styles = StyleSheet.create({
      map: {
        height:'100%',
        ...StyleSheet.absoluteFillObject,
-     },
+     }
 });

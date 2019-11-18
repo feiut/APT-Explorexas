@@ -11,7 +11,7 @@ export default class Login extends React.Component {
 
   static navigationOptions =
   {
-      title: 'Login',
+      title: 'Explorexas',
   };
 
   _signIn = async () => {
@@ -47,8 +47,8 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <View>
-         
+      <View style={styles.container}>
+        <Text style={styles.heading}> Welcome to Explorexas! </Text>
         <GoogleSigninButton
           style={{ width: 192, height: 48 }}
           size={GoogleSigninButton.Size.Wide}
@@ -64,3 +64,18 @@ export default class Login extends React.Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+     container: {
+       ...StyleSheet.absoluteFillObject,
+       top: 0,
+       height: 300,
+       width: 400,
+       justifyContent: 'flex-end',
+       alignItems: 'center',
+     },
+     heading: {
+     fontSize: 30,
+     fontWeight: 'bold'
+    }
+});
