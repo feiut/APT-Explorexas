@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
        justifyContent: 'flex-end',
        alignItems: 'center',
      },
-     heading: {
+     heading:{
      fontSize: 30,
      fontWeight: 'bold'
     }

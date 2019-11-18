@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
        justifyContent: 'flex-end',
        alignItems: 'center',
      },
-     map: {
+     map:{
        height:'100%',
        ...StyleSheet.absoluteFillObject,
      }

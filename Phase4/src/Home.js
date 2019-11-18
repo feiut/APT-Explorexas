@@ -55,7 +55,7 @@ export default class Home extends React.Component<Props> {
  }
 }
 const styles = StyleSheet.create({
-     container: {
+     container:{
        ...StyleSheet.absoluteFillObject,
        bottom:0,
        height: 400,
