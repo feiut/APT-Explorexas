@@ -38,10 +38,11 @@ export default class ViewAllCategories extends React.Component<Props> {
     })
     }
   
-    _onPressButton(cat_id) {
-      console.log("View category", cat_id);
+    _onPressButton(cat_id, catName) {
+      console.log("View category", cat_id, catName);
       this.props.navigation.navigate('ViewCat', {
-        catId: cat_id
+        catId: cat_id,
+        catName: catName
       });
     }
   
@@ -64,7 +65,7 @@ export default class ViewAllCategories extends React.Component<Props> {
             keyExtractor={(item, index) => item.cat_id}
             renderItem={
               ({item}) => 
-              <TouchableHighlight onPress={this._onPressButton.bind(this, item.cat_id)} underlayColor="white">
+              <TouchableHighlight onPress={this._onPressButton.bind(this, item.cat_id, item.catName)} underlayColor="white">
               <View style={{flex:1, flexDirection: 'row', height: 90, margin:5}} onPress={this._onPressButton.bind(this)}>
                 <Image source={{uri: "https://arctic-sound-254923.appspot.com/images/" + item.imageId}} style={{flex:1}} />
                 <View style={{flex:2.5, marginLeft:10}}>
