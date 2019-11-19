@@ -26,7 +26,8 @@ export default class ViewCategory extends React.Component<Props> {
 	  return fetch(that.web+'/viewCategoryPost/'+cat_Id, {
 	    method: "GET",
 	    headers: {
-    		'User-agent': Platform.OS
+	    	'User-agent': 'android'
+    		//'User-agent': Platform.OS
   		},
 	  })
 	  .then(function(res){

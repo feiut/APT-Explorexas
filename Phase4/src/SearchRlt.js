@@ -26,7 +26,8 @@ export default class SearchResult extends React.Component<Props> {
 	  return fetch(that.web+'/searchTag/'+ keyWord, {
 	    method: "GET",
 	    headers: {
-			'User-agent': Platform.OS
+	    	'User-agent': 'android'
+			//'User-agent': Platform.OS
 			},
 	  })
 	  .then(function(res){
