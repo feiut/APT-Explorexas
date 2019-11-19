@@ -15,21 +15,44 @@ class ReportAPI():
         self.collection = self.db[COLLECTION_NAME]
 
     def get_report_list(self):
+        userAPI = UserAPI.UserAPI()
+        catAPI = CategoryAPI.CategoryAPI()
+        tagAPI = TagAPI.TagAPI()
         results = self.collection.find({})
         report_list = []
         for result in results:
-            rep = Report.Report(result["_id"],
-                                result["userId"],
-                                result["title"],
-                                result["placeName"],
-                                result["coordinates"],
-                                result["categoryId"],
-                                result["imgId"],
-                                result["tagId"],
-                                result["review"],
-                                result["rating"],
-                                result["timeStamp"])
-            report_list.append(rep)
+            userName = userAPI.get(result['userId']).userName
+            catName = catAPI.get(result['categoryId']).catName
+            tagName = tagAPI.get(result['tagId']).tagName
+            reportContent = {"reportId": str(result['_id']),
+                             "userId": str(result['userId']),
+                             "categoryId": str(result['categoryId']),
+                             "tagId": str(result['tagId']),
+                             "userName": userName,
+                             "placeName": result['placeName'],
+                             "coordinates": result['coordinates'],
+                             "latitude": result['coordinates'][0],
+                             "longitude": result['coordinates'][1],
+                             "categoryName": catName,
+                             "imgId": str(result['imgId']),
+                             "tag": tagName,
+                             "review": result['review'],
+                             "rating": str(result['rating']),
+                             "timeStamp": str(result['timeStamp']),
+                             "title": result['title']}
+            report_list.append(reportContent)
+            # rep = Report.Report(result["_id"],
+            #                     result["userId"],
+            #                     result["title"],
+            #                     result["placeName"],
+            #                     result["coordinates"],
+            #                     result["categoryId"],
+            #                     result["imgId"],
+            #                     result["tagId"],
+            #                     result["review"],
+            #                     result["rating"],
+            #                     result["timeStamp"])
+            # report_list.append(rep)
         return report_list
 
     def add_report(self, report):

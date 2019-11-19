@@ -437,7 +437,7 @@ def find_reports_for_map():
     rep_controller = ReportAPI.ReportAPI()
     reports = rep_controller.get_report_list()
     rep_controller.close_connection()
-    return jsonify([rep.toJSON() for rep in reports])
+    return jsonify([rep for rep in reports])
 
 # Connect to MongoDB database
 # def get_db_collection():

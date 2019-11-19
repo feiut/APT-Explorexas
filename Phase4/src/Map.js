@@ -95,6 +95,22 @@ export default class Map extends Component {
     })
      }
 
+     _onMarkerPress(title, userName, placeName,
+		categoryName, imgId, tag, review, rating, timeStamp) {
+      console.log("View Report", title, userName);
+      this.props.navigation.navigate('ViewRpt', {
+      	title: title,
+      	userName: userName,
+      	placeName: placeName,
+        categoryName: categoryName,
+        imgId: imgId,
+        tag: tag,
+        review: review,
+        rating: rating,
+        timeStamp, timeStamp
+      });
+    }
+
     render(){
         return(
              <MapView
@@ -121,7 +137,11 @@ export default class Map extends Component {
                        <Marker
                           coordinate = {{ latitude: parseFloat(marker.latitude), longitude: parseFloat(marker.longitude) }}
                           title = {marker.title}
-                          description = {marker.review}>
+                          description = {marker.review}
+                          onPress={() => {this._onMarkerPress(marker.title, marker.userName, marker.placeName,
+                                                              marker.categoryName, marker.imgId, marker.tag,
+                                                              marker.review, marker.rating, marker.timeStamp);}}
+                       >
                        </Marker>
                    ))}
              </MapView>

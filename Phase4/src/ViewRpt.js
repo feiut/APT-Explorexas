@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
+import { Text, View, Image, ScrollView, Platform } from 'react-native';
 
 export default class ViewReports extends React.Component<Props> {
  static navigationOptions =
