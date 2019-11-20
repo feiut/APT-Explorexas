@@ -1,24 +1,30 @@
 package com.example.phase3
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Build.VERSION_CODES.M
 import androidx.appcompat.app.AppCompatActivity
-import android.app.AlertDialog
-import android.content.DialogInterface
-import android.opengl.Visibility
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.util.Base64
+import android.util.Log
+import android.widget.*
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.recyclerview.widget.ListAdapter
+import com.android.volley.*
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_create_report.*
+import org.json.JSONArray
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -29,16 +35,41 @@ class CreateReportActivity : AppCompatActivity() {
     var currentPath:String? = null
     val TAKE_PICTURE = 1
     val SELECT_PICTURE = 2
+    val PERMISSION_REQUEST = 3
+    private val UPLOAD_URL = "https://explorexas.appspot.com/create_report"
+    private var mClientAccountEmail: String? = null
+    private var mTitle: EditText? = null
+    private var mPlace: EditText? = null
+    private var mReview: EditText? = null
+    private var mTag: EditText? = null
+    private var mCategory: Spinner? = null
+    private var mRating: Spinner? = null
+    private var mImage: ImageView? = null
+    private var mlatitude: Double = 30.288478
+    private var mlongitude: Double = -97.735104
+    private var bitmap: Bitmap?= null
+    private var mImageString:String ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_report)
-        successTextView.visibility = View.GONE
         val rating_spinner: Spinner = findViewById(R.id.submit_rating)
         // Create an ArrayAdapter using the string array and a default spinner layout
 //        var ratingArray = arrayOf("0", "1", "2", "3", "4", "5")
 //        var MyAdapter : ArrayAdapter<String> =  ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ratingArray)
+//********************
+        val bundle = intent.extras
+        mClientAccountEmail = bundle!!.getString("clientAccountEmail") as String
+        Log.i("UserID", mClientAccountEmail)
+        mTitle = findViewById(R.id.submit_title) as EditText
+        mPlace = findViewById(R.id.submit_place) as EditText
+        mReview = findViewById(R.id.submit_review) as EditText
+        mTag = findViewById(R.id.submit_tag) as EditText
+        mCategory = findViewById(R.id.submit_category) as Spinner
+        mRating = findViewById(R.id.submit_rating) as Spinner
+        mImage = findViewById(R.id.imageView) as ImageView
 
+//**********************
         ArrayAdapter.createFromResource(
             this,
             R.array.report_rating,
@@ -61,7 +92,6 @@ class CreateReportActivity : AppCompatActivity() {
             category_spinner.adapter = adapter
         }
 
-
         buttonGallery.setOnClickListener {
             dispatchGalleryIntent()
         }
@@ -74,6 +104,52 @@ class CreateReportActivity : AppCompatActivity() {
         buttonSubmit.setOnClickListener {
             submitReport()
         }
+        if(Build.VERSION.SDK_INT >= 23){
+            if(!checkPermission()){
+                requestPermission()
+            }
+        }
+    }
+
+    private fun checkPermission(): Boolean {
+        var resultWrite:Int = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        var resultFineLocation:Int = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        var resultCoarseLocation:Int = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        if(resultWrite == PackageManager.PERMISSION_DENIED){
+            Log.i("WRITE_PERMISSION", "DENIED")
+            return false
+        }
+        if(resultFineLocation == PackageManager.PERMISSION_DENIED){
+            Log.i("FineLocation_PERMISSION", "DENIED")
+            return false
+        }
+        if(resultCoarseLocation == PackageManager.PERMISSION_DENIED){
+            Log.i("CoarLocation_PERMISSION", "DENIED")
+            return false
+        }
+        return true
+    }
+
+    private fun requestPermission(){
+        ActivityCompat.requestPermissions(this, arrayOf(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION),PERMISSION_REQUEST)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            PERMISSION_REQUEST -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Prmission Granted", Toast.LENGTH_LONG).show()
+            }else{
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     fun cancelCreateReport(){
@@ -82,53 +158,70 @@ class CreateReportActivity : AppCompatActivity() {
     }
 
     fun submitReport(){
-        submit_title.visibility = View.GONE
-        submit_category.visibility = View.GONE
-        submit_place.visibility = View.GONE
-        submit_review.visibility = View.GONE
-        submit_rating.visibility = View.GONE
-        submit_tag.visibility = View.GONE
-        categoryTextView.visibility = View.GONE
-        ratingTextView.visibility = View.GONE
-        imageView.visibility = View.GONE
-        buttonSubmit.visibility = View.GONE
-        buttonCancel.visibility = View.GONE
-        buttonGallery.visibility = View.GONE
-        buttonCamera.visibility = View.GONE
-        successTextView.visibility = View.VISIBLE
-            // build alert dialog
-//        val dialogBuilder = AlertDialog.Builder(this)
-//
-//        // set message of alert dialog
-//        dialogBuilder.setMessage("Do you want to go back to homepage?")
-//            // if the dialog is cancelable
-//            .setCancelable(false)
-//            // positive button text and action
-//            .setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface: DialogInterface, i: Int ->
-//                val intent = Intent(this, MainActivity::class.java)
-//                startActivity(intent)
-//            })
-//            // negative button text and action
-//            .setNegativeButton("Cancel", DialogInterface.OnClickListener {
-//                    dialog, id -> dialog.cancel()
-//            })
-//
-//        // create dialog box
-//        val alert = dialogBuilder.create()
-//        // set title for alert dialog box
-//        alert.setTitle("New report created! ")
-//        // show alert dialog
-//        alert.show()
-    }
+        var gps = GPSTracker(this)
+        mlatitude = gps.getLatitude()
+        mlongitude = gps.getLongitude()
+        Log.i("LATITUDE", mlatitude.toString())
+        Log.i("LONGITUDE", mlongitude.toString())
 
+        val stringRequest = object: StringRequest(
+            Method.POST,
+            UPLOAD_URL,
+            Response.Listener { response ->
+                if(response.contains("success")){
+                    Toast.makeText(this, "Image upload succeed", Toast.LENGTH_LONG).show()
+                    imageView.setImageResource(R.drawable.ic_launcher_background)
+                    submit_title.setText("")
+                    submit_place.setText("")
+                    submit_review.setText("")
+                    submit_tag.setText("")
+                    Log.i("Yeah!!!!!!1", response.toString())
+                }else{
+                    Toast.makeText(this, "response false 555 "+response.toString(), Toast.LENGTH_LONG).show()
+                }
+            },Response.ErrorListener { error ->
+                Toast.makeText(this, "" + error, Toast.LENGTH_LONG).show()
+                Log.i("ERROR!!!!!!1", error.toString())
+            }){
+            override fun getBodyContentType(): String {
+                return "application/x-www-form-urlencoded; charset=UTF-8"
+            }
+            override fun getParams(): Map<String, String>{
+                val params = HashMap<String, String>()
+                params["email"] = mClientAccountEmail!!
+                params["file"] = mImageString!!
+                params["title"] = mTitle!!.text.toString()
+                params["placeName"] = mPlace!!.text.toString()
+                params["latitude"] = mlatitude.toString()
+                params["longitude"] = mlongitude.toString()
+                params["categoryName"] = mCategory!!.getSelectedItem().toString()
+                params["review"] = mReview!!.text.toString()
+                params["rating"] = mRating!!.getSelectedItem().toString()
+                params["tagName"] = mTag!!.text.toString()
+                return params
+            }
+        }
+        stringRequest.setRetryPolicy(DefaultRetryPolicy(1000 * 10,
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+        Volley.newRequestQueue(this).add(stringRequest)
+
+//        val intent = Intent(this, MenuActivity::class.java)
+//        startActivity(intent)
+
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if(requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK){
             try{
                 val file = File(currentPath as String)
                 val uri = Uri.fromFile(file)
-                imageView.setImageURI(uri)
+                getBitmapFromUri(uri)
+//                set imageview by uri or bitmap
+                imageView.setImageBitmap(bitmap)
+//                imageView.setImageURI(uri)
             }catch (e: IOException){
                 e.printStackTrace()
             }
@@ -136,11 +229,14 @@ class CreateReportActivity : AppCompatActivity() {
         if(requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK){
             try{
                 val uri = data!!.data
+                getBitmapFromUri(uri!!)
                 imageView.setImageURI(uri)
             }catch (e: IOException){
                 e.printStackTrace()
             }
         }
+
+        mImageString = getStringImage(bitmap!!)
     }
 
     fun dispatchGalleryIntent(){
@@ -180,5 +276,31 @@ class CreateReportActivity : AppCompatActivity() {
         var image = File.createTempFile(imageName, ".jpg", storageDir)
         currentPath = image.absolutePath
         return image
+    }
+
+    private fun getBitmapFromUri(uri:Uri){
+//                transform image to bitmap
+        if(Build.VERSION.SDK_INT < 28) {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri)
+        } else {
+            val source = ImageDecoder.createSource(this.contentResolver, uri)
+            bitmap = ImageDecoder.decodeBitmap(source)
+        }
+    }
+
+    fun getStringImage(bitmap: Bitmap):String{
+        var baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        var b:ByteArray = baos.toByteArray()
+        Log.i("ImageByteArray", b.toString())
+        var temp:String = Base64.encodeToString(b, Base64.DEFAULT)
+        Log.i("ImageString", temp)
+
+        return temp
+    }
+    companion object {
+        var webUrl:String = "http://apt-team7.appspot.com/"
+        lateinit var currActivity: AppCompatActivity
+        lateinit var reportContentList: JSONArray
     }
 }

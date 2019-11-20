@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun signOut(){
+        Log.i("signOut", "IN!")
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(this, object:OnCompleteListener<Void>{
                 override fun onComplete(p0: Task<Void>) {
@@ -88,6 +89,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         Log.d("debug", requestCode.toString() + " vs " + RC_SIGN_IN.toString() + ", compare:" + (requestCode == RC_SIGN_IN).toString())
         if (requestCode == RC_SIGN_IN) {
             val task :Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
