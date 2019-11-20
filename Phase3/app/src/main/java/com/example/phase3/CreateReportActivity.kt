@@ -36,7 +36,7 @@ class CreateReportActivity : AppCompatActivity() {
     val TAKE_PICTURE = 1
     val SELECT_PICTURE = 2
     val PERMISSION_REQUEST = 3
-    private val UPLOAD_URL = "https://explorexas.appspot.com/create_report"
+    private val UPLOAD_URL = "http://apt-team7.appspot.com/create_report"
     private var mClientAccountEmail: String? = null
     private var mTitle: EditText? = null
     private var mPlace: EditText? = null
