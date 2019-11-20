@@ -9,13 +9,14 @@ import SearchReport from "./SearchRpt"
 import SearchResult from "./SearchRlt"
 import ViewReports from"./ViewRpt"
 import Template from "./Template";
+import CreateReport from './CreateReport';
 
 const AppNavigator = createStackNavigator({
     Login: Login,
     ViewAll: ViewAllCategories,
     ViewCat: ViewCategory,
     ViewRpt: ViewReports,
-    Create: Template,
+    Create: CreateReport,
     Map: Map,
     Search: SearchReport,
     SearchRlt: SearchResult,
