@@ -1,6 +1,7 @@
 import gridfs
 from bson.objectid import ObjectId
 import pymongo
+from datetime import datetime 
 
 DATABASE_NAME = "Explorexas"
 
@@ -11,10 +12,11 @@ class ImageAPI():
 
     def add_image(self, image):
         fs = gridfs.GridFS(self.db)
-        f = image.imgData.filename.split('.')
+        # TODO some image data don't have filename attribute
+
         result = fs.put(image.imgData, 
-                        content_type=f[1], 
-                        imgName=f[0],
+                        content_type='jpg', 
+                        imgName=str(datetime.now()),
                         userId=image.userId)
         return result
 

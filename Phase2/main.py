@@ -14,11 +14,12 @@ from lib import Tag, TagAPI
 from flask import make_response
 from werkzeug.datastructures import FileStorage
 from flask_mobility import Mobility
+import base64
 
 app = Flask(__name__)
 Mobility(app)
 # datastore_client = datastore.Client()
-# firebase_request_adapter = requests.Request()
+firebase_request_adapter = requests.Request()
 claims = None
 
 
@@ -92,7 +93,56 @@ def create_category():
 
 @app.route('/create_report', methods=['POST'])
 def create_report():
+    
+    if request.MOBILE:
+        repController = ReportAPI.ReportAPI()
+        catController = CategoryAPI.CategoryAPI()
+        tagController = TagAPI.TagAPI()
+        imageController = ImageAPI.ImageAPI()
+
+        userId = request.form['email']           
+        title = request.form['title']
+        placeName = request.form['placeName']
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
+        coordinates = [latitude, longitude]
+        categoryName = request.form['categoryName']
+        categoryId = catController.get_cat_by_name(categoryName).cat_id
+        review = request.form['review']
+        rating = request.form['rating']
+        timeStamp = datetime.now()
+        tagName = request.form['tagName']
+        tag = Tag.Tag(tagName)
+        tagId = tagController.insert(tag)
+    # Decode image from string to byte(bitmap)
+        bmp = base64.b64decode(request.form['file'])
+        filename = '/tmp/' + str(datetime.now()) + ".png"
+        with open(filename, 'wb+') as f:
+            f.write(bmp)
+            image = Image.Image(f.read(), userId)
+        imgId = imageController.add_image(image)
+
+        report = Report.Report( None,
+                                userId, 
+                                title, 
+                                placeName, 
+                                coordinates,  
+                                categoryId, 
+                                imgId,
+                                tagId, 
+                                review, 
+                                rating, 
+                                timeStamp)
+        reportId = repController.add_report(report).inserted_id
+        imageController.close_connection()
+        repController.close_connection()
+        tagController.close_connection()
+        catController.close_connection()
+        return jsonify({"status":"success", "htmlimage":str(bmp)})
+
+
     # Report ID and Image ID need to be unique
+
     id_token = request.cookies.get("token")
     if id_token:
         try:
@@ -136,6 +186,7 @@ def create_report():
             reportDisplay["tagId"] = tagController.get(reportDisplay["tagId"]).tagName
             catController = CategoryAPI.CategoryAPI()
             categoryName = catController.get(reportDisplay["categoryId"]).catName
+            imageController.close_connection()
             repController.close_connection()
             tagController.close_connection()
             catController.close_connection()
