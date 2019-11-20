@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Platform, FlatList, Alert, PermissionsAndroid} from 'react-native';
+import { StyleSheet, Text, View, Image, Platform, FlatList, Alert, PermissionsAndroid, Dimensions} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import MapView, { PROVIDER_GOOGLE, Marker, Callout, Image, Circle } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import MapView, { PROVIDER_GOOGLE, Marker, Callout, Circle } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import Carousel from 'react-native-snap-carousel';
+
 
 export async function request_location_runtime_permission() {
 
@@ -45,11 +47,13 @@ export default class Map extends Component {
      constructor(){
         super();
         this.state = {
+            markers: [],
             latitude: 0,
             longitude: 0,
             ready : false,
             isLoading : true,
-            dataSource : []
+            dataSource : [],
+            testData: [{"categoryName": "Test"},{"categoryName":"Another"}]
         };
      }
 
@@ -76,7 +80,7 @@ export default class Map extends Component {
       return fetch('http://apt-team7.appspot.com/findReports', {
         method: "GET",
         headers:{
-            'User-agent': Platform.OS
+            'User-agent': 'android'
         }
       })
       .then(function(res){
@@ -111,11 +115,37 @@ export default class Map extends Component {
       });
     }
 
+    onCarouselItemChange = (index) => {
+        let location = this.state.dataSource[index];
+
+        this._map.animateToRegion({
+            latitude: parseFloat(location.latitude),
+            longitude: parseFloat(location.longitude),
+            latitudeDelta: 0.09,
+            longitudeDelta: 0.035
+        })
+
+        this.state.markers[index].showCallout()
+    }
+
+    renderCarouselItem = ({item, index}) => {
+    return(
+        <View style={styles.cardContainer}>
+            <Text style={styles.cardTitle}> {item.title} </Text>
+            <Text style={styles.cardText}> Category: {item.categoryName} </Text>
+            <Text style={styles.cardText}> Place: {item.placeName} </Text>
+            <Image style={styles.cardImage} source={{uri: 'http://apt-team7.appspot.com/images/'+ item.imgId}}/>
+        </View>
+    )
+    }
+
     render(){
         return(
+        <View style={styles.container}>
              <MapView
                    provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                    style={styles.map}
+                   ref={map => this._map=map}
                    region={{
                        latitude: this.state.latitude,
                        longitude: this.state.longitude,
@@ -129,23 +159,36 @@ export default class Map extends Component {
                    />
                    {this.state.ready==true && (
                        <Marker
-                              coordinate={{ latitude:this.state.latitude, longitude:this.state.longitude }}
-                              title={'You Are Here'}>
+                              coordinate={{ latitude:this.state.latitude, longitude:this.state.longitude }}>
+                              <Callout>
+                                <Text>You Are Here!</Text>
+                              </Callout>
                        </Marker>)
                    }
-                   {this.state.dataSource.map(marker => (
-                       <Marker
-                          coordinate = {{ latitude: parseFloat(marker.latitude), longitude: parseFloat(marker.longitude) }}
-                          title = {marker.title}
-                          description = {marker.review}
-                          onPress={() => {this._onMarkerPress(marker.title, marker.userName, marker.placeName,
-                                                              marker.categoryName, marker.imgId, marker.tag,
-                                                              marker.review, marker.rating, marker.timeStamp);}}
-                       >
-                       </Marker>
+                   {this.state.dataSource.map((marker, index) => (
+                           <Marker
+                              key={marker.reportId}
+                              coordinate = {{ latitude: parseFloat(marker.latitude), longitude: parseFloat(marker.longitude) }}
+                              title = {marker.title}
+                              ref={ref => this.state.markers[index] = ref}>
+                              <Callout onPress={() => {this._onMarkerPress(marker.title, marker.userName, marker.placeName,
+                                                                  marker.categoryName, marker.imgId, marker.tag,
+                                                                  marker.review, marker.rating, marker.timeStamp);}}>
+                                  <Text>{marker.review}</Text>
+                              </Callout>
+                           </Marker>
                    ))}
              </MapView>
-
+             <Carousel
+                       ref={(c) => { this._carousel = c; }}
+                       data={this.state.dataSource}
+                       containerCustomStyle={styles.carousel}
+                       renderItem={this.renderCarouselItem}
+                       sliderWidth={Dimensions.get('window').width}
+                       itemWidth={300}
+                       onSnapToItem={(index)=> this.onCarouselItemChange(index)}
+             />
+        </View>
         );
     }
 }
@@ -153,13 +196,43 @@ export default class Map extends Component {
 const styles = StyleSheet.create({
      container: {
        ...StyleSheet.absoluteFillObject,
-       height: 400,
-       width: 400,
+//       height: 400,
+       width: 450,
        justifyContent: 'flex-end',
        alignItems: 'center',
      },
      map:{
        height:'100%',
        ...StyleSheet.absoluteFillObject,
+     },
+     carousel: {
+        position: 'absolute',
+        bottom: 0,
+        marginBottom: 48
+     },
+     cardContainer: {
+        backgroundColor: 'rgba(0,0,0,0.8)',
+        height: 220,
+        width: 300,
+        padding: 12,
+        borderRadius: 22
+     },
+     cardTitle: {
+        color: 'white',
+        fontSize: 20,
+        alignSelf: 'center'
+     },
+     cardText: {
+        color: 'white',
+        fontSize: 16,
+        alignSelf: 'center'
+     },
+     cardImage: {
+        height: 120,
+        width: 300,
+        bottom: 0,
+        position: 'absolute',
+        borderBottomLeftRadius: 22,
+        borderBottomRightRadius: 22
      }
 });
