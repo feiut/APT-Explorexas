@@ -48,6 +48,10 @@ export default class CreateReport extends Component {
     }
   }
 
+  toHome = () =>{
+    this.props.navigation.navigate('Home');
+  }
+
   chooseImage = () => {
     let options = {
       title: 'Select Image',
@@ -248,11 +252,11 @@ export default class CreateReport extends Component {
         </View>
         <View style={styles.container_submit}>
 
-          <TouchableOpacity style={styles.submit_btn}  >
+          <TouchableOpacity onPress={this.toHome.bind(this)} style={styles.submit_btn}  >
             <Text style={styles.btnText}>Submit</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.submit_btn, styles.cancel_btn]}  >
+          <TouchableOpacity onPress={this.toHome.bind(this)} style={[styles.submit_btn, styles.cancel_btn]}  >
             <Text style={styles.btnText}>Cancel</Text>
           </TouchableOpacity>
         </View>
