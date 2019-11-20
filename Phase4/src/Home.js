@@ -41,13 +41,17 @@ export default class Home extends React.Component<Props> {
  {
     return(
        <View style = {styles.container}>
+            <Text style={styles.title}> Hello! {this.props.navigation.getParam('username')} </Text>
+            <Text></Text>
+            <Text></Text>
+            <Text></Text>
             <Button onPress={this.openCategories.bind(this)} title="ALL Categories"></Button>
             <Text></Text>
-            <Button onPress={this.createReport.bind(this)} title="Create A NEW Report"></Button>
+            <Button onPress={this.createReport.bind(this)} title="Create A New Report"></Button>
             <Text></Text>
-            <Button onPress={this.viewOnMap.bind(this)} title="View REPORTS on Map"></Button>
+            <Button onPress={this.viewOnMap.bind(this)} title="View Reports on Map"></Button>
             <Text></Text>
-            <Button onPress={this.search.bind(this)} title="Search TAGS"></Button>
+            <Button onPress={this.search.bind(this)} title="Search Tags"></Button>
             <Text></Text>
             <Button onPress={this.signOut.bind(this)} title="Sign out"></Button>
        </View>
@@ -60,6 +64,11 @@ const styles = StyleSheet.create({
        bottom:0,
        height: 400,
        justifyContent: 'flex-end',
+     },
+     title: {
+        color: 'black',
+        fontSize: 20,
+        alignSelf: 'center'
      }
 });
 

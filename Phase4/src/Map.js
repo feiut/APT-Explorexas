@@ -155,11 +155,12 @@ export default class Map extends Component {
                   <Circle
                       center={{  latitude: this.state.latitude, longitude: this.state.longitude }}
                       radius = {3000}
-                      fillColor={'rgba(200, 300, 200, 0.3)'}
+                      fillColor={'rgba(200, 300, 200, 0.5)'}
                    />
                    {this.state.ready==true && (
                        <Marker
-                              coordinate={{ latitude:this.state.latitude, longitude:this.state.longitude }}>
+                              coordinate={{ latitude:this.state.latitude, longitude:this.state.longitude }}
+                              pinColor={'blue'}>
                               <Callout>
                                 <Text>You Are Here!</Text>
                               </Callout>
