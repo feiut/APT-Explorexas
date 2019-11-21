@@ -21,6 +21,7 @@ const AppNavigator = createStackNavigator({
     Search: SearchReport,
     SearchRlt: SearchResult,
     SignOut: Template,
+    PersonInfo: PersonInfo,
     Home: Home
   }, {
     initialRouteName: "Login"

@@ -26,7 +26,7 @@ export default class Home extends React.Component<Props> {
   }
 
   personalInfo(){
-    this.props.navigation.navigate('Search');
+    this.props.navigation.navigate('PersonInfo');
   }
 
   signOut = async () => {
