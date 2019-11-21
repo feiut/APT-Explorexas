@@ -1,5 +1,5 @@
 import React from 'react';
-import { Share, Text, View, Image, ScrollView, Platform, Button } from 'react-native';
+import { Share, Text, View, Image, ScrollView, Platform, Button, StyleSheet, Linking } from 'react-native';
 
 export default class ViewReports extends React.Component<Props> {
  static navigationOptions =
@@ -10,8 +10,10 @@ export default class ViewReports extends React.Component<Props> {
  onShare = async() => {
     const { navigation } = this.props;
     var reportId = navigation.getParam('reportId','Others');
+    var placeName = navigation.getParam('placeName', 'Others');
+ 	var categoryName = navigation.getParam('categoryName', 'Others');
     const result = await Share.share({
-        title: 'A Great Post Shared via Explorexas',
+        title: 'A Great Post About ' + categoryName +' in ' + placeName + ' Shared via Explorexas',
         message: 'This is a great post in Explorexas, and you should definitely check this out: https://apt-team7.appspot.com/reports/'+reportId,
     });
     console.log(result);
@@ -24,9 +26,15 @@ export default class ViewReports extends React.Component<Props> {
     }else if(result.action === Share.dismissedAction){
         alert("Share dismissed")
     }
- }
+ };
 
- 
+// onLinkToWhatsapp = async() => {
+//    const { navigation } = this.props;
+//    var reportId = navigation.getParam('reportId','Others');
+//    var text = 'This is a great post in Explorexas, and you should definitely check this out: https://apt-team7.appspot.com/reports/'+reportId;
+//    Linking.openURL('whatsapp://send?text='+text);
+// }
+
  render()
  {
  	const { navigation } = this.props;
@@ -40,7 +48,7 @@ export default class ViewReports extends React.Component<Props> {
  	var rating = navigation.getParam('rating', 'Others');
  	var timeStamp = navigation.getParam('timeStamp', 'Others');
  	var reportId = navigation.getParam('reportId','Others');
- 	console.log(title, userName, categoryName, rating,reportId)
+ 	console.log(title, userName, categoryName, rating, reportId)
 
     return(
       <View style={{flex:1, flexDirection: 'column'}}>
@@ -73,12 +81,17 @@ export default class ViewReports extends React.Component<Props> {
           	<Text style={{fontStyle:'italic', fontSize: 16, fontWeight: 'bold'}}>Time</Text>
           	<Text style={{fontSize: 16}}>{timeStamp}</Text>
           </View>
-          <View>
-            <Button onPress={this.onShare} title={'Share via Message'}> Share via Message</Button>
-          </View>
         </View>
         </ScrollView>
+        <Button onPress={this.onShare} title={'Share This Post'} style={styles.shareButton}> Share This Post</Button>
       </View>
     );
  }
 }
+const styles = StyleSheet.create({
+    shareButton: {
+        position: 'absolute',
+        bottom: 0,
+        alignItems: 'center',
+    }
+});
