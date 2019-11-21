@@ -28,7 +28,8 @@ export default class Login extends React.Component {
       console.log(userInfo);
       this.props.navigation.navigate('Home', {
         user: userInfo,
-        username: userInfo.user.name
+        username: userInfo.user.name,
+        email: userInfo.user.email
       });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {

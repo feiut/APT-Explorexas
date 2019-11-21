@@ -25,6 +25,10 @@ export default class Home extends React.Component<Props> {
     this.props.navigation.navigate('Search');
   }
 
+  personalInfo(){
+    this.props.navigation.navigate('Search');
+  }
+
   signOut = async () => {
     try {
       await GoogleSignin.revokeAccess();
@@ -42,9 +46,13 @@ export default class Home extends React.Component<Props> {
     return(
        <View style = {styles.container}>
             <Text style={styles.title}> Hello! {this.props.navigation.getParam('username')} </Text>
-            <Text></Text>
-            <Text></Text>
-            <Text></Text>
+            <Text/>
+            <Text/>
+            <Text/>
+            <Text/>
+            <Text/>
+            <Text/>
+            <Text/>
             <Button onPress={this.openCategories.bind(this)} title="ALL Categories"></Button>
             <Text></Text>
             <Button onPress={this.createReport.bind(this)} title="Create A New Report"></Button>
@@ -52,6 +60,8 @@ export default class Home extends React.Component<Props> {
             <Button onPress={this.viewOnMap.bind(this)} title="View Reports on Map"></Button>
             <Text></Text>
             <Button onPress={this.search.bind(this)} title="Search Tags"></Button>
+            <Text></Text>
+            <Button onPress={this.personalInfo.bind(this)} title={this.props.navigation.getParam('email')}></Button>
             <Text></Text>
             <Button onPress={this.signOut.bind(this)} title="Sign out"></Button>
        </View>
@@ -61,8 +71,7 @@ export default class Home extends React.Component<Props> {
 const styles = StyleSheet.create({
      container:{
        ...StyleSheet.absoluteFillObject,
-       bottom:0,
-       height: 400,
+       bottom: 0,
        justifyContent: 'flex-end',
      },
      title: {
