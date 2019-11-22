@@ -14,7 +14,7 @@ export default class Home extends React.Component<Props> {
   }
 
   createReport() {
-    this.props.navigation.navigate('Create');
+    this.props.navigation.navigate('Create',{user : this.props.navigation.getParam('user')});
   }
 
   viewOnMap() {

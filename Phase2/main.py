@@ -197,6 +197,54 @@ def create_report():
             print(error_message)
     return render_template('nologin.html')
 
+@app.route('/mobile_create_report', methods=['POST'])
+def mobileCreateReport():
+    try:
+        repController = ReportAPI.ReportAPI()
+        catController = CategoryAPI.CategoryAPI()
+        tagController = TagAPI.TagAPI()
+        imageController = ImageAPI.ImageAPI()
+        userId = request.form['email']            
+        title = request.form['title']
+        placeName = request.form['placeName']
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
+        coordinates = [latitude, longitude]
+        categoryName = request.form['categoryName']
+        categoryId = catController.get_cat_by_name(categoryName).cat_id
+        review = request.form['review']
+        rating = request.form['rating']
+        timeStamp = datetime.now()
+        tagName = request.form['tagName']
+        tag = Tag.Tag(tagName)
+        tagId = tagController.insert(tag)
+        pic = request.files['file']
+        image = Image.Image(pic, userId)
+        imgId = imageController.add_image(image)
+        report = Report.Report( None,
+                                userId, 
+                                title, 
+                                placeName, 
+                                coordinates,  
+                                categoryId, 
+                                imgId,
+                                tagId, 
+                                review, 
+                                rating, 
+                                timeStamp)
+        # image = Image.Image(pic, imgId, userId)
+        reportId = repController.add_report(report).inserted_id
+        # to display tag name instead of tag id in reports.html
+        imageController.close_connection()
+        repController.close_connection()
+        tagController.close_connection()
+        catController.close_connection()
+        return jsonify({"status":"success"})
+    except ValueError as exc:
+        error_message = str(exc)
+        print(error_message)
+        return jsonify({"status":"failed to create report"})
+    return jsonify({"status":"failed to create report"})
 
 @app.route('/createReport')
 def createReport():
@@ -481,7 +529,6 @@ def root(mobile):
         user_data=claims, error_message=error_message, categories=categories, now = str(datetime.utcnow()))
     else:
         return jsonify([cat.toJSON() for cat in categories])
-
 
 @app.route('/findReports')
 def find_reports_for_map():
