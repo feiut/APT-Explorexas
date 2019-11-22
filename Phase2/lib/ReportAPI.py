@@ -222,6 +222,24 @@ class ReportAPI():
             return reportContentList
         else:
             return None
+
+    def list_by_userId(self, userIds):
+        results = self.collection.find({'userId': {'$in': userIds}})
+        report_list = []
+        for result in results:
+            report = Report.Report(result["_id"],
+                            result["userId"],
+                            result["title"],
+                            result["placeName"],
+                            result["coordinates"],
+                            result["categoryId"],
+                            result["imgId"],
+                            result["tagId"],
+                            result["review"],
+                            result["rating"],
+                            result["timeStamp"])
+            report_list.append(report)
+        return report_list
             
     def close_connection(self):
         self.client.close()

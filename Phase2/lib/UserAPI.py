@@ -60,3 +60,6 @@ class UserAPI():
     #[return] list of user object
     def subscribe(self, userId, authorId):
         return self.collection.update_one({ "userId": userId}, {'$push': {'subscription': authorId}})
+    
+    def unsubscribe(self, userId, authorId):
+        return self.collection.update_one({ "userId": userId}, {'$pull': {'subscription': authorId}})

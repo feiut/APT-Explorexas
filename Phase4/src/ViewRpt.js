@@ -1,11 +1,46 @@
 import React from 'react';
 import { Share, Text, View, Image, ScrollView, Platform, Button, StyleSheet, Linking } from 'react-native';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import { ActivityIndicator} from 'react-native';
 
 export default class ViewReports extends React.Component<Props> {
  static navigationOptions =
  {
     title: 'View Report',
  };
+
+  constructor(props){
+    super(props);
+    this.state ={isLoading: true, subscribed: false};
+  }
+
+  async componentDidMount() {
+    var that = this;
+    var userInfo = await GoogleSignin.signInSilently();
+    var userId = userInfo.user.email;
+
+    const url = 'https://arctic-sound-254923.appspot.com/mobile/get_subscriptions/' + userId;
+    const author = this.props.navigation.getParam('userId', 'Others')
+    console.log(url)
+    return fetch(url, {
+        method: "GET"
+      })
+      .then(function(res){
+        res.json().then(function(data) {
+            that.setState({
+                isLoading: false,
+                userId: userId,
+                subscribed:  (data.some(item => author === item)),
+              }, function(){
+      
+              });
+        }).catch(function(error) {
+          console.log('Data failed', error)
+        });
+    }).catch(function(error){
+        console.log('request failed', error)
+    })
+  }
 
  onShare = async() => {
     const { navigation } = this.props;
@@ -28,6 +63,23 @@ export default class ViewReports extends React.Component<Props> {
     }
  };
 
+ onSubscribe() {
+     var that = this;
+     console.log("this.state=", this.state);
+    var userId = this.state.userId;
+    var operation = this.state.subscribed ? "unsubscribe" : "subscribe";
+    var url = 'https://arctic-sound-254923.appspot.com/mobile/' + operation + '/' + userId + '/' + this.props.navigation.getParam('userId', 'Others')
+    console.log(url);
+    fetch(url, {
+        method: "GET"
+      })
+      .then(function(res){
+        that.state.subscribed = !that.state.subscribed;
+        that.forceUpdate();
+    }).catch(function(error){
+        console.log('request failed', error)
+    })
+}
 // onLinkToWhatsapp = async() => {
 //    const { navigation } = this.props;
 //    var reportId = navigation.getParam('reportId','Others');
@@ -37,7 +89,9 @@ export default class ViewReports extends React.Component<Props> {
 
  render()
  {
- 	const { navigation } = this.props;
+     const { navigation } = this.props;
+     var subscribed = this.state.subscribed;
+     console.log("subscribed:", subscribed);
  	var title = navigation.getParam('title', 'Others');
  	var userName = navigation.getParam('userName', 'Others');
  	var placeName = navigation.getParam('placeName', 'Others');
@@ -48,7 +102,17 @@ export default class ViewReports extends React.Component<Props> {
  	var rating = navigation.getParam('rating', 'Others');
  	var timeStamp = navigation.getParam('timeStamp', 'Others');
  	var reportId = navigation.getParam('reportId','Others');
- 	console.log(title, userName, categoryName, rating, reportId)
+     console.log(title, userName, categoryName, rating, reportId);
+     console.log(this.state.isLoading)
+     if(this.state.isLoading){
+        return(
+          <View style={{flex:1, justifyContent:'center'}}>
+            <View style={{flex: 1, padding: 20}}>
+              <ActivityIndicator/>
+            </View>
+          </View>
+        )
+      }
 
     return(
       <View style={{flex:1, flexDirection: 'column'}}>
@@ -84,6 +148,8 @@ export default class ViewReports extends React.Component<Props> {
         </View>
         </ScrollView>
         <Button onPress={this.onShare} title={'Share This Post'} style={styles.shareButton}> Share This Post</Button>
+        <Text></Text>
+        <Button id="subscribe" onPress={this.onSubscribe.bind(this)} title={subscribed ? "Unsubscribe" : "Subscribe"} style={styles.shareButton}></Button>
       </View>
     );
  }

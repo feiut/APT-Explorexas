@@ -556,6 +556,27 @@ def subscribe(userId, authorId):
     except Exception as exc:
         return jsonify({"error": str(exc)})
 
+@app.route('/mobile/unsubscribe/<userId>/<authorId>')
+def unsubscribe(userId, authorId):
+    try:
+        user_controller = UserAPI.UserAPI()
+        user_controller.unsubscribe(userId, authorId)
+        user = user_controller.get(userId)
+        return jsonify(user.subscription)
+    except Exception as exc:
+        return jsonify({"error": str(exc)})
+
+@app.route('/mobile/list_subscribed_reports/<userId>')
+def list_subscribed_reports(userId):
+    try:
+        user_controller = UserAPI.UserAPI()
+        subscribed = user_controller.get(userId).subscription
+        repController = ReportAPI.ReportAPI()
+        reportContentList = repController.list_by_userId(subscribed)
+        return jsonify([rep.toJSON() for rep in reportContentList])
+    except Exception as exc:
+        return jsonify({"error": str(exc)})
+
 # Connect to MongoDB database
 # def get_db_collection():
 #     client = pymongo.MongoClient(

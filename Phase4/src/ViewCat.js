@@ -48,11 +48,12 @@ export default class ViewCategory extends React.Component<Props> {
 	}
 
 
-	_onPressButton(title, userName, placeName, 
+	_onPressButton(title, userId, userName, placeName, 
 		categoryName, imgId, tag, review, rating, timeStamp, reportId) {
       console.log("View Report", title, userName, reportId);
       this.props.navigation.navigate('ViewRpt', {
-      	title: title,
+				title: title,
+				userId: userId,
       	userName: userName,
       	placeName: placeName,
         categoryName: categoryName,
@@ -84,7 +85,7 @@ export default class ViewCategory extends React.Component<Props> {
             keyExtractor={(item, index) => item.imgId}
             renderItem={
               ({item}) => 
-              <TouchableHighlight onPress={this._onPressButton.bind(this, item.title, item.userName, item.placeName, item.categoryName, item.imgId, item.tag, item.review, item.rating, item.timeStamp, item.reportId)} underlayColor="white">
+              <TouchableHighlight onPress={this._onPressButton.bind(this, item.title, item.userId, item.userName, item.placeName, item.categoryName, item.imgId, item.tag, item.review, item.rating, item.timeStamp, item.reportId)} underlayColor="white">
               <View style={{flex:1, flexDirection: 'row', height: 90, margin:5}} onPress={this._onPressButton.bind(this)}>
                 <Image source={{uri: 'http://apt-team7.appspot.com/images/'+ item.imgId}} style={{flex:1}} />
                 <View style={{flex:2.5, marginLeft:10}}>
