@@ -32,7 +32,12 @@ class UserAPI():
             print("The user does not exist")
             return None
         else:
-            user = User.User(srchRlt["userId"], srchRlt["userName"])
+            subscription = []
+            try:
+                subscription = srchRlt["subscription"]
+            except Exception as exc:
+                pass
+            user = User.User(srchRlt["userId"], srchRlt["userName"], subscription)
             return user
 
     #[input]  None
@@ -41,7 +46,17 @@ class UserAPI():
         results = self.collection.find({})
         users = []
         for result in results:
-            user = User.User(result["userId"], result["userName"])
+            subscription = []
+            try:
+                subscription = result["subscription"]
+            except Exception as exc:
+                pass
+
+            user = User.User(result["userId"], result["userName"], subscription)
             users.append(user)
         return users
 
+    #[input]  None
+    #[return] list of user object
+    def subscribe(self, userId, authorId):
+        return self.collection.update_one({ "userId": userId}, {'$push': {'subscription': authorId}})

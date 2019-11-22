@@ -181,6 +181,7 @@ class ReportAPI():
                 catName = catAPI.get(catId).catName
                 tagName = tagAPI.get(report.tagId).tagName
                 reportContent = {"reportId": str(report.reportId),
+                                "userId": report.userId, 
                                  "userName": userName, 
                                  "placeName": report.placeName, 
                                  "coordinates": report.coordinates, 

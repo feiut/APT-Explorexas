@@ -537,6 +537,25 @@ def find_reports_for_map():
     rep_controller.close_connection()
     return jsonify([rep for rep in reports])
 
+@app.route('/mobile/get_subscriptions/<userId>')
+def get_subscriptions(userId):
+    try:
+        user_controller = UserAPI.UserAPI()
+        user = user_controller.get(userId)
+        return jsonify(user.subscription)
+    except Exception as exc:
+        return jsonify({"error": str(exc)})
+
+@app.route('/mobile/subscribe/<userId>/<authorId>')
+def subscribe(userId, authorId):
+    try:
+        user_controller = UserAPI.UserAPI()
+        user_controller.subscribe(userId, authorId)
+        user = user_controller.get(userId)
+        return jsonify(user.subscription)
+    except Exception as exc:
+        return jsonify({"error": str(exc)})
+
 # Connect to MongoDB database
 # def get_db_collection():
 #     client = pymongo.MongoClient(
