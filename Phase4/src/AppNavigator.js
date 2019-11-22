@@ -10,6 +10,7 @@ import SearchResult from "./SearchRlt"
 import ViewReports from"./ViewRpt"
 import Template from "./Template";
 import CreateReport from './CreateReport';
+import PersonInfo from './PersonInfo';
 
 const AppNavigator = createStackNavigator({
     Login: Login,

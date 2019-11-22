@@ -486,6 +486,14 @@ def profile():
             return render_template('profile.html', reports=reports, user_data=claims)
 
 
+@app.route('/mobileProfile/<user_id>')
+def mobileProfile(user_id):
+    repController = ReportAPI.ReportAPI()
+    reports = repController.mobile_find_by_userId(user_id)
+    reports.sort(key=lambda rpt:rpt['timeStamp'], reverse=True)
+    repController.close_connection()
+    return jsonify(reports)
+
 @app.route('/')
 def desktop_root():
     return root(False)

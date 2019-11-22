@@ -106,6 +106,33 @@ class ReportAPI():
         result = reports.delete_one({"_id": reportId})
         return result
 
+    def mobile_find_by_userId(self, userId):
+        reports = self.collection
+        query = {'userId': userId}
+        results = reports.find(query)
+        reportList = []
+        tagAPI = TagAPI.TagAPI()
+        userAPI = UserAPI.UserAPI()
+        catAPI = CategoryAPI.CategoryAPI()
+        for report in results:
+            userName = userAPI.get(userId).userName
+            catName = catAPI.get(report['categoryId']).catName
+            tagName = tagAPI.get(report['tagId']).tagName
+            reportContent = {"reportId": str(report['_id']),
+                             "userId": userId,
+                             "userName": userName,
+                             "placeName": report['placeName'],
+                             "coordinates": report['coordinates'],
+                             "categoryName": catName,
+                             "imgId": str(report['imgId']),
+                             "tag": tagName,
+                             "review": report['review'],
+                             "rating": report['rating'],
+                             "timeStamp": report['timeStamp'],
+                             "title": report['title']}
+            reportList.append(reportContent)
+        return reportList
+
     def find_by_userId(self, userId):
         reports = self.collection
         query = {'userId': userId}
@@ -172,7 +199,6 @@ class ReportAPI():
         tagAPI = TagAPI.TagAPI()
         userAPI = UserAPI.UserAPI()
         catAPI = CategoryAPI.CategoryAPI()
-
         reportContentList = []
         reportList = self.find_by_catId(catId)
         if len(reportList) > 0:

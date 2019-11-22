@@ -32,7 +32,6 @@ export default class ViewCategory extends React.Component<Props> {
 	  .then(function(res){
 	    res.json().then(function(data) {
 	      console.log('request succeeded with JSON response', data)
-
 	      that.setState({
 	        isLoading: false,
 	        dataSource: data,
