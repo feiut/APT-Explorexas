@@ -1,11 +1,12 @@
 import React from 'react';
 import { FlatList, ActivityIndicator, Text, View, Image, TouchableHighlight  } from 'react-native';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import {Platform} from 'react-native';
 
 export default class ViewCategory extends React.Component<Props> {
 	static navigationOptions = ({ navigation }) => {
 		return {
-		  title: navigation.getParam('catName', 'Others'),
+		  title: "My subscription",
 		};
 	};
 
@@ -13,17 +14,18 @@ export default class ViewCategory extends React.Component<Props> {
 	  super(props);
 	  this.state ={ isLoading: true};
       //this.web = 'http://explore-texas-web.appspot.com';
-      this.web = 'http://apt-team7.appspot.com';
+      this.web = 'http://arctic-sound-254923.appspot.com';
 	}
 
-	componentDidMount(){
-		var that = this; 
-  		const { navigation } = this.props;
-		var cat_Id = navigation.getParam('catId', '5dab50f93763c3146ac201b9');
-		var cat_Name = navigation.getParam('catName', 'Others');
-		console.log(cat_Id, cat_Name);
+    async componentDidMount() {
+        var that = this;
+        var userInfo = await GoogleSignin.signInSilently();
+        var userId = userInfo.user.email;
+          const { navigation } = this.props;
+          var url = that.web+'/mobile/list_subscribed_reports/'+userId
+          console.log(url);
 
-	  return fetch(that.web+'/viewCategoryPost/'+cat_Id, {
+	  return fetch(url, {
 	    method: "GET",
 	    headers: {
     		'User-agent': 'android'
@@ -31,7 +33,8 @@ export default class ViewCategory extends React.Component<Props> {
 	  })
 	  .then(function(res){
 	    res.json().then(function(data) {
-	      console.log('request succeeded with JSON response', data)
+	      //console.log('request succeeded with JSON response', data)
+
 	      that.setState({
 	        isLoading: false,
 	        dataSource: data,

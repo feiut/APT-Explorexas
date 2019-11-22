@@ -26,7 +26,12 @@ export default class Home extends React.Component<Props> {
   }
 
   personalInfo(){
-    this.props.navigation.navigate('PersonInfo');
+    this.props.navigation.navigate('PersonInfo',{username: this.props.navigation.getParam('username'),
+                                                 email: this.props.navigation.getParam('email')});
+  }
+
+  subscription(){
+    this.props.navigation.navigate('Subscription');
   }
 
   signOut = async () => {
@@ -62,6 +67,8 @@ export default class Home extends React.Component<Props> {
             <Button onPress={this.search.bind(this)} title="Search Tags"></Button>
             <Text></Text>
             <Button onPress={this.personalInfo.bind(this)} title={this.props.navigation.getParam('email')}></Button>
+            <Text></Text>
+            <Button onPress={this.subscription.bind(this)} title="My subscription"></Button>
             <Text></Text>
             <Button onPress={this.signOut.bind(this)} title="Sign out"></Button>
        </View>

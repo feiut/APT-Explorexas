@@ -11,6 +11,7 @@ import ViewReports from"./ViewRpt"
 import Template from "./Template";
 import CreateReport from './CreateReport';
 import PersonInfo from './PersonInfo';
+import Subscription from './Subscription';
 
 const AppNavigator = createStackNavigator({
     Login: Login,
@@ -23,6 +24,7 @@ const AppNavigator = createStackNavigator({
     SearchRlt: SearchResult,
     SignOut: Template,
     PersonInfo: PersonInfo,
+    Subscription: Subscription,
     Home: Home
   }, {
     initialRouteName: "Login"
