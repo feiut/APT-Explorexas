@@ -9,6 +9,7 @@ import { Text,
   Image,
   TouchableOpacity,
   Alert, 
+  ActivityIndicator,
   PermissionsAndroid
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
@@ -47,6 +48,22 @@ export async function request_location_runtime_permission() {
   }
 }
 
+const createFormData = (photo, body) => {
+  const data = new FormData();
+  data.append("file", {
+    name: photo.fileName,
+    type: photo.type,
+    uri:
+      Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
+  });
+
+  Object.keys(body).forEach(key => {
+    data.append(key, body[key]);
+  });
+  console.log(data)
+  return data;
+};
+
 export default class CreateReport extends Component {
   static navigationOptions =
   {
@@ -55,7 +72,7 @@ export default class CreateReport extends Component {
   constructor(){
     super()
     this.state={
-      image: null,
+      isuploading: false,
       title: '',
       placeName: '',
       category: '',
@@ -73,7 +90,7 @@ export default class CreateReport extends Component {
     // this.url = 'https://explorexas.appspot.com/mobile_create_report'
     this.url = 'https://apt-team7.appspot.com/mobile_create_report'
   }
-  
+
   async componentDidMount() {
     Geolocation.getCurrentPosition(position => {
       var myLatitude = position.coords.latitude;
@@ -232,29 +249,19 @@ export default class CreateReport extends Component {
       alert("Please Enter a Title")
       return
     }
-    const createFormData = (photo, body) => {
-      const data = new FormData();
-      data.append("file", {
-        name: photo.fileName,
-        type: photo.type,
-        uri:
-          Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
-      });
-    
-      Object.keys(body).forEach(key => {
-        data.append(key, body[key]);
-      });
-      console.log(data)
-      return data;
-    };
-
-    // let photo = { uri: source.uri}
-    let formdata = new FormData()
-    // formdata.append("product[images_attributes[0][file]]", {uri: photo.uri, name: 'image.jpg', type: 'image/jpeg'})
+    if(this.state.rating == ''){
+      alert("Please Enter a Rating")
+      return
+    }
+    this.uploadForm()
+  }
+  
+  uploadForm = () => {
+    this.setState({ isuploading : true})
     console.log("fileName",this.state.photo.fileName)
     console.log("type",this.state.photo.type)
     console.log("uri",this.state.photo.uri)
- 
+    console.log("upload",this.state.isuploading)
     fetch(this.url, {
       method: "POST",
 	    headers: {
@@ -281,9 +288,14 @@ export default class CreateReport extends Component {
       .then(response => {
         console.log("upload succes", response);
         alert("Upload success!");
-        this.setState({ photo: null });
+        this.setState({ 
+          photo: null,
+          isuploading : false
+         });
+        console.log(this.state)
       })
       .catch(error => {
+        this.setState({ isuploading : false });
         console.log("upload error", error);
         console.log(createFormData(
           this.state.photo,
@@ -407,11 +419,13 @@ export default class CreateReport extends Component {
         </View>
         <View style={styles.container_submit}>
 
-          <TouchableOpacity onPress={this.handleUploadForm} style={styles.submit_btn}  >
-            <Text style={styles.btnText}>Submit</Text>
+          <TouchableOpacity onPress={this.handleUploadForm} style={[styles.submit_btn]} disabled={this.state.isuploading} >
+              { this.state.isuploading && <ActivityIndicator color='#ffffff' size='large'/> }
+              { this.state.isuploading && <Text style={styles.btnText}>Uploading</Text> }
+              { !this.state.isuploading && <Text style={styles.btnText}>Submit</Text> }
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.toHome.bind(this)} style={[styles.submit_btn, styles.cancel_btn]}  >
+          <TouchableOpacity onPress={this.toHome.bind(this)} style={[styles.submit_btn, styles.cancel_btn]} disabled={this.state.isuploading} >
             <Text style={styles.btnText}>Cancel</Text>
           </TouchableOpacity>
         </View>
@@ -523,6 +537,7 @@ const styles = StyleSheet.create({
     width: 280,
     height: 55,
     flex: 1,
+    flexDirection: 'row',
     backgroundColor: '#5DADE2',
     margin: 10,
     alignItems: 'center',
