@@ -21,6 +21,7 @@
     "react-native-google-signin": "^2.1.0",
     "react-native-image-picker": "^1.1.0",
     "react-native-maps": "0.26.1",
+    "react-native-push-notification": "^3.1.9",
     "react-native-share": "^2.0.0",
     "react-native-snap-carousel": "^3.8.4",
     "react-native-vector-icons": "^6.6.0",

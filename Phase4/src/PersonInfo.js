@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, FlatList, Image, TouchableHighlight, Button  } from 'react-native';
+import NotifyService from './NotifyService'
 
 export default class PersonInfo extends React.Component<Props> {
      static navigationOptions =
@@ -12,7 +13,9 @@ export default class PersonInfo extends React.Component<Props> {
           this.state = {
                 isLoading: true,
                 dataSource: [],
+                enableNotify: false,
           };
+          this.notif = new NotifyService(this.onNotify.bind(this));
      }
 
     componentDidMount(){
@@ -56,12 +59,36 @@ export default class PersonInfo extends React.Component<Props> {
       console.log("Delete Report", reportId);
     }
 
+    onNotify(notify) {
+      console.log(notify);
+      this.props.navigation.navigate('Map');
+      this.notif.scheduleNotify(10 ,"APT Notification Trial");
+  }
+
+    scheduleNotification() {
+      var enable = this.state.enableNotify;
+      if(this.state.enableNotify) {
+        this.notif.cancelAll();
+      } else {
+        this.notif.scheduleNotify(1 ,"APT Notification Trial");
+      }
+
+      this.setState({enableNotify: !enable});
+    }
+
+    cancelNotification() {
+      this.notif.cancelAll();
+    }
+
      render()
      {
+        var enblNotify = this.state.enableNotify;
+        console.log(this.state.enableNotify);
         return(
            <View style={styles.container}>
               <View style={styles.postsContainer}>
                   <Text style={styles.title}> Hello! {this.props.navigation.getParam('username')}</Text>
+                  <Button onPress={this.scheduleNotification.bind(this)} title={enblNotify ? "Disable Notification" : "Enable Notification"}></Button>
                   <Text style={styles.secondTitle}> Your Posts: </Text>
                       <FlatList
                         data={this.state.dataSource}
