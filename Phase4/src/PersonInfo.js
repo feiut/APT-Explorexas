@@ -61,9 +61,9 @@ export default class PersonInfo extends React.Component<Props> {
 
     onNotify(notify) {
       console.log(notify);
-      this.props.navigation.navigate('Map');
-      this.notif.scheduleNotify(10 ,"APT Notification Trial");
-  }
+      this.props.navigation.navigate('Map', {onlyNearby: true});
+      this.notif.scheduleNotify(10 ,"Check out the nearby reports!");
+    }
 
     scheduleNotification() {
       var enable = this.state.enableNotify;
@@ -72,7 +72,6 @@ export default class PersonInfo extends React.Component<Props> {
       } else {
         this.notif.scheduleNotify(1 ,"APT Notification Trial");
       }
-
       this.setState({enableNotify: !enable});
     }
 
@@ -83,7 +82,6 @@ export default class PersonInfo extends React.Component<Props> {
      render()
      {
         var enblNotify = this.state.enableNotify;
-        console.log(this.state.enableNotify);
         return(
            <View style={styles.container}>
               <View style={styles.postsContainer}>

@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, Platform, FlatList, Alert, PermissionsAn
 import Geolocation from 'react-native-geolocation-service';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout, Circle } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import Carousel from 'react-native-snap-carousel';
+import { getDistance } from 'geolib';
 
 
 export async function request_location_runtime_permission() {
@@ -76,28 +77,69 @@ export default class Map extends Component {
       error => Alert.alert(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
+      const { navigation } = that.props;
+      var onlyNearby = navigation.getParam('onlyNearby', false);
+      console.log("onlyNearby", onlyNearby);
 
-      return fetch('http://apt-team7.appspot.com/findReports', {
-        method: "GET",
-        headers:{
-            'User-agent': 'android'
-        }
-      })
-      .then(function(res){
-        res.json().then(function(data) {
-          console.log(data);
-          that.setState({
-            isLoading: false,
-            dataSource : data,
-          }, function(){
+      if(!onlyNearby) {
+        return fetch('http://apt-team7.appspot.com/findReports', {
+          method: "GET",
+          headers:{
+              'User-agent': 'android'
+          }
+        })
+        .then(function(res){
+          res.json().then(function(data) {
+            console.log(data);
+            that.setState({
+              isLoading: false,
+              dataSource : data,
+            }, function(){
+            });
+          }).catch(function(error) {
+            console.log('Map Data failed', error)
           });
-        }).catch(function(error) {
-          console.log('Map Data failed', error)
-        });
-    }).catch(function(error){
-        console.log('Map request failed', error)
-    })
-     }
+      }).catch(function(error){
+          console.log('Map request failed', error)
+      })
+      } else {
+            return fetch('http://apt-team7.appspot.com/findReports', {
+            method: "GET",
+            headers:{
+                'User-agent': 'android'
+            }
+          })
+          .then(function(res){
+            res.json().then(function(data) {
+              var nearbyData = []
+              var currPos = {
+                latitude: that.state.latitude, 
+                longitude: that.state.longitude,
+              }
+              for(var item of data) {
+                var dist = getDistance(currPos, {
+                  latitude: item.latitude,
+                  longitude: item.longitude,
+                });
+                console.log("dist", dist);
+                if (dist <= 3000) {
+                  nearbyData.push(item);
+                }
+              }
+              console.log(data);
+              that.setState({
+                isLoading: false,
+                dataSource : nearbyData,
+              }, function(){
+              });
+            }).catch(function(error) {
+              console.log('Map Data failed', error)
+            });
+        }).catch(function(error){
+            console.log('Map request failed', error)
+        })
+      }
+    }//componentDidMount
 
      _onMarkerPress(title, userName, placeName,
 		categoryName, imgId, tag, review, rating, timeStamp) {

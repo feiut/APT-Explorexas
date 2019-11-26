@@ -18,7 +18,7 @@ export default class Home extends React.Component<Props> {
   }
 
   viewOnMap() {
-    this.props.navigation.navigate('Map');
+    this.props.navigation.navigate('Map', {onlyNearby: false});
   }
 
   search() {
