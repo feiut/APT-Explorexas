@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button} from 'react-native';
+import { StyleSheet, Text, View, Button, Image} from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 
 export default class Home extends React.Component<Props> {
@@ -48,13 +48,14 @@ export default class Home extends React.Component<Props> {
 
  render()
  {
+    var img = this.props.navigation.getParam('img');
+    console.log("img url", img);
     return(
        <View style = {styles.container}>
+            <Text/>
+            <Image source={{uri: img}} style={styles.image}/>
+            <Text/>
             <Text style={styles.title}> Hello! {this.props.navigation.getParam('username')} </Text>
-            <Text/>
-            <Text/>
-            <Text/>
-            <Text/>
             <Text/>
             <Text/>
             <Text/>
@@ -85,6 +86,12 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 20,
         alignSelf: 'center'
+     },
+     image: {
+        width: 120,
+        height: 120,
+        alignSelf: 'center',
+        borderRadius: 75,
      }
 });
 
