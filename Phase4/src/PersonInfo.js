@@ -107,9 +107,6 @@ export default class PersonInfo extends React.Component<Props> {
                         }
                       />
               </View>
-              <View style={styles.subscriptionsContainer}>
-                <Text style={styles.secondTitle}> Your Subscription: </Text>
-              </View>
            </View>
         );
      }

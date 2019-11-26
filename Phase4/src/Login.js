@@ -51,6 +51,8 @@ export default class Login extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.heading}> Welcome to Explorexas! </Text>
+        <Text></Text>
+        <Text></Text>
         <GoogleSigninButton
           style={{ width: 192, height: 48 }}
           size={GoogleSigninButton.Size.Wide}
