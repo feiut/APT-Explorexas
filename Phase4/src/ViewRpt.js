@@ -80,6 +80,13 @@ export default class ViewReports extends React.Component<Props> {
         console.log('request failed', error)
     })
 }
+ onTagPress() {
+    var tag = this.props.navigation.getParam('tag', 'Others');
+    console.log('Search Report', tag)
+	this.props.navigation.navigate('SearchRlt', {
+	    keyWord: tag
+	});
+ }
 // onLinkToWhatsapp = async() => {
 //    const { navigation } = this.props;
 //    var reportId = navigation.getParam('reportId','Others');
@@ -120,7 +127,7 @@ export default class ViewReports extends React.Component<Props> {
         <ScrollView>
         <View style={{flex:3, marginLeft:10}}>
           <Text style={{color: 'blue', fontSize: 24}}>{title}</Text>
-          <Text style={{color: 'blue', fontSize: 16}}>{'#' + tag}</Text>
+          <Text style={{color: 'blue', fontSize: 16}} onPress={this.onTagPress.bind(this)}>{'#' + tag}</Text>
           <View style ={{flexDirection: 'column'}}>
           	<Text style={{fontStyle:'italic', fontSize: 16, fontWeight: 'bold'}}>User</Text>
           	<Text style={{fontSize: 16}}>{userName}</Text>

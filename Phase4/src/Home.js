@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button} from 'react-native';
+import { StyleSheet, Text, View, Button, Image, TouchableOpacity, ImageBackground} from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 
 export default class Home extends React.Component<Props> {
@@ -26,8 +26,11 @@ export default class Home extends React.Component<Props> {
   }
 
   personalInfo(){
+    var img = this.props.navigation.getParam('img');
     this.props.navigation.navigate('PersonInfo',{username: this.props.navigation.getParam('username'),
-                                                 email: this.props.navigation.getParam('email')});
+                                                 email: this.props.navigation.getParam('email'),
+                                                 user: this.props.navigation.getParam('user'),
+                                                 image: img});
   }
 
   subscription(){
@@ -48,13 +51,18 @@ export default class Home extends React.Component<Props> {
 
  render()
  {
+    var img = this.props.navigation.getParam('img');
+    console.log("img url", img);
     return(
        <View style = {styles.container}>
+            <Text/>
+            <Text/>
+            <TouchableOpacity style={styles.imageContainer} onPress={this.personalInfo.bind(this)}>
+                <Image source={{uri: img}} style={styles.image}/>
+                <Image source={{uri: "https://theunstuckgroup.com/wp-content/uploads/2013/06/widget-personal-info.png"}} style={styles.smallImage}/>
+            </TouchableOpacity>
+            <Text/>
             <Text style={styles.title}> Hello! {this.props.navigation.getParam('username')} </Text>
-            <Text/>
-            <Text/>
-            <Text/>
-            <Text/>
             <Text/>
             <Text/>
             <Text/>
@@ -65,8 +73,6 @@ export default class Home extends React.Component<Props> {
             <Button onPress={this.viewOnMap.bind(this)} title="View Reports on Map"></Button>
             <Text></Text>
             <Button onPress={this.search.bind(this)} title="Search Tags"></Button>
-            <Text></Text>
-            <Button onPress={this.personalInfo.bind(this)} title={this.props.navigation.getParam('email')}></Button>
             <Text></Text>
             <Button onPress={this.subscription.bind(this)} title="My subscription"></Button>
             <Text></Text>
@@ -81,10 +87,29 @@ const styles = StyleSheet.create({
        bottom: 0,
        justifyContent: 'flex-end',
      },
+     imageContainer:{
+        height: 130,
+        width: 130,
+        alignSelf:'center',
+     },
      title: {
         color: 'black',
         fontSize: 20,
         alignSelf: 'center'
+     },
+     image: {
+        width: 120,
+        height: 120,
+        alignSelf: 'center',
+        borderRadius: 75,
+        opacity: 0.9
+     },
+     smallImage: {
+        width: 40,
+        height: 40,
+        position: 'absolute',
+        bottom: 0,
+        right: 0
      }
 });
 

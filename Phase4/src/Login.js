@@ -29,7 +29,8 @@ export default class Login extends React.Component {
       this.props.navigation.navigate('Home', {
         user: userInfo,
         username: userInfo.user.name,
-        email: userInfo.user.email
+        email: userInfo.user.email,
+        img: userInfo.user.photo
       });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -51,6 +52,8 @@ export default class Login extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.heading}> Welcome to Explorexas! </Text>
+        <Text></Text>
+        <Text></Text>
         <GoogleSigninButton
           style={{ width: 192, height: 48 }}
           size={GoogleSigninButton.Size.Wide}
