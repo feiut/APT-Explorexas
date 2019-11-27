@@ -3,10 +3,10 @@ import { StyleSheet, Text, View, Button, Image, TouchableOpacity, ImageBackgroun
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 
 export default class Home extends React.Component<Props> {
- static navigationOptions =
+ static navigationOptions = (
  {
     title: 'Home',
- };
+ });
 
  openCategories() {
     console.log("View category");
@@ -27,6 +27,9 @@ export default class Home extends React.Component<Props> {
 
   personalInfo(){
     var img = this.props.navigation.getParam('img');
+    if (img==null){
+        img = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
+    }
     this.props.navigation.navigate('PersonInfo',{username: this.props.navigation.getParam('username'),
                                                  email: this.props.navigation.getParam('email'),
                                                  user: this.props.navigation.getParam('user'),
@@ -52,6 +55,9 @@ export default class Home extends React.Component<Props> {
  render()
  {
     var img = this.props.navigation.getParam('img');
+    if (img == null){
+        img = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
+    }
     console.log("img url", img);
     return(
        <View style = {styles.container}>
