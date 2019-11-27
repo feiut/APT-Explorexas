@@ -486,6 +486,13 @@ def profile():
             return render_template('profile.html', reports=reports, user_data=claims)
 
 
+@app.route('/deleteReport/<report_id>')
+def deleteReport(report_id):
+    repController = ReportAPI.ReportAPI()
+    toDelete = ObjectId(report_id)
+    repController.delete_by_id(toDelete)
+
+
 @app.route('/mobileProfile/<user_id>')
 def mobileProfile(user_id):
     repController = ReportAPI.ReportAPI()
