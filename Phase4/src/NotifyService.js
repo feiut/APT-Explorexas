@@ -25,7 +25,9 @@ export default class NotifyService {
   	this.lastId++;
 	PushNotification.localNotificationSchedule({
 		date: new Date(Date.now() + (interval * 1000)),
+		repeatType: 'minute',
 		message: msg,
+		largeIcon: "ic_launcher",
 	});
   }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, FlatList, Image, TouchableHighlight, Button  } from 'react-native';
 import NotifyService from './NotifyService'
+import NotifyRec from './NotifyRec'
 
 export default class PersonInfo extends React.Component<Props> {
      static navigationOptions =
@@ -13,7 +14,7 @@ export default class PersonInfo extends React.Component<Props> {
           this.state = {
                 isLoading: true,
                 dataSource: [],
-                enableNotify: false,
+                enableNotify: NotifyRec.enblNotify,
           };
           this.notif = new NotifyService(this.onNotify.bind(this));
      }
@@ -62,7 +63,6 @@ export default class PersonInfo extends React.Component<Props> {
     onNotify(notify) {
       console.log(notify);
       this.props.navigation.navigate('Map', {onlyNearby: true});
-      this.notif.scheduleNotify(10 ,"Check out the nearby reports!");
     }
 
     scheduleNotification() {
@@ -70,13 +70,10 @@ export default class PersonInfo extends React.Component<Props> {
       if(this.state.enableNotify) {
         this.notif.cancelAll();
       } else {
-        this.notif.scheduleNotify(1 ,"APT Notification Trial");
+        this.notif.scheduleNotify(1 ,"Check out nearby reports!");
       }
       this.setState({enableNotify: !enable});
-    }
-
-    cancelNotification() {
-      this.notif.cancelAll();
+      NotifyRec.enblNotify = !enable;
     }
 
      render()
