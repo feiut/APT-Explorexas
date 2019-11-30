@@ -37,10 +37,11 @@ class ViewCategoriesActivity : AppCompatActivity() {
 
         val queue = Volley.newRequestQueue(this)
         // 2. Create the request with the callback
-        val stringRequest = StringRequest(Request.Method.GET, url,
+        val stringRequest = StringRequest(Request.Method.GET, url + "/mobile",
             Response.Listener {
                 response -> run {
                 val parser = JsonParser()
+                Log.d("json", response)
                 val jsonTree = parser.parse(response)
                 val categories = jsonTree.asJsonArray
                 bind(categories)
