@@ -9,6 +9,7 @@ import { Text,
   Image,
   TouchableOpacity,
   Alert, 
+  Modal,
   ActivityIndicator,
   PermissionsAndroid
 } from 'react-native';
@@ -84,6 +85,7 @@ export default class CreateReport extends Component {
       latitude: '',
       longitude: '',
       photoloaded: false,
+      showPopup: false,
       photo: '',
       fileData: '',
       fileUri: ''
@@ -171,6 +173,7 @@ export default class CreateReport extends Component {
 
   
   launchCamera = () => {
+    this.setState({showPopup: false});
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -201,6 +204,7 @@ export default class CreateReport extends Component {
   }
 
   launchImageLibrary = () => {
+    this.setState({showPopup: false});
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -351,6 +355,24 @@ export default class CreateReport extends Component {
   });
   return(
     <SafeAreaView style={styles.container}>
+    <Modal 
+      animationType="fade"
+      transparent={true}
+      visible={this.state.showPopup}
+      >
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)'}}>
+          
+        <View style={styles.btnParentSection}>
+          <TouchableOpacity onPress={this.launchCamera} style={[styles.btnSection,{borderBottomWidth: 0.5, borderBottomColor:'rgba(0,0,0,1)'}]}  >
+            <Text style={styles.btnText}>Launch Camera</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.launchImageLibrary} style={styles.btnSection}  >
+            <Text style={styles.btnText}>Launch Gallery</Text>
+          </TouchableOpacity>
+
+        </View>
+      </View>
+    </Modal>
     <ScrollView style={styles.scrollView}>
       <View style={styles.container_input}>
         <View style={styles.container_item}>
@@ -434,25 +456,10 @@ export default class CreateReport extends Component {
             {/* <View>
               {this.renderFileData()}
             </View> */}
-            <View>
+            <TouchableOpacity onPress={() => {this.setState({showPopup: true})}}>
               {this.renderFileUri()}
-            </View>
+            </TouchableOpacity>
           </View>
-
-          <View style={styles.btnParentSection}>
-            {/* <TouchableOpacity onPress={this.chooseImage} style={styles.btnSection}  >
-              <Text style={styles.btnText}>Choose File</Text>
-            </TouchableOpacity> */}
-
-            <TouchableOpacity onPress={this.launchCamera} style={styles.btnSection}  >
-              <Text style={styles.btnText}>Launch Camera</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={this.launchImageLibrary} style={styles.btnSection}  >
-              <Text style={styles.btnText}>Launch Gallery</Text>
-            </TouchableOpacity>
-
-        </View>
         </View>
 
       </View>
@@ -460,12 +467,12 @@ export default class CreateReport extends Component {
 
         <TouchableOpacity onPress={this.handleUploadForm} style={[styles.submit_btn]} disabled={this.state.isuploading} >
             { this.state.isuploading && <ActivityIndicator color='#ffffff' size='large'/> }
-            { this.state.isuploading && <Text style={styles.btnText}>Uploading</Text> }
-            { !this.state.isuploading && <Text style={styles.btnText}>Submit</Text> }
+            { this.state.isuploading && <Text style={styles.submit_btnText}>Uploading</Text> }
+            { !this.state.isuploading && <Text style={styles.submit_btnText}>Submit</Text> }
         </TouchableOpacity>
 
         <TouchableOpacity onPress={this.toHome.bind(this)} style={[styles.submit_btn, styles.cancel_btn]} disabled={this.state.isuploading} >
-          <Text style={styles.btnText}>Cancel</Text>
+          <Text style={styles.submit_btnText}>Cancel</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -525,11 +532,12 @@ const styles = StyleSheet.create({
   },
 
   container_image:{
-    height: 300,
+    height: 250,
     borderBottomWidth: .5
   },
 
   container_submit:{
+    paddingBottom: 20,
     paddingTop: 10,
     alignItems: 'center'
   },
@@ -542,35 +550,38 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   images: {
-    width: 250,
-    height: 150,
+    width: 280,
+    height: 170,
     borderColor: 'black',
-    borderWidth: 1,
+    borderWidth: 0.4,
     marginHorizontal: 3
   },
   btnParentSection: {
     alignItems: 'center',
     height: 100,
-    flex:1,
-    flexDirection: 'row',
-    marginTop:10
+    flex: 0.2,
+    flexDirection: 'column',
+    marginTop: 10,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    borderRadius: 5
   },
   btnSection: {
-    width: 200,
+    width: 280,
     height: 50,
     flex: 1,
-    backgroundColor: '#797D7F',
-    margin: 10,
+    // backgroundColor: 'rgba(0,0,0,0.5)',
     alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
-    marginBottom:10
+    justifyContent: 'center'
   },
   btnText: {
     textAlign: 'center',
+    color: 'black',
+    fontSize: 18
+  },
+  submit_btnText: {
+    textAlign: 'center',
     color: 'white',
-    fontSize: 14,
-    fontWeight:'bold'
+    fontSize: 16
   },
   submit_btn: {
     width: 280,
@@ -578,11 +589,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: '#5DADE2',
-    margin: 10,
+    marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 5,
-    marginBottom:10
+    borderRadius: 5
   },
   cancel_btn: {
     backgroundColor: '#979A9A'
