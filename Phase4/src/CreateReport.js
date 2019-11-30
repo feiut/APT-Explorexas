@@ -75,6 +75,7 @@ export default class CreateReport extends Component {
       isuploading: false,
       title: '',
       placeName: '',
+      catList: ['Hiking', 'Running', 'Boating', 'Basketball', 'Jogging', 'Others'],
       category: '',
       review: '',
       tag: '',
@@ -104,6 +105,26 @@ export default class CreateReport extends Component {
     error => Alert.alert(error.message),
     { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
   )
+  
+  var that = this; 
+  fetch('http://apt-team7.appspot.com/mobile', {
+    method: "GET",
+    userAgent: "android"
+  })
+  .then(function(res){
+    res.json().then(function(data) {
+      console.log('request succeeded with JSON response', data)
+      var catList = data.map(cat => cat.catName);
+      console.log('Caltlist', catList)
+      that.setState({
+        catList: catList,
+      });
+    }).catch(function(error) {
+        console.log('Data failed', error)
+      });
+    }).catch(function(error){
+        console.log('request failed', error)
+    })
 
 }
 
@@ -141,7 +162,7 @@ export default class CreateReport extends Component {
         this.setState({
           photoloaded:true,
           photo: response,
-          fileData: response.data,
+          // fileData: response.data,
           fileUri: response.uri
         });
       }
@@ -171,7 +192,7 @@ export default class CreateReport extends Component {
         this.setState({
           photoloaded:true,
           photo: response,
-          fileData: response.data,
+          // fileData: response.data,
           fileUri: response.uri
         });
       }
@@ -202,7 +223,7 @@ export default class CreateReport extends Component {
         this.setState({
           photoloaded:true,
           photo: response,
-          fileData: response.data,
+          // fileData: response.data,
           fileUri: response.uri
         });
       }
@@ -288,9 +309,18 @@ export default class CreateReport extends Component {
       .then(response => {
         console.log("upload succes", response);
         alert("Upload success!");
+        this.renderFileUri();
         this.setState({ 
           photo: null,
-          isuploading : false
+          isuploading : false,
+          title: '',
+          placeName: '',
+          category: '',
+          review: '',
+          tag: '',
+          rating: '',
+          fileUri: '',
+          photoloaded: false
          });
         console.log(this.state)
       })
@@ -315,123 +345,132 @@ export default class CreateReport extends Component {
       });
   };
 
- render()
- {
-    return(
-      <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.container_input}>
-          <View style={styles.container_item}>
-            <Text style={[styles.input_left]}>Titlel:</Text>
-            <TextInput 
-              style={styles.input_right} 
-              placeholder="Title"
-              onChangeText={(inputValue) => {
-                this.setState({title: inputValue})
-                console.log(this.state.title)}}></TextInput>    
-          </View>
-          <View style={styles.container_item}>
-            <Text style={[styles.input_left]}>Place Name:</Text>
-            <TextInput 
-              style={styles.input_right} 
-              placeholder="Place Name"
-              onChangeText={(inputValue) => {
-                this.setState({placeName: inputValue})}}></TextInput>    
-          </View>
-          <View style={styles.container_item}>
-            <Text style={styles.input_left}>Category:</Text>
-            <Picker style={styles.input_right} selectedValue={this.state.category}
-              onValueChange={(itemValue) =>
-                {this.setState({category: itemValue})
-              console.log(this.state.category)}
-                }>
-              <Picker.Item label="Select Category" value="" />
-              <Picker.Item label="Hiking" value="Hiking" />
-              <Picker.Item label="Running" value="Running" />
-              <Picker.Item label="Boating" value="Boating" />
-              <Picker.Item label="Basketball" value="Basketball" />
-              <Picker.Item label="Jogging" value="Jogging" />
-              <Picker.Item label="Others" value="Others" />
-            </Picker>
-          </View>
-          <View style={styles.container_item}>
-            <Text style={[styles.input_left, styles.input_review]}>Review:</Text>
-            <TextInput 
-              multiline 
-              style={[styles.input_right, styles.input_review]} 
-              placeholder="Review"
-              onChangeText={(inputValue) => {
-                this.setState({review: inputValue})
-                console.log(this.state.review)}}
-            ></TextInput>
-          </View>
-          <View style={styles.container_item}>
-            <Text style={[styles.input_left]}>Tag:</Text>
-            <TextInput 
-              style={styles.input_right} 
-              placeholder="Tag"
-              onChangeText={(inputValue) => {
-                this.setState({tag: inputValue})
-                console.log(this.state.tag)}}></TextInput>    
-          </View>
-          <View style={styles.container_item}>
-            <Text style={styles.input_left}>Rating:</Text>
-            <Picker style={styles.input_right} selectedValue={this.state.rating}
-              onValueChange={(itemValue) =>
-                this.setState({rating: itemValue})}>
-              <Picker.Item label="Select Rating" value="" />
-              <Picker.Item label="0" value="0" />
-              <Picker.Item label="1" value="1" />
-              <Picker.Item label="2" value="2" />
-              <Picker.Item label="3" value="3" />
-              <Picker.Item label="4" value="4" />
-              <Picker.Item label="5" value="5" />
-            </Picker>
-          </View>
+ render(){
+  let catItems = this.state.catList.map((cat, i) => {
+    return <Picker.Item key={i} value={cat} label={cat} />
+  });
+  return(
+    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.container_input}>
+        <View style={styles.container_item}>
+          <Text style={[styles.input_left]}>Titlel:</Text>
+          <TextInput 
+            style={styles.input_right}
+            // autoCorrect={false} 
+            // ref={title => this.titleInput = title} 
+            value={this.state.title} 
+            placeholder="Title"
+            onChangeText={(inputValue) => {
+              this.setState({title: inputValue})
+              console.log(this.state.title)}}></TextInput>    
+        </View>
+        <View style={styles.container_item}>
+          <Text style={[styles.input_left]}>Place Name:</Text>
+          <TextInput 
+            value={this.state.placeName} 
+            style={styles.input_right} 
+            placeholder="Place Name"
+            onChangeText={(inputValue) => {
+              this.setState({placeName: inputValue})}}></TextInput>    
+        </View>
+        <View style={styles.container_item}>
+          <Text style={styles.input_left}>Category:</Text>
+          <Picker style={styles.input_right} selectedValue={this.state.category}
+            onValueChange={(itemValue) =>
+              {this.setState({category: itemValue})
+            console.log(this.state.category)}
+              }>
+            <Picker.Item label="Select Category" value="" />
+            {catItems}
+            {/* <Picker.Item label="Hiking" value="Hiking" />
+            <Picker.Item label="Running" value="Running" />
+            <Picker.Item label="Boating" value="Boating" />
+            <Picker.Item label="Basketball" value="Basketball" />
+            <Picker.Item label="Jogging" value="Jogging" />
+            <Picker.Item label="Others" value="Others" /> */}
+          </Picker>
+        </View>
+        <View style={styles.container_item}>
+          <Text style={[styles.input_left, styles.input_review]}>Review:</Text>
+          <TextInput 
+            multiline 
+            value={this.state.review} 
+            style={[styles.input_right, styles.input_review]} 
+            placeholder="Review"
+            onChangeText={(inputValue) => {
+              this.setState({review: inputValue})
+              console.log(this.state.review)}}
+          ></TextInput>
+        </View>
+        <View style={styles.container_item}>
+          <Text style={[styles.input_left]}>Tag:</Text>
+          <TextInput 
+            value={this.state.tag} 
+            style={styles.input_right} 
+            placeholder="Tag"
+            onChangeText={(inputValue) => {
+              this.setState({tag: inputValue})
+              console.log(this.state.tag)}}></TextInput>    
+        </View>
+        <View style={styles.container_item}>
+          <Text style={styles.input_left}>Rating:</Text>
+          <Picker style={styles.input_right} selectedValue={this.state.rating}
+            onValueChange={(itemValue) =>
+              this.setState({rating: itemValue})}>
+            <Picker.Item label="Select Rating" value="" />
+            <Picker.Item label="0" value="0" />
+            <Picker.Item label="1" value="1" />
+            <Picker.Item label="2" value="2" />
+            <Picker.Item label="3" value="3" />
+            <Picker.Item label="4" value="4" />
+            <Picker.Item label="5" value="5" />
+          </Picker>
+        </View>
 
-          <View style={styles.container_image}>
-            <Text style={{textAlign:'left',paddingVertical:15}} >Choose Image:</Text>
-            <View style={styles.ImageSections}>
-              {/* <View>
-                {this.renderFileData()}
-              </View> */}
-              <View>
-                {this.renderFileUri()}
-              </View>
+        <View style={styles.container_image}>
+          <Text style={{textAlign:'left',paddingVertical:15}} >Choose Image:</Text>
+          <View style={styles.ImageSections}>
+            {/* <View>
+              {this.renderFileData()}
+            </View> */}
+            <View>
+              {this.renderFileUri()}
             </View>
-
-            <View style={styles.btnParentSection}>
-              {/* <TouchableOpacity onPress={this.chooseImage} style={styles.btnSection}  >
-                <Text style={styles.btnText}>Choose File</Text>
-              </TouchableOpacity> */}
-
-              <TouchableOpacity onPress={this.launchCamera} style={styles.btnSection}  >
-                <Text style={styles.btnText}>Launch Camera</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={this.launchImageLibrary} style={styles.btnSection}  >
-                <Text style={styles.btnText}>Launch Gallery</Text>
-              </TouchableOpacity>
-
-          </View>
           </View>
 
-        </View>
-        <View style={styles.container_submit}>
+          <View style={styles.btnParentSection}>
+            {/* <TouchableOpacity onPress={this.chooseImage} style={styles.btnSection}  >
+              <Text style={styles.btnText}>Choose File</Text>
+            </TouchableOpacity> */}
 
-          <TouchableOpacity onPress={this.handleUploadForm} style={[styles.submit_btn]} disabled={this.state.isuploading} >
-              { this.state.isuploading && <ActivityIndicator color='#ffffff' size='large'/> }
-              { this.state.isuploading && <Text style={styles.btnText}>Uploading</Text> }
-              { !this.state.isuploading && <Text style={styles.btnText}>Submit</Text> }
-          </TouchableOpacity>
+            <TouchableOpacity onPress={this.launchCamera} style={styles.btnSection}  >
+              <Text style={styles.btnText}>Launch Camera</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.toHome.bind(this)} style={[styles.submit_btn, styles.cancel_btn]} disabled={this.state.isuploading} >
-            <Text style={styles.btnText}>Cancel</Text>
-          </TouchableOpacity>
+            <TouchableOpacity onPress={this.launchImageLibrary} style={styles.btnSection}  >
+              <Text style={styles.btnText}>Launch Gallery</Text>
+            </TouchableOpacity>
+
         </View>
-      </ScrollView>
-      </SafeAreaView>
-    );
+        </View>
+
+      </View>
+      <View style={styles.container_submit}>
+
+        <TouchableOpacity onPress={this.handleUploadForm} style={[styles.submit_btn]} disabled={this.state.isuploading} >
+            { this.state.isuploading && <ActivityIndicator color='#ffffff' size='large'/> }
+            { this.state.isuploading && <Text style={styles.btnText}>Uploading</Text> }
+            { !this.state.isuploading && <Text style={styles.btnText}>Submit</Text> }
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={this.toHome.bind(this)} style={[styles.submit_btn, styles.cancel_btn]} disabled={this.state.isuploading} >
+          <Text style={styles.btnText}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+    </SafeAreaView>
+  );
  }
 }
 
