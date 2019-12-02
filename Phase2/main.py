@@ -274,13 +274,11 @@ def viewSubscription():
             return login()
         else:
             user_controller = UserAPI.UserAPI()
-            print(userId)
             subscribed = user_controller.get(userId).subscription
             repController = ReportAPI.ReportAPI()
             reportContentList = repController.list_by_userId(subscribed)
             reportContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
             repController.close_connection()
-            print(reportContentList[1])
             return render_template('viewSubscription.html', reportContentList=reportContentList, user_data=claims)
     return login()
 
