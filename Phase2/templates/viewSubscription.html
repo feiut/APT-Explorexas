@@ -26,8 +26,14 @@
 {% endblock %}
 
 {% block content %}
+{% if not reportContentList %}
+    <div class="alert alert-danger" role="alert" style="margin: 0 auto">
+        You haven't subscribed to any author yet.
+        <a href="/">Find more</a>
+    </div>
+{% else %}
     <div class="center-in-center">
-        <h1 style="font-size:40px;color:white"> {{ categoryName }} </h1>
+        <h1 style="font-size:40px;color:white"> My Subscriptions </h1>
         {% for reportContent in reportContentList %}
         <div class="report-container">
             <div>
@@ -57,4 +63,5 @@
         <hr>
         {% endfor %}
     </div>
+{% endif %}
 {% endblock %}

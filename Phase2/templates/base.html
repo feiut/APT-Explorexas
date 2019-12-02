@@ -110,6 +110,10 @@
             <li><a class="nav-item nav-link" href="/welcomePage">Welcome</a></li>
             <hr>
             <li><a class="nav-item nav-link" href="/">View Categories</a></li>
+            {% if user_data %}
+            <hr>
+            <li><a class="nav-item nav-link" href="/viewSubscription">My Subscriptions</a></li>
+            {% endif %}
             <hr>
             <li><a class="nav-item nav-link" href="/createCategory">Create a Category</a></li>
             <hr>

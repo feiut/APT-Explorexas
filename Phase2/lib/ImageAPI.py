@@ -22,8 +22,6 @@ class ImageAPI():
 
     def get_image_by_id(self, imgId):
         fs = gridfs.GridFS(self.db)
-        print("get by imgid")
-        print(imgId)
         try:
             gridout = fs.get( ObjectId(imgId))
             return gridout

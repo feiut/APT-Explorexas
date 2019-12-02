@@ -263,6 +263,25 @@ def createReport():
     else:
         return render_template('nologin.html')
 
+@app.route('/viewSubscription')
+def viewSubscription():
+    id_token = request.cookies.get("token")
+    userId = None
+    if id_token:
+        claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+        userId = claims["email"]
+        if userId is None:
+            return login()
+        else:
+            user_controller = UserAPI.UserAPI()
+            print(userId)
+            subscribed = user_controller.get(userId).subscription
+            repController = ReportAPI.ReportAPI()
+            reportContentList = repController.list_by_userId(subscribed)
+            reportContentList.sort(key=lambda rpt:rpt.timeStamp, reverse=True)
+            repController.close_connection()
+            return render_template('viewSubscription.html', reportContentList=reportContentList, user_data=claims)
+    return login()
 
 @app.route('/images/<imgId>')
 def image(imgId):
@@ -275,13 +294,17 @@ def image(imgId):
     return response
 
 
-@app.route('/reports/<reportId>')
+@app.route('/reports/<reportId>', methods=["GET","POST"])
 def report(reportId):
     id_token = request.cookies.get("token")
     claims = None
+    subscriptions = None
     if id_token:
         try:
             claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
+            user_controller = UserAPI.UserAPI()
+            user = user_controller.get(claims['email'])
+            subscriptions = user.subscription
         except ValueError as exc:
             print("Login info Error! : " + str(exc))
     repController = ReportAPI.ReportAPI()
@@ -294,8 +317,9 @@ def report(reportId):
     tagController.close_connection()
     catController.close_connection()
     reportDisplay["categoryId"] = categoryName
-    return render_template('reports.html', report=reportDisplay, user_data=claims, imgId=reportDisplay["imgId"])
-
+    # session['previous_report'] = url_for('reports', reportId=reportId)
+    print(subscriptions)
+    return render_template('reports.html', report=reportDisplay, user_data=claims, imgId=reportDisplay["imgId"], subscriptions=subscriptions)
 
 @app.route('/viewCategoryPost/<catId>')
 def viewCategoryPost(catId):
