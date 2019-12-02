@@ -43,13 +43,13 @@
                 <div class="col-4">
                     <img src="{{url_for('image', imgId=reportContent["imgId"])}}" alt="{{reportContent["placeName"]}}" style="height:180px;width:200px">
                     <div > 
-                        <span class="badge badge-pill badge-primary" style="margin-top:10px"># {{reportContent["tagId"]}}</span>
+                        <span class="badge badge-pill badge-primary" style="margin-top:10px"># {{reportContent["tag"]}}</span>
                     </div>
                 </div>
                 <div class="col-8">
                     <ul class="list-group list-group-flush" style="color:Black" align="left">
-                        <li class="list-group-item">User: {{ reportContent["userId"] }}</li>
-                        <li class="list-group-item">Category: {{ reportContent["categoryId"] }}</li>
+                        <li class="list-group-item">User: {{ reportContent["userName"] }}</li>
+                        <li class="list-group-item">Category: {{ reportContent["categoryName"] }}</li>
                         <li class="list-group-item">Review: {{ reportContent["review"] }}</li>
                         <li class="list-group-item">
                         Rating: {{reportContent["rating"]}}.0 / 5.0

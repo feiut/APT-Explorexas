@@ -259,17 +259,23 @@ class ReportAPI():
             userName = userAPI.get(result["userId"]).userName
             catName = catAPI.get(result["categoryId"]).catName
             tagName = tagAPI.get(result["tagId"]).tagName
-            report = Report.Report(result["_id"],
-                            userName,
-                            result["title"],
-                            result["placeName"],
-                            result["coordinates"],
-                            catName,
-                            result["imgId"],
-                            tagName,
-                            result["review"],
-                            result["rating"],
-                            result["timeStamp"])
+            report = {
+                        "reportId": result["_id"],
+                        "userId": result["userId"],
+                        "userName": userName,
+                        "title": result["title"],
+                        "placeName": result["placeName"],
+                        "coordinates": result["coordinates"],
+                        "categoryId": result["categoryId"],
+                        "categoryName": catName,
+                        "imgId": result["imgId"],
+                        "tag": tagName,
+                        "tagId": result["tagId"],
+                        "review": result["review"],
+                        "rating": result["rating"],
+                        "timeStamp": result["timeStamp"]
+                    }
+
             report_list.append(report)
         return report_list
             
