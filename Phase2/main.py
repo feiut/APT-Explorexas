@@ -449,7 +449,7 @@ def searchTag(ptn):
                                         user_data=claims, 
                                         error = error_message)
             else:
-                return jsonify({})
+                return jsonify([])
 
 
 @app.route('/login')

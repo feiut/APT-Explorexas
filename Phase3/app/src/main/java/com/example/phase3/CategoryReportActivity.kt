@@ -45,7 +45,7 @@ class CategoryReportActivity : AppCompatActivity() {
         try {
             val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, url, null,
                 Response.Listener<JSONArray> { response ->
-                    if (response.getJSONObject(0).has("title")) {
+                    if (response.length() > 0) {
                         reportContentList = response
                         val reportItemList = mutableListOf<ReportItem>()
                         for (reportIdx in 0 until reportContentList.length()) {
@@ -63,7 +63,7 @@ class CategoryReportActivity : AppCompatActivity() {
                         recyclerView.layoutManager = LinearLayoutManager(this)
                         recyclerView.adapter = Adapter(reportItemList)
                     } else {
-                        findViewById<TextView>(R.id.categoryTextView).text = "No Matching Result"
+                        findViewById<TextView>(R.id.categoryTextView).text = "No Matching Result for: " + pattern
                     }
                 },
                 Response.ErrorListener { error ->
