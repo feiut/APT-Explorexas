@@ -14,7 +14,7 @@ export default class ViewCategory extends React.Component<Props> {
 	  super(props);
 	  this.state ={ isLoading: true};
       //this.web = 'http://explore-texas-web.appspot.com';
-      this.web = 'http://arctic-sound-254923.appspot.com';
+      this.web = 'http://apt-team7.appspot.com';
 	}
 
     async componentDidMount() {
