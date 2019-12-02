@@ -252,15 +252,21 @@ class ReportAPI():
     def list_by_userId(self, userIds):
         results = self.collection.find({'userId': {'$in': userIds}})
         report_list = []
+        userAPI = UserAPI.UserAPI()
+        catAPI = CategoryAPI.CategoryAPI()
+        tagAPI = TagAPI.TagAPI()
         for result in results:
+            userName = userAPI.get(result["userId"]).userName
+            catName = catAPI.get(result["categoryId"]).catName
+            tagName = tagAPI.get(result["tagId"]).tagName
             report = Report.Report(result["_id"],
-                            result["userId"],
+                            userName,
                             result["title"],
                             result["placeName"],
                             result["coordinates"],
-                            result["categoryId"],
+                            catName,
                             result["imgId"],
-                            result["tagId"],
+                            tagName,
                             result["review"],
                             result["rating"],
                             result["timeStamp"])
