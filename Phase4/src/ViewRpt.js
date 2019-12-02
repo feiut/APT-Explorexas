@@ -44,7 +44,7 @@ export default class ViewReports extends React.Component<Props> {
 
  onShare = async() => {
     const { navigation } = this.props;
-    var reportId = navigation.getParam('reportId','Others');
+    var reportId = navigation.getParam('reportId');
     var placeName = navigation.getParam('placeName', 'Others');
  	var categoryName = navigation.getParam('categoryName', 'Others');
     const result = await Share.share({
