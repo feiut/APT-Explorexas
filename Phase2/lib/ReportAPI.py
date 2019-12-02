@@ -260,17 +260,17 @@ class ReportAPI():
             catName = catAPI.get(result["categoryId"]).catName
             tagName = tagAPI.get(result["tagId"]).tagName
             report = {
-                        "reportId": result["_id"],
+                        "reportId": str(result["_id"]),
                         "userId": result["userId"],
                         "userName": userName,
                         "title": result["title"],
                         "placeName": result["placeName"],
                         "coordinates": result["coordinates"],
-                        "categoryId": result["categoryId"],
+                        "categoryId": str(result["categoryId"]),
                         "categoryName": catName,
-                        "imgId": result["imgId"],
+                        "imgId": str(result["imgId"]),
                         "tag": tagName,
-                        "tagId": result["tagId"],
+                        "tagId": str(result["tagId"]),
                         "review": result["review"],
                         "rating": result["rating"],
                         "timeStamp": result["timeStamp"]

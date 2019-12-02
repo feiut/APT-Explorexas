@@ -15,6 +15,7 @@ export default class ViewCategory extends React.Component<Props> {
 	  this.state ={ isLoading: true};
       //this.web = 'http://explore-texas-web.appspot.com';
       this.web = 'http://apt-team7.appspot.com';
+    //   this.web = 'https://explorexas.appspot.com';
 	}
 
     async componentDidMount() {
@@ -32,8 +33,9 @@ export default class ViewCategory extends React.Component<Props> {
   		},
 	  })
 	  .then(function(res){
+		console.log('request succeeded with JSON response', res)
 	    res.json().then(function(data) {
-	      //console.log('request succeeded with JSON response', data)
+	      console.log('request succeeded with JSON res//ponse', data)
 
 	      that.setState({
 	        isLoading: false,
