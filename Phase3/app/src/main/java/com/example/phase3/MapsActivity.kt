@@ -94,7 +94,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             },
             Response.ErrorListener {
                     error -> run {
-                txtHeader.text = "Failed to retrieve data"
+                txtHeader!!.text = "Failed to retrieve data"
                 lstCategories.visibility = View.GONE
                 Log.d("error", error.toString())
             }
@@ -179,7 +179,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     if (location == null) {
                         requestNewLocationData()
                     } else {
-                        var current = LatLng(location.latitude, location.longitude)
+//                        var current = LatLng(location.latitude, location.longitude)
+                        var gps = GPSTracker(this)
+                        var mlatitude = gps.getLatitude()
+                        var mlongitude = gps.getLongitude()
+                        var current = LatLng(mlatitude, mlongitude)
                         mMap.addMarker(MarkerOptions().position(current).title("You are here!"))
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(current))
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current,(mMap.minZoomLevel+mMap.maxZoomLevel)*3/4))

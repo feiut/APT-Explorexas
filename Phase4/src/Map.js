@@ -65,9 +65,11 @@ export default class Map extends Component {
       position => {
         console.log("Current Location", position);
         var newLocation = JSON.stringify(position);
-        var myLatitude = position.coords.latitude;
+//        var myLatitude = position.coords.latitude;
+        var myLatitude = 30.2887;
         console.log("Current latitude", myLatitude);
-        var myLongitude = position.coords.longitude;
+        var myLongitude = -97.7355;
+//        var myLongitude = position.coords.longitude;
         console.log("Current longitude", myLongitude);
         this.setState({ latitude: myLatitude,
                         longitude: myLongitude,
