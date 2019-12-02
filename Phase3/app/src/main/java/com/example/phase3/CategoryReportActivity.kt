@@ -84,18 +84,22 @@ class CategoryReportActivity : AppCompatActivity() {
 
         val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, url, null,
             Response.Listener<JSONArray> { response ->
-                reportContentList = response
-                val reportItemList = mutableListOf<ReportItem>()
-                for(reportIdx in 0 until reportContentList.length()) {
-                    val report: JSONObject = reportContentList.getJSONObject(reportIdx)
-                    reportItemList.add(ReportItem(report.getString("title"),
-                                            report.getString("imgId"),
-                                            report.getString("tag")))
+                if(response.length() > 0) {
+                    reportContentList = response
+                    val reportItemList = mutableListOf<ReportItem>()
+                    for(reportIdx in 0 until reportContentList.length()) {
+                        val report: JSONObject = reportContentList.getJSONObject(reportIdx)
+                        reportItemList.add(ReportItem(report.getString("title"),
+                                                report.getString("imgId"),
+                                                report.getString("tag")))
+                    }
+                    val catName = "Category: "+ reportContentList.getJSONObject(0).getString("categoryName")
+                    findViewById<TextView>(R.id.categoryTextView).text =  catName
+                    recyclerView.layoutManager = LinearLayoutManager(this)
+                    recyclerView.adapter = Adapter(reportItemList)
+                } else {
+                    findViewById<TextView>(R.id.categoryTextView).text = "Empty"
                 }
-                val catName = "Category: "+ reportContentList.getJSONObject(0).getString("categoryName")
-                findViewById<TextView>(R.id.categoryTextView).text =  catName
-                recyclerView.layoutManager = LinearLayoutManager(this)
-                recyclerView.adapter = Adapter(reportItemList)
             },
             Response.ErrorListener { error->
                 val nameTextView = findViewById<TextView>(R.id.categoryTextView)
