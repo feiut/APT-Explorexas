@@ -271,7 +271,7 @@ def viewSubscription():
         claims = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
         userId = claims["email"]
         if userId is None:
-            return login()
+            return render_template('nologin.html')
         else:
             user_controller = UserAPI.UserAPI()
             subscribed = user_controller.get(userId).subscription
@@ -279,8 +279,9 @@ def viewSubscription():
             reportContentList = repController.list_by_userId(subscribed)
             reportContentList.sort(key=lambda rpt:rpt["timeStamp"], reverse=True)
             repController.close_connection()
+            user_controller.close_connection()
             return render_template('viewSubscription.html', reportContentList=reportContentList, user_data=claims)
-    return login()
+    return render_template('nologin.html')
 
 @app.route('/images/<imgId>')
 def image(imgId):
@@ -304,6 +305,7 @@ def report(reportId):
             user_controller = UserAPI.UserAPI()
             user = user_controller.get(claims['email'])
             subscriptions = user.subscription
+            user_controller.close_connection()
         except ValueError as exc:
             print("Login info Error! : " + str(exc))
     repController = ReportAPI.ReportAPI()
@@ -476,6 +478,7 @@ def welcomePage():
             user = User.User(claims["email"], claims["name"])
             user_controller = UserAPI.UserAPI()
             search_user = user_controller.insert(user)
+            user_controller.close_connection()
 
         except ValueError as exc:
             # This will be raised if the token is expired or any other
@@ -552,7 +555,7 @@ def root(mobile):
             user = User.User(claims["email"], claims["name"])
             user_controller = UserAPI.UserAPI()
             search_user = user_controller.insert(user)
-
+            user_controller.close_connection()
         except ValueError as exc:
             # This will be raised if the token is expired or any other
             # verification checks fail.
@@ -580,6 +583,7 @@ def get_subscriptions(userId):
     try:
         user_controller = UserAPI.UserAPI()
         user = user_controller.get(userId)
+        user_controller.close_connection()
         return jsonify(user.subscription)
     except Exception as exc:
         return jsonify({"error": str(exc)})
@@ -590,6 +594,7 @@ def subscribe(userId, authorId):
         user_controller = UserAPI.UserAPI()
         user_controller.subscribe(userId, authorId)
         user = user_controller.get(userId)
+        user_controller.close_connection()
         return jsonify(user.subscription)
     except Exception as exc:
         return jsonify({"error": str(exc)})
@@ -600,6 +605,7 @@ def unsubscribe(userId, authorId):
         user_controller = UserAPI.UserAPI()
         user_controller.unsubscribe(userId, authorId)
         user = user_controller.get(userId)
+        user_controller.close_connection()
         return jsonify(user.subscription)
     except Exception as exc:
         return jsonify({"error": str(exc)})
@@ -611,6 +617,7 @@ def list_subscribed_reports(userId):
         subscribed = user_controller.get(userId).subscription
         repController = ReportAPI.ReportAPI()
         reportContentList = repController.list_by_userId(subscribed)
+        user_controller.close_connection()
         return jsonify([rep for rep in reportContentList])
     except Exception as exc:
         return jsonify({"error": str(exc)})

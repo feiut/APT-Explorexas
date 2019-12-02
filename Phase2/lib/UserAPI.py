@@ -63,3 +63,7 @@ class UserAPI():
     
     def unsubscribe(self, userId, authorId):
         return self.collection.update_one({ "userId": userId}, {'$pull': {'subscription': authorId}})
+
+    
+    def close_connection(self):
+        self.client.close()
