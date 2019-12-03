@@ -43,6 +43,7 @@ import android.Manifest
 import android.os.Looper
 import android.provider.Settings
 import android.widget.Toast
+import com.android.volley.DefaultRetryPolicy
 
 import java.util.*
 
@@ -109,17 +110,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             var category_id = categoryJson.getString("cat_id")
             val queue = Volley.newRequestQueue(this)
             val cat_url: String = "http://apt-team7.appspot.com/viewCategoryPost/" + category_id
-            val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, cat_url, null,
+            val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, cat_url, JSONArray(),
                 Response.Listener<JSONArray> { response ->
+                    Log.d("debug", response.toString())
                     var reportContentList = response
                     for (reportIdx in 0 until reportContentList.length()) {
                         val report: JSONObject = reportContentList.getJSONObject(reportIdx)
                         Log.d("debug", report.toString())
                         var coordinate = report.getString("coordinates")
                         var latitude =
-                            coordinate.split(',')[0].subSequence(2, 10).toString().toDouble()
+                            coordinate.split(',')[0].subSequence(2, 12).toString().toDouble()
                         var longitude =
-                            coordinate.split(',')[1].subSequence(1, 10).toString().toDouble()
+                            coordinate.split(',')[1].subSequence(1, 12).toString().toDouble()
+                        Log.d("debug", latitude.toString())
+                        Log.d("debug", longitude.toString())
                         val current = LatLng(latitude, longitude)
                         mMap.addMarker(
                             MarkerOptions()
@@ -130,7 +134,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 },
                 Response.ErrorListener { error->
-                    Log.d("Error",error.toString())
+                    Log.d("Error",categoryJson.getString("cat_id")+error.toString())
                 })
             queue.add(jsonArrayRequest)
         }
