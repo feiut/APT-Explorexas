@@ -15,6 +15,8 @@ from flask import make_response
 from werkzeug.datastructures import FileStorage
 from flask_mobility import Mobility
 import base64
+import logging
+from logging.config import dictConfig
 
 app = Flask(__name__)
 Mobility(app)
@@ -22,6 +24,21 @@ Mobility(app)
 firebase_request_adapter = requests.Request()
 claims = None
 
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://flask.logging.wsgi_errors_stream',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'INFO',
+        'handlers': ['wsgi']
+    }
+})
 
 @app.route('/createCategory')
 def createCategory():
@@ -114,13 +131,22 @@ def create_report():
         tagName = request.form['tagName']
         tag = Tag.Tag(tagName)
         tagId = tagController.insert(tag)
-    # Decode image from string to byte(bitmap)
+    # # Decode image from string to byte(bitmap)
+    #     bmp = base64.b64decode(request.form['file'])
+    #     filename = '/tmp/' + str(datetime.now()) + ".png"
+    #     with open(filename, 'wb+') as f:
+    #         f.write(bmp)
+    #         image = Image.Image(f.read(), userId)
+    #     imgId = imageController.add_image(image)
+
         bmp = base64.b64decode(request.form['file'])
-        filename = '/tmp/' + str(datetime.now()) + ".png"
+        app.logger.warning('!!!!!!!!!!!!bmp is: %s', str(bmp))
+        filename = '/tmp/' + str(datetime.now()) + ".jpg"
         with open(filename, 'wb+') as f:
             f.write(bmp)
             image = Image.Image(f.read(), userId)
         imgId = imageController.add_image(image)
+    
 
         report = Report.Report( None,
                                 userId, 
