@@ -17,6 +17,9 @@ from flask_mobility import Mobility
 import base64
 import logging
 from logging.config import dictConfig
+from PIL import Image
+from base64 import decodestring
+
 
 app = Flask(__name__)
 Mobility(app)
@@ -144,7 +147,8 @@ def create_report():
         filename = '/tmp/' + str(datetime.now()) + ".jpg"
         with open(filename, 'wb+') as f:
             f.write(bmp)
-            image = Image.Image(f.read(), userId)
+        app.logger.warning('!!!!!!!!!!!!bmp is: %s', str(filename))
+        image = Image.Image(filename, userId)
         imgId = imageController.add_image(image)
     
 
@@ -190,6 +194,7 @@ def create_report():
             tagController = TagAPI.TagAPI()
             tagId = tagController.insert(tag)
             pic = request.files['file']
+            print(pic)
             imageController = ImageAPI.ImageAPI()
             image = Image.Image(pic, userId)
             imgId = imageController.add_image(image)

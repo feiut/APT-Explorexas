@@ -4,12 +4,13 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -19,6 +20,7 @@ import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toFile
 import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -26,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_create_report.*
 import org.json.JSONArray
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,7 +39,10 @@ class CreateReportActivity : AppCompatActivity() {
     val TAKE_PICTURE = 1
     val SELECT_PICTURE = 2
     val PERMISSION_REQUEST = 3
-    private val UPLOAD_URL = "http://apt-team7.appspot.com/create_report"
+//    private val UPLOAD_URL = "http://apt-team7.appspot.com/create_report"
+
+    private val UPLOAD_URL = "https://explorexas.appspot.com/create_report"
+
     private var mClientAccountEmail: String? = null
     private var mTitle: EditText? = null
     private var mPlace: EditText? = null
@@ -217,6 +223,7 @@ class CreateReportActivity : AppCompatActivity() {
         if(requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK){
             try{
                 val file = File(currentPath as String)
+                mImageString = getStringImage(file)
                 val uri = Uri.fromFile(file)
                 getBitmapFromUri(uri)
 //                set imageview by uri or bitmap
@@ -229,6 +236,23 @@ class CreateReportActivity : AppCompatActivity() {
         if(requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK){
             try{
                 val uri = data!!.data
+                var filePath = ""
+//                Log.i("uri from gallery", uri?.toString())
+//                Log.i("uripath from gallery", uri?.path)
+//                if (uri != null && "content".equals(uri.getScheme())) {
+//                    Log.d("","?????????????/ = "+
+//                            android.provider.MediaStore.Images.Media._ID)
+//                    var cursor: Cursor ?= this.getContentResolver().query(uri, arrayOf(android.provider.MediaStore.Images.ImageColumns.DATA), null, null, null);
+//                    cursor!!.moveToFirst();
+//                    filePath = cursor.getString(0);
+//                    cursor.close();
+//                } else {
+//                    filePath = uri!!.getPath()!!
+//                }
+//                Log.d("","Chosen path = "+ filePath)
+//                val file = File(filePath)
+//                mImageString = getStringImage(file)
+//                Log.i("mImage from gallery", mImageString)
                 getBitmapFromUri(uri!!)
                 imageView.setImageURI(uri)
             }catch (e: IOException){
@@ -236,7 +260,6 @@ class CreateReportActivity : AppCompatActivity() {
             }
         }
 
-        mImageString = getStringImage(bitmap!!)
     }
 
     fun dispatchGalleryIntent(){
@@ -288,15 +311,34 @@ class CreateReportActivity : AppCompatActivity() {
         }
     }
 
-    fun getStringImage(bitmap: Bitmap):String{
-        var baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        var b:ByteArray = baos.toByteArray()
-        Log.i("ImageByteArray", b.toString())
-        var temp:String = Base64.encodeToString(b, Base64.DEFAULT)
-        Log.i("ImageString", temp)
+//    fun getStringImage(bitmap: Bitmap):String{
+//        var baos = ByteArrayOutputStream()
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+//        var b:ByteArray = baos.toByteArray()
+//        Log.i("ImageByteArray", b.toString())
+//        var temp:String = Base64.encodeToString(b, Base64.DEFAULT)
+//        Log.i("ImageString", temp)
+//
+//        return temp
+//    }
 
-        return temp
+    fun getStringImage(file: File):String{
+        var encodedfile = ""
+            try {
+                var fileInputStreamReader = FileInputStream(file)
+                var bytes = ByteArray(file.length().toInt())
+                fileInputStreamReader.read(bytes)
+                encodedfile = Base64.encodeToString(bytes, Base64.DEFAULT).toString();
+            } catch (e: IOException) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (e: Exception) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            Log.i("ImageString", encodedfile)
+            return encodedfile
     }
     companion object {
         var webUrl:String = "http://apt-team7.appspot.com/"
