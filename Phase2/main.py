@@ -17,7 +17,6 @@ from flask_mobility import Mobility
 import base64
 import logging
 from logging.config import dictConfig
-from PIL import Image
 from base64 import decodestring
 
 
@@ -143,14 +142,21 @@ def create_report():
     #     imgId = imageController.add_image(image)
 
         bmp = base64.b64decode(request.form['file'])
-        app.logger.warning('!!!!!!!!!!!!bmp is: %s', str(bmp))
+        # app.logger.warning('!!!!!!!!!!!!bmp is: %s', str(bmp))
         filename = '/tmp/' + str(datetime.now()) + ".jpg"
+        imageFile = None
         with open(filename, 'wb+') as f:
             f.write(bmp)
-        app.logger.warning('!!!!!!!!!!!!bmp is: %s', str(filename))
-        image = Image.Image(filename, userId)
-        imgId = imageController.add_image(image)
-    
+            print(type(f))
+
+        with open(filename, 'rb+') as f:
+            imageFile = FileStorage(f)
+            image = Image.Image(imageFile, userId)
+            imgId = imageController.add_image(image)
+
+        # app.logger.warning('!!!!!!!!!!!!bmp is: %s', str(imageFile))
+        # image = Image.Image(filename, userId)
+        # imgId = imageController.add_image(image)
 
         report = Report.Report( None,
                                 userId, 

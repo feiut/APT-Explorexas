@@ -39,6 +39,8 @@
         <item>Baseball</item>
         <item>Jogging</item>
         <item>Others</item>
+        <item>Test</item>
+        <item>Test2</item>
     </string-array>
 
 </resources>
